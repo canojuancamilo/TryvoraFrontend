@@ -1,0 +1,28 @@
+<div class="k-mt-2 k-mb-2">
+  <label class="label-input !k-d-flex k-flex-row k-font-medium k-font-size-md">
+    {{ nombreCampo() }}
+    @if (esRequerido()) {
+      <span class="c-error-500">&nbsp;*</span>
+    }
+  </label>
+  <div class="w-100">
+    <!-- <kendo-dropdownlist
+      #kendoDropdown
+      [formControl]="formControlGet"
+      [data]="datosFiltrados()"
+      [textField]="textoDatos()"
+      [valueField]="keyDatos()"
+      [valuePrimitive]="true"
+      [defaultItem]="defaultItem"
+      [filterable]="filterable()"
+      (filterChange)="handleFilter($event)"
+      [ngClass]="{
+        'c-gray-70': !formControlGet?.invalid,
+        'c-error': formControlGet?.invalid && formControlGet?.touched,
+      }"
+    /> -->
+    <div class="k-d-flex k-justify-content-end k-mt-1">
+      <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
+    </div>
+  </div>
+</div>

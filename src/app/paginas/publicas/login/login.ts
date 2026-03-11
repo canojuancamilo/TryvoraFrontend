@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { Contexto } from '../../../componentes/login/contexto/contexto';
+import { CampoTexto } from '../../../shared/componentes/inputs/campo-texto/campo-texto';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, Contexto, CampoTexto],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })

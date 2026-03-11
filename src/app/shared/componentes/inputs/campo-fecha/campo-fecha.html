@@ -1,0 +1,85 @@
+<div class="k-mt-2 k-mb-2">
+  <label class="label-input !k-d-flex k-flex-row k-font-medium k-font-size-md">
+    {{ nombreCampo() }}
+    @if(esRequerido()){
+    <span class="c-error-500">&nbsp;*</span>
+    }
+  </label>
+  <div class="input-date-container" [class.has-error]="hasError()" [class.c-error]="hasError()"
+    [class.disabled]="isDisabled()">
+    <div class="input-wrapper">
+      <input #dateInput [formControl]="formControlGet" type="text" class="date-input" [ngClass]="{'c-gray-70': isDisabled()}" [id]="id()"
+        [placeholder]="placeholder()" autocomplete="off" (input)="onInputChange($event)"
+        (focus)="onInputFocus()" (blur)="onInputBlur()" (keydown)="onInputKeydown($event)" (click)="toggleCalendar()" />
+      <button type="button" class="calendar-button" [ngClass]="{'c-gray-70': isDisabled()}" [disabled]="isDisabled()" (click)="toggleCalendar()" req
+        [attr.aria-label]="'Abrir calendario'">
+        <i class="material-symbols-outlined">calendar_month</i>
+      </button>
+    </div>
+
+    @if(showCalendar()){
+    <div class="calendar-dropdown" (click)="$event.stopPropagation()">
+      <div class="calendar-header">
+        <button type="button" class="nav-button" (click)="navigatePrevious()">
+          <i class="material-symbols-outlined">chevron_left</i>
+        </button>
+        <button type="button" class="month-year-button" (click)="onHeaderClick()">
+          {{ monthYearDisplay() }}
+        </button>
+        <button type="button" class="nav-button" (click)="navigateNext()">
+          <i class="material-symbols-outlined">chevron_right</i>
+        </button>
+      </div>
+
+      @if(calendarView() === 'days'){
+      <div class="calendar-grid">
+        <div class="weekdays">
+          <span *ngFor="let day of weekDays" class="weekday">{{ day }}</span>
+        </div>
+
+        <div class="days">
+          <button type="button" *ngFor="let day of calendarDays()" class="day-button"
+            [class.other-month]="!day.currentMonth" [class.selected]="day.selected" [class.today]="day.isToday"
+            [class.disabled-date]="day.disabled" [disabled]="!day.currentMonth || day.disabled"
+            (click)="selectDate(day.date)">
+            {{ day.day }}
+          </button>
+        </div>
+      </div>
+      }
+
+      @if(calendarView() === 'months'){
+      <div class="calendar-grid months-grid">
+        <button type="button" *ngFor="let month of calendarMonths()" class="month-button"
+          [class.selected]="month.selected" [class.current]="month.isCurrentMonth" (click)="selectMonth(month.index)">
+          {{ month.name }}
+        </button>
+      </div>
+      }
+
+      @if(calendarView() === 'years'){
+      <div class="calendar-grid years-grid">
+        <button type="button" *ngFor="let year of calendarYears()" class="year-button" [class.selected]="year.selected"
+          [class.current]="year.isCurrentYear" (click)="selectYear(year.year)">
+          {{ year.year }}
+        </button>
+      </div>
+      }
+
+      <div class="calendar-footer">
+        <button type="button" class="today-button" (click)="selectToday()">
+          Hoy
+        </button>
+        <button type="button" class="clear-button" (click)="clearDate()">
+          Limpiar
+        </button>
+      </div>
+    </div>
+    }
+
+
+    <div class="k-d-flex k-justify-content-end k-mt-1">
+      <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
+    </div>
+  </div>
+</div>
