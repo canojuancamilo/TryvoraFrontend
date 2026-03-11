@@ -1,3 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+:host {
+  display: block;
+  height: 100vh;
+}
 
-@import "tailwindcss";
+:root {
+  --primary: #4F46E5;
+  --primary-light: #EEF2FF;
+  --primary-dark: #3730A3;
+  --secondary: #06B6D4;
+  --success: #10B981;
+  --danger: #EF4444;
+  --warning: #F59E0B;
+  --bg: #F8FAFC;
+  --text-primary: #1E293B;
+  --text-muted: #64748B;
+  --border: #E2E8F0;
+}

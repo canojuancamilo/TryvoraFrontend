@@ -1,0 +1,174 @@
+<div class="login-container">
+  <aside class="login-left">
+    <div class="blob-mid"></div>
+    <div class="brand-logo">
+      <div class="brand-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M11 2C6.03 2 2 6.03 2 11s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 2c1.54 0 2.96.47 4.13 1.27L4.27 15.13A6.96 6.96 0 0 1 4 11c0-3.87 3.13-7 7-7zm0 14c-1.54 0-2.96-.47-4.13-1.27l10.86-10.86A6.96 6.96 0 0 1 18 11c0 3.87-3.13 7-7 7z"
+            fill="white" />
+        </svg>
+      </div>
+      <span class="brand-logo-text">ClubPay</span>
+    </div>
+    <div class="left-headline">
+      <h1>Gestiona tu club<br />con total control</h1>
+      <p>La plataforma todo-en-uno para administrar pagos, jugadores y entrenadores de tu club deportivo.</p>
+
+      <ul class="feature-list">
+        <li>
+          <span class="feat-icon"><i class="bi bi-people-fill" style="color: #06B6D4;"></i></span>
+          Gestión completa de jugadores y roles
+        </li>
+        <li>
+          <span class="feat-icon"><i class="bi bi-credit-card-fill" style="color: #10B981;"></i></span>
+          Control de mensualidades y pagos
+        </li>
+        <li>
+          <span class="feat-icon"><i class="bi bi-bar-chart-fill" style="color: #F59E0B;"></i></span>
+          Reportes de ingresos y egresos
+        </li>
+        <li>
+          <span class="feat-icon"><i class="bi bi-bell-fill" style="color: #EC4899;"></i></span>
+          Notificaciones y recordatorios internos
+        </li>
+      </ul>
+    </div>
+    <div class="left-footer">
+      <p>© 2026 ClubPay · Todos los derechos reservados</p>
+    </div>
+  </aside>
+
+  <main class="login-right">
+    <div class="login-form-wrapper">
+      <div class="form-header">
+        <h2>Bienvenido de nuevo</h2>
+        <p>Accede a tu panel de gestión de club</p>
+      </div>
+
+      @if (showError) {
+        <div class="cp-alert cp-alert-danger" role="alert" aria-live="polite">
+          <i class="bi bi-exclamation-circle-fill flex-shrink-0 mt-1" style="font-size:1rem;"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+
+      <!-- Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="cp-label">Correo electrónico</label>
+          <div class="input-icon-wrap">
+            <i class="bi bi-envelope input-icon"></i>
+            <input 
+              id="email"
+              type="email"
+              class="cp-input"
+              [class.is-invalid]="isFieldInvalid('email')"
+              [class.is-valid]="isFieldValid('email')"
+              formControlName="email"
+              placeholder="admin@miclub.com"
+              autocomplete="email"
+              inputmode="email"
+              aria-required="true"
+              aria-describedby="email-error" />
+          </div>
+          @if (shouldShowError('email')) {
+            <div id="email-error" class="field-error show" role="alert">
+              {{ getErrorMessage('email') }}
+            </div>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label for="password" class="cp-label">Contraseña</label>
+          <div class="input-icon-wrap">
+            <i class="bi bi-lock input-icon"></i>
+            <input 
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              class="cp-input"
+              style="padding-right: 3rem;"
+              [class.is-invalid]="isFieldInvalid('password')"
+              [class.is-valid]="isFieldValid('password')"
+              formControlName="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              aria-required="true"
+              aria-describedby="password-error" />
+            <button 
+              type="button"
+              class="input-suffix-btn"
+              (click)="togglePassword()"
+              [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+              <i [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword" class="bi"></i>
+            </button>
+          </div>
+          @if (shouldShowError('password')) {
+            <div id="password-error" class="field-error show" role="alert">
+              {{ getErrorMessage('password') }}
+            </div>
+          }
+        </div>
+
+        <!-- Remember me -->
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <div class="form-check mb-0">
+            <input class="form-check-input" type="checkbox" id="remember" formControlName="remember"
+              style="accent-color: var(--primary); cursor:pointer;">
+            <label class="form-check-label" for="remember"
+              style="font-size:0.85rem; color: var(--text-muted); cursor:pointer;">
+              Recordar sesión
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-cp-primary mb-3" [disabled]="isLoading">
+          <span>{{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}</span>
+          @if (isLoading) {
+            <div class="spinner-sm"></div>
+          }
+        </button>
+
+        <!-- Forgot password -->
+        <div class="text-center">
+          <a href="javascript:void(0)" class="forgot-password-link">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="cp-divider">
+        <span>¿Nuevo en ClubPay?</span>
+      </div>
+
+      <!-- Register link -->
+      <a routerLink="/registro-club" class="register-link">
+        <i class="bi bi-building-add"></i>
+        Registrar mi club
+      </a>
+
+      <!-- Trust badges -->
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <i class="bi bi-shield-check" style="color: var(--success);"></i>
+          <span>Conexión segura</span>
+        </div>
+        <div class="trust-badge">
+          <i class="bi bi-lock-fill" style="color: var(--primary);"></i>
+          <span>Datos cifrados</span>
+        </div>
+        <div class="trust-badge">
+          <i class="bi bi-clock-fill" style="color: var(--secondary);"></i>
+          <span>Disponible 24/7</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
