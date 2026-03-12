@@ -1,16 +1,15 @@
-<div class="mb-3">
-    <label class="cp-label"> 
-        {{ nombreCampo() }}
-        @if(esRequerido()){
-        <span class="c-error-500">*</span>
-        }
-    </label>
-    <div class="input-icon-wrap">
-        <i class="bi bi-envelope input-icon"></i>
-        <input [type]="type()" class="cp-input" [ngClass]="{'is-invalid': formControlGet?.invalid && formControlGet?.touched}" 
-            [formControl]="formControlGet" [placeholder]="placeholder()"/>
-    </div>
-    <div class="field-error show" role="alert">
-          <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
-    </div>
+<label class="cp-label">
+    {{ nombreCampo() }}
+    @if(esRequerido()){
+    <span class="c-error-500">*</span>
+    }
+</label>
+<div class="input-icon-wrap">
+    <i class="bi bi-envelope input-icon"></i>
+    <input [type]="type()" class="cp-input"
+        [ngClass]="{'is-invalid': formControlGet!.invalid && formControlGet!.touched}" [formControl]="formControlGet"
+        [placeholder]="placeholder()" />
+</div>
+<div class="field-error show" role="alert">
+    <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
 </div>

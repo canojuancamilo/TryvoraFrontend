@@ -1,16 +1,12 @@
-<div class="k-mt-2 k-mb-2">
-    <label class="label-input !k-d-flex k-flex-row k-font-medium k-font-size-md">
-        {{ nombreCampo() }}
-        @if(esRequerido()){
-        <span class="c-error-500">&nbsp;*</span>
-        }
-    </label>
-        <!-- <kendo-textarea [rows]="filas()"  [formControl]="formControlGet" [ngClass]="{
-      'c-gray-70': !formControlGet?.invalid,
-      'c-error': formControlGet?.invalid && formControlGet?.touched
-    }" [placeholder]="espacioReservado()" (blur)="onBlur()" style="color: red;" /> -->
+<label class="form-label">
+    {{ nombreCampo() }}
+    @if(esRequerido()){
+    <span class="c-error-500">&nbsp;*</span>
+    }
+</label>
+<textarea [formControl]="formControlGet" class="form-control" [rows]="filas()" [placeholder]="placeholder()"
+    style="resize:none;"></textarea>
 
-        <div class="k-d-flex k-justify-content-end k-mt-1">
-            <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
-        </div>
+<div class="k-d-flex k-justify-content-end k-mt-1">
+    <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
 </div>

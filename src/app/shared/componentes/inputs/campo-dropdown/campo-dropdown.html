@@ -1,28 +1,32 @@
-<div class="k-mt-2 k-mb-2">
-  <label class="label-input !k-d-flex k-flex-row k-font-medium k-font-size-md">
+  <label class="form-label">
     {{ nombreCampo() }}
     @if (esRequerido()) {
-      <span class="c-error-500">&nbsp;*</span>
+      <span class="text-danger">&nbsp;*</span>
     }
   </label>
-  <div class="w-100">
-    <!-- <kendo-dropdownlist
-      #kendoDropdown
+
+    <select 
+      class="form-select"
+      [class.is-invalid]="hasError() && formControlGet.touched"
       [formControl]="formControlGet"
-      [data]="opcionesFiltradas()"
-      [textField]="textoOpciones()"
-      [valueField]="keyOpciones()"
-      [valuePrimitive]="true"
-      [defaultItem]="defaultItem"
-      [filterable]="filterable()"
-      (filterChange)="handleFilter($event)"
-      [ngClass]="{
-        'c-gray-70': !formControlGet?.invalid,
-        'c-error': formControlGet?.invalid && formControlGet?.touched,
-      }"
-    /> -->
-    <div class="k-d-flex k-justify-content-end k-mt-1">
+      (blur)="onBlur()"
+    >
+      <!-- Opción por defecto (placeholder) -->
+      @if (espacioReservado()) {
+        <option [ngValue]="null" selected disabled>
+          {{ espacioReservado() }}
+        </option>
+      }
+
+      <!-- Opciones del select -->
+      @for (opcion of opcionesFiltradas(); track opcion[keyOpciones()]) {
+        <option [ngValue]="opcion[keyOpciones()]">
+          {{ opcion[textoOpciones()] }}
+        </option>
+      }
+    </select>
+
+    <!-- Validación -->
+    <div class="d-flex justify-content-end mt-1">
       <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
     </div>
-  </div>
-</div>

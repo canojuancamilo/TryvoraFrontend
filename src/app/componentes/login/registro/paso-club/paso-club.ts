@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { debounceTime, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs';
 import { RegistroService } from '../../../../servicios/registro.service';
-import { IOpcionesDeportes } from '../../../../interfaces/registro/registro';
 import { CampoTexto } from "../../../../shared/componentes/inputs/campo-texto/campo-texto";
 import { CampoDropDown } from "../../../../shared/componentes/inputs/campo-dropdown/campo-dropdown";
 import { CampoAreaTexto } from "../../../../shared/componentes/inputs/campo-area-texto/campo-area-texto";

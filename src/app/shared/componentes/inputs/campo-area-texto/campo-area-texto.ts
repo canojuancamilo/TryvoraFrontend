@@ -8,6 +8,7 @@ import { CamposService } from '../../../servicios/campos.service';
   selector: 'app-campo-area-texto',
   imports: [FormValidationComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './campo-area-texto.html',
+  styleUrl: './campo-area-texto.css'
 })
 export class CampoAreaTexto {
   camposService = inject(CamposService);
@@ -15,7 +16,7 @@ export class CampoAreaTexto {
   nombreCampo = input.required<string>();
   controlForm = input.required<AbstractControl>();
 
-  espacioReservado = input<string>("");
+  placeholder = input<string>("");
   type = input<string>("text");
   filas = input<number>(4);
   

@@ -5,15 +5,20 @@
     <div class="login-form-wrapper">
       <div class="form-header">
         <h2>Bienvenido de nuevo</h2>
-      </div>   
+      </div>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-        <app-campo-texto nombreCampo="Correo electrónico" [controlForm]="loginForm.get('email')!"
-          placeholder="ejemplo@miclub.com" />
-        <app-campo-texto nombreCampo="Contraseña" [controlForm]="loginForm.get('password')!" placeholder="••••••••"
-          type="password" />
-        <app-campo-check textoCampo="Recordar sesión" [controlForm]="loginForm.get('remember')!" />
+        <div class="mb-3">
+          <app-campo-texto nombreCampo="Correo electrónico" [controlForm]="loginForm.get('email')!"
+            placeholder="ejemplo@miclub.com" />
+        </div>
+        <div class="mb-3">
+          <app-campo-texto nombreCampo="Contraseña" [controlForm]="loginForm.get('password')!" placeholder="••••••••"
+            type="password" />
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <app-campo-check textoCampo="Recordar sesión" [controlForm]="loginForm.get('remember')!" />
+        </div>
 
         <button type="submit" class="btn-cp-primary mb-3" [disabled]="isLoading">
           <span>{{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}</span>

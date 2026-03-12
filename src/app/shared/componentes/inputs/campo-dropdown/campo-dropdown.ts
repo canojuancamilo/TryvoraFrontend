@@ -7,7 +7,8 @@ import { CamposService } from '../../../servicios/campos.service';
 @Component({
   selector: 'app-campo-dropdown',
   imports: [FormValidationComponent, ReactiveFormsModule, CommonModule],
-  templateUrl: './campo-dropdown.html'
+  templateUrl: './campo-dropdown.html',
+  styleUrl: './campo-dropdown.css'
 })
 export class CampoDropDown {
   camposService = inject(CamposService);
