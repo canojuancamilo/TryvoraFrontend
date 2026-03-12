@@ -15,9 +15,9 @@ export class CampoDropDown {
 
   nombreCampo = input.required<string>();
   controlForm = input.required<AbstractControl>();
-  datos = input.required<any[]>();
-  textoDatos = input.required<string>();
-  keyDatos = input.required<string>();
+  opciones = input.required<any[]>();
+  textoOpciones = input.required<string>();
+  keyOpciones = input.required<string>();
 
   espacioReservado = input<string>("");
   filterable = input<boolean>(false);
@@ -26,7 +26,7 @@ export class CampoDropDown {
   
   validationComp = viewChild(FormValidationComponent);
   
-  datosFiltrados = signal<any[]>([]);
+  opcionesFiltradas = signal<any[]>([]);
   datosOriginales: any[] = [];
 
   get formControlGet(): FormControl {
@@ -36,8 +36,8 @@ export class CampoDropDown {
   get defaultItem() {
     if (this.espacioReservado() != "") {
       return {
-        [this.textoDatos()]: this.espacioReservado(),
-        [this.keyDatos()]: null
+        [this.textoOpciones()]: this.espacioReservado(),
+        [this.keyOpciones()]: null
       };
     } else {
       return null;
@@ -46,9 +46,9 @@ export class CampoDropDown {
 
   constructor() {
     effect(() => {
-      const datos = this.datos();
+      const datos = this.opciones();
       this.datosOriginales = datos || [];
-      this.datosFiltrados.set(datos || []);
+      this.opcionesFiltradas.set(datos || []);
       
       const debeSeleccionar = this.espacioReservado() == "";
 
@@ -61,7 +61,7 @@ export class CampoDropDown {
           setTimeout(() => {
             // Verificar nuevamente por si se estableció mientras esperábamos
             if (formControl.value === null || formControl.value === undefined) {
-              const primerValor = datos[0][this.keyDatos()];
+              const primerValor = datos[0][this.keyOpciones()];
               formControl.setValue(primerValor, { emitEvent: false });
             }
           });
@@ -89,18 +89,18 @@ export class CampoDropDown {
 
   handleFilter(value: string) {
     if (!value) {
-      this.datosFiltrados.set(this.datosOriginales);
+      this.opcionesFiltradas.set(this.datosOriginales);
       return;
     }
     
     const filtered = this.datosOriginales.filter((item) =>
-      item[this.textoDatos()]
+      item[this.textoOpciones()]
         ?.toString()
         .toLowerCase()
         .includes(value.toLowerCase())
     );
     
-    this.datosFiltrados.set(filtered);
+    this.opcionesFiltradas.set(filtered);
   }
 
   // Método público para forzar sincronización del dropdown

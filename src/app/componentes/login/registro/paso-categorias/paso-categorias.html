@@ -1,0 +1,47 @@
+<!-- app/pages/registro/componentes/paso-categorias/paso-categorias.html -->
+<div class="step-content active">
+  <h2 class="step-title">Categorías</h2>
+  <p class="step-subtitle">Define las categorías de jugadores para cada rama</p>
+
+  <div id="categories-container">
+    @if (!tieneRamas()) {
+      <app-category-section
+        tipo="masculina"
+        nombreRama="General"
+        [categorias]="categorias().masculina"
+        (categoriasChange)="onCategoriasChange('masculina', $event)"
+      />
+    } @else {
+      @if (ramas().masculina) {
+        <app-category-section
+          tipo="masculina"
+          [nombreRama]="nombreRamaMasculina"
+          [categorias]="categorias().masculina"
+          (categoriasChange)="onCategoriasChange('masculina', $event)"
+        />
+      }
+      
+      @if (ramas().femenina) {
+        <app-category-section
+          tipo="femenina"
+          [nombreRama]="nombreRamaFemenina"
+          [categorias]="categorias().femenina"
+          (categoriasChange)="onCategoriasChange('femenina', $event)"
+        />
+      }
+    }
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn-cp-secondary" (click)="onAnterior()">
+      <i class="bi bi-arrow-left"></i> Anterior
+    </button>
+    <button 
+      class="btn-cp-primary ms-auto" 
+      (click)="onSiguiente()"
+      [disabled]="!isValid()"
+    >
+      Siguiente <i class="bi bi-arrow-right"></i>
+    </button>
+  </div>
+</div>

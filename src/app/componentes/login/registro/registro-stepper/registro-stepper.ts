@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { IStepd } from '../../../../interfaces/registro/ISteps';
+import { IStepd } from '../../../../interfaces/registro/registro';
 
 @Component({
   selector: 'app-registro-stepper',

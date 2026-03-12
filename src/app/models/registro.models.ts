@@ -8,14 +8,14 @@ export interface ClubInfo {
   descripcion?: string;
 }
 
-export interface Ramas {
+export interface RamasInfo {
   masculina: boolean;
   femenina: boolean;
   nombreMasculina?: string;
   nombreFemenina?: string;
 }
 
-export interface Categorias {
+export interface CategoriasInfo {
   masculina: string[];
   femenina: string[];
 }
@@ -26,13 +26,16 @@ export interface AdminInfo {
   telefono: string;
   email: string;
   password: string;
+  confirmPassword:string;
   aceptaTerminos: boolean;
   aceptaComunicaciones: boolean;
 }
 
 export interface RegistroData {
   club: ClubInfo;
-  ramas: Ramas;
-  categorias: Categorias;
+  ramas: RamasInfo;
+  categorias: CategoriasInfo;
   admin: AdminInfo;
 }
+
+export type StepNumber = 1 | 2 | 3 | 4 | 5;

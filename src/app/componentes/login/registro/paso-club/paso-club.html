@@ -1,0 +1,89 @@
+<div class="step-content active">
+      <h2 class="step-title">Información del Club</h2>
+      <p class="step-subtitle">Cuéntanos sobre tu club deportivo</p>
+
+      <form [formGroup]="clubForm">
+        <div class="row g-3">
+          <!-- Nombre del Club -->
+          <div class="col-12">
+            <app-campo-texto 
+              nombreCampo="Nombre del Club"
+              [controlForm]="clubForm.get('nombre')!"
+              placeholder="Ej. Club Atlético Madrid"
+            />
+          </div>
+
+          <!-- Deporte -->
+          <div class="col-md-6">
+            <app-campo-dropdown
+              nombreCampo="Deporte"
+              [controlForm]="clubForm.get('deporte')!"
+              [opciones]="opcionesDeportes"
+              placeholder="Seleccionar deporte..."
+              textoOpciones="label"
+              keyOpciones="valor"
+            />
+          </div>
+
+          <!-- Ciudad -->
+          <div class="col-md-6">
+            <app-campo-texto 
+              nombreCampo="Ciudad"
+              [controlForm]="clubForm.get('ciudad')!"
+              placeholder="Ej. Madrid"
+              icono="bi-geo-alt"
+            />
+          </div>
+
+          <!-- Teléfono -->
+          <div class="col-md-6">
+            <app-campo-texto 
+              nombreCampo="Teléfono de Contacto"
+              [controlForm]="clubForm.get('telefono')!"
+              placeholder="+34 600 000 000"
+              icono="bi-telephone"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="col-md-6">
+            <app-campo-texto 
+              nombreCampo="Email del Club"
+              [controlForm]="clubForm.get('email')!"
+              placeholder="info@miclub.es"
+              icono="bi-envelope"
+              type="email"
+            />
+          </div>
+
+          <!-- Dirección (opcional) -->
+          <div class="col-12">
+            <app-campo-texto 
+              nombreCampo="Dirección (opcional)"
+              [controlForm]="clubForm.get('direccion')!"
+              placeholder="Calle, número, código postal"
+              icono="bi-map"
+            />
+          </div>
+
+          <!-- Descripción (opcional) -->
+          <div class="col-12">
+            <app-campo-area-texto
+              nombreCampo="Descripción del Club (opcional)"
+              [controlForm]="clubForm.get('descripcion')!"
+              placeholder="Breve descripción del club, historia, valores..."
+              [filas]="3"
+            />
+          </div>
+        </div>
+      </form>
+
+      <div class="nav-buttons">
+        <button 
+          class="btn-cp-primary ms-auto" 
+          (click)="onSiguiente()"
+        >
+          Siguiente <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>

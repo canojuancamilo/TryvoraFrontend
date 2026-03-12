@@ -1,0 +1,132 @@
+step-content {
+  display: block;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.step-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 38px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.password-toggle:hover {
+  color: var(--primary);
+}
+
+.terms-box {
+  background: #F8FAFC;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.btn-cp-success {
+  background: var(--success);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-cp-success:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-cp-success:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-cp-secondary {
+  background: #fff;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-cp-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+.invalid-feedback {
+  font-size: 0.78rem;
+  color: var(--danger);
+  margin-top: 0.25rem;
+}
+
+.spinner-border {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15em;
+}
+
+@media (max-width: 576px) {
+  .nav-buttons {
+    flex-direction: column-reverse;
+  }
+
+  .btn-cp-success,
+  .btn-cp-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}

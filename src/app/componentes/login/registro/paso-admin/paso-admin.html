@@ -1,0 +1,136 @@
+<!-- app/pages/registro/componentes/paso-admin/paso-admin.html -->
+<div class="step-content active">
+  <h2 class="step-title">Administrador Principal</h2>
+  <p class="step-subtitle">Crea las credenciales del administrador del club</p>
+
+  <form [formGroup]="adminForm">
+    <div class="row g-3">
+      <!-- Nombre -->
+      <div class="col-md-6">
+        <app-campo-texto
+          nombreCampo="Nombre"
+          [controlForm]="adminForm.get('nombre')!"
+          placeholder="Nombre completo"
+          icono="bi-person"
+        />
+      </div>
+
+      <!-- Documento -->
+      <div class="col-md-6">
+        <app-campo-texto
+          nombreCampo="Documento de Identidad"
+          [controlForm]="adminForm.get('documento')!"
+          placeholder="DNI / NIE / Pasaporte"
+          icono="bi-card-text"
+        />
+      </div>
+
+      <!-- Teléfono -->
+      <div class="col-md-6">
+        <app-campo-texto
+          nombreCampo="Teléfono"
+          [controlForm]="adminForm.get('telefono')!"
+          placeholder="+34 600 000 000"
+          icono="bi-telephone"
+        />
+      </div>
+
+      <!-- Email -->
+      <div class="col-md-6">
+        <app-campo-texto
+          nombreCampo="Email"
+          [controlForm]="adminForm.get('email')!"
+          placeholder="admin@miclub.es"
+          icono="bi-envelope"
+          type="email"
+        />
+      </div>
+
+      <!-- Contraseña -->
+      <div class="col-12">
+        <div style="position: relative;">
+          <app-campo-texto
+            nombreCampo="Contraseña"
+            [controlForm]="adminForm.get('password')!"
+            placeholder="Mínimo 8 caracteres"
+            icono="bi-lock"
+            [type]="showPassword() ? 'text' : 'password'"
+          />
+          <button 
+            type="button" 
+            class="password-toggle" 
+            (click)="togglePassword()"
+          >
+            <i [class]="showPassword() ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+          </button>
+        </div>
+        
+        <app-password-strength [password]="adminForm.controls['password'].value || ''" />
+      </div>
+
+      <!-- Confirmar Contraseña -->
+      <div class="col-12">
+        <div style="position: relative;">
+          <app-campo-texto
+            nombreCampo="Confirmar Contraseña"
+            [controlForm]="adminForm.get('confirmPassword')!"
+            placeholder="Repite la contraseña"
+            icono="bi-lock-fill"
+            [type]="showConfirmPassword() ? 'text' : 'password'"
+          />
+          <button 
+            type="button" 
+            class="password-toggle" 
+            (click)="toggleConfirmPassword()"
+          >
+            <i [class]="showConfirmPassword() ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+          </button>
+        </div>
+        @if (adminForm.hasError('passwordMismatch') && adminForm.get('confirmPassword')!.touched) {
+          <div class="invalid-feedback d-block">
+            Las contraseñas no coinciden.
+          </div>
+        }
+      </div>
+    </div>
+  </form>
+
+  <!-- Términos -->
+  <div class="terms-box mt-4">
+    <div class="mb-2">
+      <app-campo-check
+        textoCampo="Acepto los Términos y Condiciones y la Política de Privacidad de ClubPay"
+        [controlForm]="adminForm.get('aceptaTerminos')!"
+      />
+    </div>
+    <div>
+      <app-campo-check
+        textoCampo="Deseo recibir comunicaciones sobre novedades y actualizaciones (opcional)"
+        [controlForm]="adminForm.get('aceptaComunicaciones')!"
+      />
+    </div>
+    @if (adminForm.hasError('termsRequired') && adminForm.get('aceptaTerminos')!.touched) {
+      <div class="invalid-feedback d-block mt-2">
+        Debes aceptar los términos y condiciones.
+      </div>
+    }
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn-cp-secondary" (click)="onAnterior()">
+      <i class="bi bi-arrow-left"></i> Anterior
+    </button>
+    <button 
+      class="btn-cp-success ms-auto" 
+      (click)="onSubmit()"
+      [disabled]="!isValid() || isSubmitting()"
+    >
+      @if (!isSubmitting()) {
+        <span><i class="bi bi-check-circle"></i> Registrar Club</span>
+      } @else {
+        <span class="spinner-border spinner-border-sm me-2"></span>
+        <span>Registrando...</span>
+      }
+    </button>
+  </div>
+</div>

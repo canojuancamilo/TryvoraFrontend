@@ -1,0 +1,55 @@
+<div class="success-screen">
+  <div class="success-icon">
+    <i class="bi bi-check-lg"></i>
+  </div>
+  
+  <h2 class="success-title">¡Club Registrado!</h2>
+  
+  <p class="success-message">
+    Tu club ha sido registrado exitosamente. Revisa tu email para confirmar 
+    la cuenta y acceder al panel de administración.
+  </p>
+
+  <!-- Tarjeta de resumen -->
+  <div class="summary-card">
+    <div class="summary-header">
+      <i class="bi bi-file-text-fill me-2"></i>
+      Resumen del Registro
+    </div>
+    
+    <div class="summary-content">
+      <div class="summary-item">
+        <span class="summary-label">Club:</span>
+        <span class="summary-value">{{ clubNombre() }}</span>
+      </div>
+      
+      <div class="summary-item">
+        <span class="summary-label">Deporte:</span>
+        <span class="summary-value">{{ deporte() }}</span>
+      </div>
+      
+      <div class="summary-item">
+        <span class="summary-label">Ramas:</span>
+        <span class="summary-value">{{ ramasTexto() }}</span>
+      </div>
+      
+      <div class="summary-item">
+        <span class="summary-label">Administrador:</span>
+        <span class="summary-value">{{ adminNombre() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="action-buttons">
+    <a routerLink="/login" class="btn-cp-primary">
+      <i class="bi bi-box-arrow-in-right"></i>
+      Ir al Login
+    </a>
+    
+    <button class="btn-cp-secondary" (click)="resetForm()">
+      <i class="bi bi-plus-circle"></i>
+      Registrar otro club
+    </button>
+  </div>
+</div>

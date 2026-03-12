@@ -586,3 +586,217 @@
       .nav-buttons { flex-direction: column-reverse; }
       .btn-cp-primary, .btn-cp-secondary, .btn-cp-success { width: 100%; justify-content: center; }
     }
+
+
+
+    /*================================*/
+
+    /* app/pages/registro/registro.css */
+.registro-container {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+.main-content {
+  padding: 2rem 1rem 4rem;
+}
+
+.form-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(79,70,229,0.06);
+  padding: 2rem;
+  max-width: 680px;
+  margin: 0 auto;
+  animation: cardAppear 0.4s ease;
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de entrada para cada paso */
+::ng-deep .step-content {
+  animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para los títulos dentro de los pasos */
+::ng-deep .step-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+::ng-deep .step-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+}
+
+/* Estilos para los botones de navegación */
+::ng-deep .nav-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+::ng-deep .btn-cp-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+::ng-deep .btn-cp-primary:hover:not(:disabled) {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79,70,229,0.3);
+}
+
+::ng-deep .btn-cp-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+::ng-deep .btn-cp-secondary {
+  background: #fff;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+::ng-deep .btn-cp-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+::ng-deep .btn-cp-success {
+  background: var(--success);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+::ng-deep .btn-cp-success:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+}
+
+::ng-deep .btn-cp-success:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Info box */
+::ng-deep .info-box {
+  background: var(--primary-light);
+  border: 1px solid rgba(79,70,229,0.2);
+  border-radius: 10px;
+  padding: 0.875rem 1rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+::ng-deep .info-box i {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+::ng-deep .info-box p {
+  font-size: 0.82rem;
+  color: var(--primary-dark);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Password strength */
+::ng-deep .strength-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+::ng-deep .strength-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s, background 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-card {
+    padding: 1.25rem;
+  }
+
+  ::ng-deep .nav-buttons {
+    flex-direction: column-reverse;
+  }
+
+  ::ng-deep .btn-cp-primary,
+  ::ng-deep .btn-cp-secondary,
+  ::ng-deep .btn-cp-success {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,66 @@
+<div class="step-content active">
+  <h2 class="step-title">Ramas del Club</h2>
+  <p class="step-subtitle">¿Tu club tiene rama masculina, femenina o ambas? (opcional)</p>
+
+  <div class="info-box">
+    <i class="bi bi-info-circle-fill"></i>
+    <p>Puedes tener una o ambas ramas. Cada rama puede tener un nombre diferente y se gestiona de forma independiente con sus propios balances.</p>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <app-branch-card
+        tipo="masculina"
+        titulo="Rama Masculina"
+        descripcion="Gestión independiente de jugadores y balances masculinos"
+        [selected]="ramasForm.get('masculina')?.value"
+        (selectedChange)="onToggleRama('masculina', $event)"
+      />
+    </div>
+    <div class="col-md-6">
+      <app-branch-card
+        tipo="femenina"
+        titulo="Rama Femenina"
+        descripcion="Gestión independiente de jugadoras y balances femeninos"
+        [selected]="ramasForm.get('femenina')?.value"
+        (selectedChange)="onToggleRama('femenina', $event)"
+      />
+    </div>
+  </div>
+
+  <!-- Campos de nombre para ramas seleccionadas -->
+  @if (tieneRamasSeleccionadas) {
+    <div class="row g-3">
+      @if (ramasForm.get('masculina')?.value) {
+        <div class="col-md-6">
+          <app-campo-texto
+            nombreCampo="Nombre de la Rama Masculina"
+            [controlForm]="ramasForm.get('nombreMasculina')!"
+            placeholder="Ej. Seniors Masculino"
+            icono="bi-tag"
+          />
+        </div>
+      }
+      
+      @if (ramasForm.get('femenina')?.value) {
+        <div class="col-md-6">
+          <app-campo-texto
+            nombreCampo="Nombre de la Rama Femenina"
+            [controlForm]="ramasForm.get('nombreFemenina')!"
+            placeholder="Ej. Equipo Femenino"
+            icono="bi-tag"
+          />
+        </div>
+      }
+    </div>
+  }
+
+  <div class="nav-buttons">
+    <button class="btn-cp-secondary" (click)="onAnterior()">
+      <i class="bi bi-arrow-left"></i> Anterior
+    </button>
+    <button class="btn-cp-primary ms-auto" (click)="onSiguiente()">
+      Siguiente <i class="bi bi-arrow-right"></i>
+    </button>
+  </div>
+</div>

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormValidationComponent } from '../../form-validation/form-validation';
 import { CamposService } from '../../../servicios/campos.service';
 
-export type TipoCampo = 'text' | 'password' | 'number';
+export type TipoCampo = 'text' | 'password' | 'number' | 'email';
 
 @Component({
   selector: 'app-campo-texto',

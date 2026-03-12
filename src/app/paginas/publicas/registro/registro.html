@@ -636,3 +636,48 @@
   </script>
 <script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
 </div>
+
+<div class="registro-container">
+  <!-- Navbar -->
+  <app-registro-navbar />
+
+  <!-- Header (solo visible si no estamos en éxito) -->
+  @if (!isSuccessStep()) {
+    <app-registro-header />
+  }
+
+  <!-- Stepper (solo visible si no estamos en éxito) -->
+  @if (showStepper()) {
+    <app-registro-stepper [currentStep]="currentStep()" />
+  }
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="form-card">
+      <!-- Paso 1: Club -->
+      @if (currentStep() === 1) {
+        <app-paso-club />
+      }
+
+      <!-- Paso 2: Ramas -->
+      @if (currentStep() === 2) {
+        <app-paso-ramas />
+      }
+
+      <!-- Paso 3: Categorías -->
+      @if (currentStep() === 3) {
+        <app-paso-categorias />
+      }
+
+      <!-- Paso 4: Admin -->
+      @if (currentStep() === 4) {
+        <app-paso-admin />
+      }
+
+      <!-- Paso 5: Éxito -->
+      @if (currentStep() === 5) {
+        <app-registro-exito />
+      }
+    </div>
+  </div>
+</div>
