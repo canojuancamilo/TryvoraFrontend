@@ -1,0 +1,16 @@
+<div class="stepper-wrapper">
+    <div class="stepper">
+        @for (step of steps(); track step.number; let i = $index) {
+        <div class="step-item" [class.active]="step.number === currentStep()"
+            [class.completed]="step.number < currentStep()">
+            <div class="step-circle">
+                @if (step.number < currentStep()) { <i class="bi bi-check-lg" style="font-size:0.8rem;"></i>
+                    } @else {
+                    {{ step.number }}
+                    }
+            </div>
+            <span class="step-label">{{ step.label }}</span>
+        </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,92 @@
+.branch-section {
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .branch-section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .branch-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .branch-badge.masc { 
+      background: #DBEAFE; 
+      color: #2563EB; 
+    }
+    
+    .branch-badge.fem { 
+      background: #FCE7F3; 
+      color: #DB2777; 
+    }
+
+    .category-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 20px;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1.5px solid transparent;
+    }
+
+    .category-tag:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .category-tag.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .category-tag .remove-tag {
+      font-size: 0.9rem;
+      line-height: 1;
+    }
+
+    .add-category-wrap {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .add-category-wrap .form-control {
+      flex: 1;
+    }
+
+    .btn-add-cat {
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1.5px solid rgba(79,70,229,0.3);
+      border-radius: 10px;
+      padding: 0.65rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .btn-add-cat:hover {
+      background: var(--primary);
+      color: white;
+    }

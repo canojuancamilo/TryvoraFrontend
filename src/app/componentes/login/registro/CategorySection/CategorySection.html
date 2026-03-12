@@ -1,0 +1,27 @@
+<div class="branch-section">
+    <div class="branch-section-header">
+        <span class="branch-badge" [class.masc]="tipo() === 'masculina'" [class.fem]="tipo() === 'femenina'">
+            <i [class]="icono"></i> {{ nombreRama() }}
+        </span>
+    </div>
+
+    <div class="mb-2" style="font-size:0.82rem;color:var(--text-muted);">
+        Haz clic en una categoría para quitarla, o añade una nueva:
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-3">
+        @for (categoria of categorias(); track categoria) {
+        <span class="category-tag active" (click)="removerCategoria(categoria)">
+            {{ categoria }} <span class="remove-tag">×</span>
+        </span>
+        }
+    </div>
+
+    <div class="add-category-wrap">
+        <input type="text" class="form-control" [ngModel]="nuevaCategoria()" (keydown.enter)="agregarCategoria()"
+            placeholder="Nueva categoría (ej. Sub-12)" />
+        <button class="btn-add-cat" (click)="agregarCategoria()">
+            <i class="bi bi-plus-lg me-1"></i>Añadir
+        </button>
+    </div>
+</div>
