@@ -31,7 +31,7 @@ export class Login implements OnInit {
   }
 
   ngOnInit(): void {
-    this.alertaServices.error("Credenciales incorrectas. Verifica tu correo y contraseña.")
+   
   }
 
   onSubmit(): void {

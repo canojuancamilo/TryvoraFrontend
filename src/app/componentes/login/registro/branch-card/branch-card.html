@@ -1,0 +1,15 @@
+<div class="branch-card" [class.masc]="tipo() === 'masculina'" [class.fem]="tipo() === 'femenina'"
+    [class.selected]="selected()" (click)="onClick()">
+    <div class="d-flex align-items-start justify-content-between">
+        <div class="branch-icon">
+            <i [class]="icono"></i>
+        </div>
+        <div class="branch-check" [class.selected]="selected()">
+            @if (selected()) {
+            <i class="bi bi-check-lg" style="font-size:0.75rem;"></i>
+            }
+        </div>
+    </div>
+    <div class="branch-title">{{ titulo() }}</div>
+    <div class="branch-desc">{{ descripcion() }}</div>
+</div>
