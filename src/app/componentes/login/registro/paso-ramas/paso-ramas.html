@@ -13,7 +13,7 @@
         tipo="masculina"
         titulo="Rama Masculina"
         descripcion="Gestión independiente de jugadores y balances masculinos"
-        [selected]="ramasForm.get('masculina')?.value"
+        [selected]="esMasculina()"
         (selectedChange)="onToggleRama('masculina', $event)"
       />
     </div>
@@ -22,16 +22,16 @@
         tipo="femenina"
         titulo="Rama Femenina"
         descripcion="Gestión independiente de jugadoras y balances femeninos"
-        [selected]="ramasForm.get('femenina')?.value"
+        [selected]="esFemenina()"
         (selectedChange)="onToggleRama('femenina', $event)"
       />
     </div>
   </div>
 
   <!-- Campos de nombre para ramas seleccionadas -->
-  @if (tieneRamasSeleccionadas) {
+  @if (tieneRamasSeleccionadas()) {
     <div class="row g-3">
-      @if (ramasForm.get('masculina')?.value) {
+      @if (esMasculina()) {
         <div class="col-md-6">
           <app-campo-texto
             nombreCampo="Nombre de la Rama Masculina"
@@ -42,7 +42,7 @@
         </div>
       }
       
-      @if (ramasForm.get('femenina')?.value) {
+      @if (esFemenina()) {
         <div class="col-md-6">
           <app-campo-texto
             nombreCampo="Nombre de la Rama Femenina"

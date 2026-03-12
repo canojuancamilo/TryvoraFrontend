@@ -1,14 +1,14 @@
 // app/pages/registro/componentes/paso-admin/paso-admin.component.ts
-import { 
-  ChangeDetectionStrategy, 
-  Component, 
-  inject, 
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
   DestroyRef,
   signal,
   computed,
   effect
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { RegistroService } from '../../../../servicios/registro.service';
@@ -34,9 +34,7 @@ export class PasoAdmin {
   showPassword = signal(false);
   showConfirmPassword = signal(false);
   isSubmitting = signal(false);
-  
-  // Señal computada para validación
-  isValid = computed(() => this.adminForm.valid);
+  isValid = signal(false);
 
   // Formulario
   adminForm: FormGroup;
@@ -54,12 +52,14 @@ export class PasoAdmin {
       aceptaComunicaciones: [false]
     }, { validators: this.passwordMatchValidator });
 
+
     // Efecto para cargar datos iniciales
     effect(() => {
       const data = this.registroService.data();
       if (data.admin) {
         this.adminForm.patchValue(data.admin, { emitEvent: false });
       }
+      this.isValid.set(this.adminForm.valid);
     });
 
     // Guardar cambios automáticamente con debounce
@@ -68,6 +68,7 @@ export class PasoAdmin {
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(value => {
       this.registroService.updateAdminData(value);
+      this.isValid.set(this.adminForm.valid);
     });
   }
 
@@ -77,19 +78,19 @@ export class PasoAdmin {
     const confirmPassword = control.get('confirmPassword')?.value;
 
     if (password && confirmPassword && password !== confirmPassword) {
-      control.get('confirmPassword')?.setErrors({ 
-        ...control.get('confirmPassword')?.errors, 
-        passwordMismatch: true 
+      control.get('confirmPassword')?.setErrors({
+        ...control.get('confirmPassword')?.errors,
+        passwordMismatch: true
       });
       return { passwordMismatch: true };
     }
-    
+
     if (control.get('confirmPassword')?.errors) {
       const errors = { ...control.get('confirmPassword')?.errors };
       delete errors['passwordMismatch'];
       control.get('confirmPassword')?.setErrors(Object.keys(errors).length ? errors : null);
     }
-    
+
     return null;
   }
 

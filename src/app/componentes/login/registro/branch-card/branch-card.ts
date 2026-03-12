@@ -20,6 +20,6 @@ export class BranchCard {
   }
 
   onClick(): void {
-    this.selectedChange.emit(!this.selected);
+    this.selectedChange.emit(!this.selected());
   }
 }

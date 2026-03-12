@@ -1,24 +1,26 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RegistroService } from '../../../../servicios/registro.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-registro-exito',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './registro-exito.html',
   styleUrl: './registro-exito.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistroExito {
-    private registroService = inject(RegistroService);
-  
+  private registroService = inject(RegistroService);
+  private router = inject(Router);
+
   // Obtener datos del registro para el resumen
   private data = this.registroService.data;
-  
+
   // Señales computadas para el resumen
   clubNombre = computed(() => this.data().club.nombre);
   deporte = computed(() => this.data().club.deporte);
   adminNombre = computed(() => this.data().admin.nombre);
-  
+
   ramasTexto = computed(() => {
     const ramas = this.data().ramas;
     const ramasList = [];
@@ -30,4 +32,9 @@ export class RegistroExito {
   resetForm(): void {
     this.registroService.resetForm();
   }
- }
+
+  toLogin(): void {
+    this.registroService.resetForm();
+    this.router.navigate(['/login']);
+  }
+}

@@ -14,11 +14,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './paso-club.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PasoClub implements OnInit { 
+export class PasoClub implements OnInit {
   private fb = inject(FormBuilder);
   private registroService = inject(RegistroService);
   private destroyRef = inject(DestroyRef);
-  
+
   clubForm: FormGroup;
 
   opcionesDeportes = [
@@ -63,13 +63,16 @@ export class PasoClub implements OnInit {
   }
 
   onSiguiente(): void {
-    if (this.clubForm.valid) {
-      // Marcar todos los campos como tocados para mostrar errores
+
+    if (this.clubForm.invalid) {
       Object.keys(this.clubForm.controls).forEach(key => {
-        this.clubForm.get(key)?.markAsTouched();
+        const control = this.clubForm.get(key);
+        control?.markAsTouched();
       });
-      
-      this.registroService.nextStep();
+
+      return;
     }
+
+    this.registroService.nextStep();
   }
 }

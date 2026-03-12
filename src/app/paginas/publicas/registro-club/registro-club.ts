@@ -23,11 +23,11 @@ import { RegistroService } from '../../../servicios/registro.service';
     PasoAdmin,
     RegistroExito
   ],
-  templateUrl: './registro.html',
-  styleUrls: ['./registro.css'],
+  templateUrl: './registro-club.html',
+  styleUrls: ['./registro-club.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Registro {
+export class RegistroClub {
    private registroService = inject(RegistroService);
   
   // Señal del paso actual

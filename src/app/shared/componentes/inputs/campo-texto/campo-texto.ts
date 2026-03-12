@@ -19,6 +19,7 @@ export class CampoTexto {
   controlForm = input.required<AbstractControl>();
   placeholder = input<string>("");
   type = input<TipoCampo>("text");
+  icono = input<string>("");
   esDecimal = input<boolean>(false);
   blur = output<void>();
 

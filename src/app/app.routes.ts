@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
+import { RegistroClub } from './paginas/publicas/registro-club/registro-club';
 import { Login } from './paginas/publicas/login/login';
-import { Registro } from './paginas/publicas/registro/registro';
 
 export const routes: Routes = [
   {
@@ -13,8 +13,8 @@ export const routes: Routes = [
     component: Login
   },
   {
-    path: 'Registro',
-    component: Registro
+    path: 'registro-club',
+    component: RegistroClub
   },
   {
     path: '**',

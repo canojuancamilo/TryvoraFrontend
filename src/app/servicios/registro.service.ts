@@ -59,8 +59,8 @@ export class RegistroService {
         nombreFemenina: ''
       },
       categorias: {
-        masculina: ['Sub-15', 'Sub-18', 'Primera'],
-        femenina: ['Sub-15', 'Sub-18', 'Primera']
+        masculina: ['M-14', 'M-18', 'Tercera', 'Segunda', 'Primera'],
+        femenina: ['M-14', 'M-18', 'Tercera', 'Segunda', 'Primera']
       },
       admin: {
         nombre: '',

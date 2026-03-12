@@ -1,10 +1,12 @@
 // app/pages/registro/componentes/paso-ramas/paso-ramas.component.ts
-import { 
-  ChangeDetectionStrategy, 
-  Component, 
-  OnInit, 
-  inject, 
-  DestroyRef 
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+  DestroyRef,
+  computed,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -26,14 +28,17 @@ export class PasoRamas implements OnInit {
   private fb = inject(FormBuilder);
   private registroService = inject(RegistroService);
   private destroyRef = inject(DestroyRef);
-  
+
   // Formulario
   ramasForm: FormGroup;
 
+  esMasculina = signal<boolean>(false);
+  esFemenina = signal<boolean>(false);
+
   // Señales computadas (podemos crear getters o signals computadas)
-  get tieneRamasSeleccionadas(): boolean {
-    return this.ramasForm.get('masculina')?.value || this.ramasForm.get('femenina')?.value;
-  }
+  tieneRamasSeleccionadas = computed(() =>
+    this.esMasculina() || this.esFemenina()
+  );
 
   constructor() {
     // Inicializar formulario
@@ -62,13 +67,24 @@ export class PasoRamas implements OnInit {
   }
 
   onToggleRama(rama: 'masculina' | 'femenina', value: boolean): void {
-    this.ramasForm.patchValue({ [rama]: value });
-    
+    // Actualizar la signal correspondiente
+    debugger;
+    if (rama === 'masculina') {
+      this.esMasculina.set(value);
+    } else {
+      this.esFemenina.set(value);
+    }
+
+    // Actualizar formulario en una sola operación
+    const update: any = { [rama]: value };
+
     // Si se deselecciona, limpiar el nombre
     if (!value) {
       const nombreCampo = rama === 'masculina' ? 'nombreMasculina' : 'nombreFemenina';
-      this.ramasForm.patchValue({ [nombreCampo]: '' });
+      update[nombreCampo] = '';
     }
+
+    this.ramasForm.patchValue(update);
   }
 
   onAnterior(): void {
@@ -76,7 +92,6 @@ export class PasoRamas implements OnInit {
   }
 
   onSiguiente(): void {
-    // Opcional: validar algo específico antes de avanzar
     this.registroService.nextStep();
   }
 }
