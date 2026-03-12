@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, input, output, viewChild, signal, 
 import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormValidationComponent } from '../../form-validation/form-validation';
-import { CamposService } from '../../../servicios/campos/campos.service';
+import { CamposService } from '../../../servicios/campos.service';
 
 @Component({
   selector: 'app-campo-dropdown',

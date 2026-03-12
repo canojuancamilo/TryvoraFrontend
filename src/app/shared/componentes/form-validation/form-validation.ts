@@ -97,7 +97,7 @@ export class FormValidationComponent {
       return `${label} es obligatorio.`;
     
     case 'email':
-      return `${label} debe ser un correo válido.`;
+      return `debe ser un correo válido.`;
     
     case 'minlength':
       return `${label} debe tener al menos ${errors['minlength'].requiredLength} caracteres.`;

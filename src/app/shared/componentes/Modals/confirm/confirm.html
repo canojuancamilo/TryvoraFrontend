@@ -1,0 +1,28 @@
+@if (confirmService.mensaje(); as mensaje) {
+
+    <div class="modal-backdrop fade show"></div>
+<div class="modal fade show d-block" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{confirmService.titulo()}}</h5>
+            </div>
+
+            <div class="modal-body" [innerHTML]="mensaje">
+            </div>
+
+            <div class="modal-footer">
+                @if(confirmService.ocultarCancelar()){
+                <button type="button" class="btn btn-secondary" (click)="confirmService.cerrar()">
+                    Cancelar
+                </button>
+                }
+
+                <button type="button" [class]="'btn btn-' + confirmService.type()" (click)="confirmService.aceptar()">
+                    Continuar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+}

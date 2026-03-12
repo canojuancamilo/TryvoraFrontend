@@ -1,8 +1,8 @@
 <div class="mb-3">
-    <label for="email" class="cp-label"> 
+    <label class="cp-label"> 
         {{ nombreCampo() }}
         @if(esRequerido()){
-        <span class="c-error-500">&nbsp;*</span>
+        <span class="c-error-500">*</span>
         }
     </label>
     <div class="input-icon-wrap">
@@ -10,7 +10,7 @@
         <input [type]="type()" class="cp-input" [ngClass]="{'is-invalid': formControlGet?.invalid && formControlGet?.touched}" 
             [formControl]="formControlGet" [placeholder]="placeholder()"/>
     </div>
-    <div id="email-error" class="field-error show" role="alert">
+    <div class="field-error show" role="alert">
           <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
     </div>
 </div>

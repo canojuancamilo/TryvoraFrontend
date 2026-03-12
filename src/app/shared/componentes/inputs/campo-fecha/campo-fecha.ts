@@ -21,7 +21,7 @@ import { AbstractControl, ControlValueAccessor, FormControl, FormControlState, F
 import { distinctUntilChanged, Subscription } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormValidationComponent } from '../../form-validation/form-validation';
-import { CamposService } from '../../../servicios/campos/campos.service';
+import { CamposService } from '../../../servicios/campos.service';
 import { FechasUtils } from '../../../utils/fechas';
 import { ICalendario } from '../../../interfaces/Icalendario';
 

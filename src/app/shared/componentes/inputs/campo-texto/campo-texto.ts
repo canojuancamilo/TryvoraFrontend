@@ -2,7 +2,7 @@ import { Component, computed, inject, input, output, viewChild } from '@angular/
 import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormValidationComponent } from '../../form-validation/form-validation';
-import { CamposService } from '../../../servicios/campos/campos.service';
+import { CamposService } from '../../../servicios/campos.service';
 
 export type TipoCampo = 'text' | 'password' | 'number';
 
@@ -10,6 +10,7 @@ export type TipoCampo = 'text' | 'password' | 'number';
   selector: 'app-campo-texto',
   imports: [FormValidationComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './campo-texto.html',
+  styleUrl: './campo-texto.css',
 })
 export class CampoTexto {
   camposService = inject(CamposService);
@@ -38,10 +39,6 @@ export class CampoTexto {
 
   formato = computed(() => {
     return this.esDecimal() ? "n2" : "n0";
-  });
-
-  controlName = computed(() => {
-    return this.camposService.controlName(this.formControlGet);
   });
 
   esRequerido = computed(() => {
