@@ -45,7 +45,7 @@ export class RegistroService {
     return {
       club: {
         nombre: '',
-        deporte: '',
+        deporte: null,
         ciudad: '',
         telefono: '',
         email: '',

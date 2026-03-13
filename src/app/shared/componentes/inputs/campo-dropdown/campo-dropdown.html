@@ -1,32 +1,38 @@
-  <label class="form-label">
-    {{ nombreCampo() }}
-    @if (esRequerido()) {
-      <span class="text-danger">&nbsp;*</span>
+<label class="cp-label">
+  {{ nombreCampo() }}
+  @if (esRequerido()) {
+    <span class="text-danger">*</span>
+  }
+</label>
+
+<div class="input-icon-wrap">
+
+  <select
+    class="form-select"
+    [class.is-invalid]="hasError() && formControlGet.touched"
+    [formControl]="formControlGet"
+    (blur)="onBlur()"
+  >
+
+    @if (placeholder()) {
+      <option value="">
+        {{ placeholder() }}
+      </option>
     }
-  </label>
 
-    <select 
-      class="form-select"
-      [class.is-invalid]="hasError() && formControlGet.touched"
-      [formControl]="formControlGet"
-      (blur)="onBlur()"
-    >
-      <!-- Opción por defecto (placeholder) -->
-      @if (espacioReservado()) {
-        <option [ngValue]="null" selected disabled>
-          {{ espacioReservado() }}
-        </option>
-      }
+    @for (opcion of opcionesFiltradas(); track opcion[keyOpciones()]) {
+      <option [ngValue]="opcion[keyOpciones()]">
+        {{ opcion[textoOpciones()] }}
+      </option>
+    }
 
-      <!-- Opciones del select -->
-      @for (opcion of opcionesFiltradas(); track opcion[keyOpciones()]) {
-        <option [ngValue]="opcion[keyOpciones()]">
-          {{ opcion[textoOpciones()] }}
-        </option>
-      }
-    </select>
+  </select>
 
-    <!-- Validación -->
-    <div class="d-flex justify-content-end mt-1">
-      <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
-    </div>
+</div>
+
+<div class="field-error show">
+  <app-form-validation
+    [control]="formControlGet"
+    [label]="nombreCampo()"
+  />
+</div>

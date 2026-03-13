@@ -1,6 +1,6 @@
 export interface ClubInfo {
   nombre: string;
-  deporte: string;
+  deporte: string | null;
   ciudad: string;
   telefono: string;
   email: string;

@@ -36,13 +36,13 @@ export class PasoClub implements OnInit {
 
   constructor() {
     this.clubForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(2)]],
-      deporte: ['', Validators.required],
-      ciudad: ['', [Validators.required, Validators.minLength(2)]],
-      telefono: ['', [Validators.required, Validators.minLength(6)]],
-      email: ['', [Validators.required, Validators.email]],
-      direccion: [''],
-      descripcion: ['']
+      nombre: [null, [Validators.required, Validators.minLength(2)]],
+      deporte: [null, Validators.required],
+      ciudad: [null, [Validators.required, Validators.minLength(2)]],
+      telefono: [null, [Validators.required, Validators.minLength(6)]],
+      email: [null, [Validators.required, Validators.email]],
+      direccion: [null],
+      descripcion: [null]
     });
   }
 
