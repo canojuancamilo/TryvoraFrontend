@@ -1,0 +1,20 @@
+<!-- src/app/features/dashboard/components/quick-actions/quick-actions.component.html -->
+<div class="section-card">
+  <div class="section-card-header">
+    <div class="section-card-title">Acciones Rápidas</div>
+  </div>
+  <div class="section-card-body">
+    <div class="actions-grid">
+      @for (action of actions; track action.id) {
+        <button 
+          class="quick-action-btn" 
+          [class.primary-btn]="action.primary"
+          (click)="executeAction(action)"
+        >
+          <i [class]="'bi ' + action.icon"></i>
+          {{ action.label }}
+        </button>
+      }
+    </div>
+  </div>
+</div>

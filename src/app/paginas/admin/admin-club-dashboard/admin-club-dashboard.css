@@ -1,3 +1,79 @@
-:host {
-  display: block;
+/* src/app/features/dashboard/pages/dashboard-page/dashboard-page.component.css */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  position: relative;
+  width: 100%;
+}
+
+/* Main Wrapper - Estilos base */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+}
+
+/* Cuando el sidebar está abierto en desktop */
+.main-wrapper:not(.expanded) {
+  margin-left: 260px; /* Mismo ancho que el sidebar */
+}
+
+/* Cuando el sidebar está colapsado en desktop */
+.main-wrapper.expanded {
+  margin-left: 0;
+}
+
+/* En móvil, siempre sin margen */
+@media (max-width: 991px) {
+  .main-wrapper {
+    margin-left: 0 !important;
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+}
+
+.page-content {
+  padding: 1.75rem;
+  flex: 1;
+  position: relative;
+  background: var(--bg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-content {
+    padding: 1rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-content > * {
+  animation: fadeIn 0.3s ease-out;
 }

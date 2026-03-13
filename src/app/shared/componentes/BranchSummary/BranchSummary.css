@@ -1,0 +1,105 @@
+/* src/app/features/dashboard/components/branch-summary/branch-summary.component.css */
+.section-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.section-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.section-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.section-card-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.view-all-link {
+  font-size: 0.82rem;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.section-card-body {
+  padding: 1.5rem;
+}
+
+.branch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.branch-card {
+  border-radius: 14px;
+  padding: 1.25rem;
+  border: 1.5px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.branch-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.1);
+}
+
+.branch-card.masculino { border-top: 3px solid #4F46E5; }
+.branch-card.femenino { border-top: 3px solid #EC4899; }
+.branch-card.total { 
+  border-top: 3px solid #06B6D4; 
+  background: linear-gradient(135deg, #F0F9FF, #EEF2FF);
+}
+
+.branch-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.branch-label.masculino { color: #4F46E5; }
+.branch-label.femenino { color: #EC4899; }
+.branch-label.total { color: #0891B2; }
+
+.branch-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.branch-stat-key {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.branch-stat-val {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.branch-stat-val.green { color: #059669; }
+.branch-stat-val.red { color: #DC2626; }
+.branch-stat-val.blue { color: #4F46E5; }

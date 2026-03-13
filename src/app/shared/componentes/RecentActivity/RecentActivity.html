@@ -1,0 +1,29 @@
+<!-- src/app/features/dashboard/components/recent-activity/recent-activity.component.html -->
+<div class="section-card h-100">
+  <div class="section-card-header">
+    <div class="section-card-title">Actividad Reciente</div>
+    <a href="#" class="view-all-link">Ver todo →</a>
+  </div>
+  
+  <div class="section-card-body">
+    @if (activities().length > 0) {
+      @for (activity of activities(); track activity.id) {
+        <div class="activity-item">
+          <div class="activity-icon" [class]="getActivityClass(activity.type)">
+            <i [class]="'bi ' + getActivityIcon(activity.type)"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">{{ activity.title }}</div>
+            <div class="activity-desc">{{ activity.description }}</div>
+          </div>
+          <div class="activity-time">{{ formatTime(activity.time) }}</div>
+        </div>
+      }
+    } @else {
+      <div class="text-center py-4 text-muted">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        <p>No hay actividad reciente</p>
+      </div>
+    }
+  </div>
+</div>

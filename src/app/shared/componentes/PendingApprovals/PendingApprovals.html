@@ -1,0 +1,45 @@
+<!-- pending-approvals.component.html -->
+<div class="section-card">
+  <div class="section-card-header">
+    <div>
+      <div class="section-card-title">Comprobantes Pendientes</div>
+      <div class="section-card-subtitle">Requieren revisión del administrador</div>
+    </div>
+    <span class="pending-badge">{{ pendingCount() }} pendientes</span>
+  </div>
+  
+  <div class="section-card-body">
+    @for (approval of approvals(); track approval.id) {
+      <div class="approval-item">
+        <div class="approval-thumb">
+          <i class="bi bi-file-earmark-image"></i>
+        </div>
+        <div class="approval-info">
+          <div class="approval-name">{{ approval.name }}</div>
+          <div class="approval-meta">
+            {{ approval.category }} · {{ approval.branch }}
+            @if (approval.ageGroup) {
+              · {{ approval.ageGroup }}
+            }
+            · {{ formatTime(approval.time) }}
+          </div>
+        </div>
+        <div class="approval-amount">${{ approval.amount }}</div>
+        <div class="approval-actions">
+          <button class="btn-approve" (click)="approve(approval.id)">
+            <i class="bi bi-check-lg"></i> Aprobar
+          </button>
+          <button class="btn-reject" (click)="reject(approval.id)">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      </div>
+    }
+    
+    <div class="text-center mt-3">
+      <a href="#" class="view-all-link">
+        Ver los {{ pendingCount() }} comprobantes pendientes →
+      </a>
+    </div>
+  </div>
+</div>

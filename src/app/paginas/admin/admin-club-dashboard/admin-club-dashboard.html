@@ -1,843 +1,94 @@
-<!DOCTYPE html>
-<html lang="es" dir="ltr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trybora – Admin Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --primary: #4F46E5;
-      --primary-light: #EEF2FF;
-      --primary-dark: #3730A3;
-      --secondary: #06B6D4;
-      --success: #10B981;
-      --danger: #EF4444;
-      --warning: #F59E0B;
-      --bg: #F8FAFC;
-      --sidebar-bg: #1E1B4B;
-      --sidebar-hover: rgba(255,255,255,0.08);
-      --sidebar-active: rgba(79,70,229,0.5);
-      --text-primary: #1E293B;
-      --text-muted: #64748B;
-      --border: #E2E8F0;
-      --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(79,70,229,0.06);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text-primary);
-      min-height: 100vh;
-      display: flex;
-    }
+<!-- src/app/features/dashboard/pages/dashboard-page/dashboard-page.component.html -->
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <app-sidebar 
+    [isOpen]="sidebarOpen()"
+    [isMobile]="isMobile()"
+    [clubInfo]="clubInfo"
+    [userInfo]="userInfo"
+    (toggleSidebar)="toggleSidebar()"
+  />
 
-    /* Sidebar */
-    .sidebar {
-      width: 260px;
-      min-height: 100vh;
-      background: var(--sidebar-bg);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0; left: 0;
-      z-index: 200;
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    .sidebar.collapsed { transform: translateX(-260px); }
-    .sidebar-logo {
-      padding: 1.5rem 1.25rem 1.25rem;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      display: flex; align-items: center; gap: 0.625rem;
-    }
-    .sidebar-logo-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, #4F46E5, #06B6D4);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .sidebar-logo-text { font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-    .sidebar-club-info {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .sidebar-club-avatar {
-      width: 40px; height: 40px; border-radius: 12px;
-      background: linear-gradient(135deg, #4F46E5, #06B6D4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; font-weight: 800; color: white;
-      margin-bottom: 0.5rem;
-    }
-    .sidebar-club-name { font-size: 0.875rem; font-weight: 700; color: #fff; }
-    .sidebar-club-role {
-      font-size: 0.7rem; font-weight: 600;
-      background: rgba(79,70,229,0.4); color: #A5B4FC;
-      padding: 0.15rem 0.5rem; border-radius: 20px;
-      display: inline-block; margin-top: 0.25rem;
-    }
-    .sidebar-section { padding: 1.25rem 0.75rem 0.5rem; }
-    .sidebar-section-label {
-      font-size: 0.65rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 1px;
-      color: rgba(255,255,255,0.35);
-      padding: 0 0.5rem; margin-bottom: 0.5rem;
-    }
-    .sidebar-nav-item {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.65rem 0.875rem; border-radius: 10px;
-      color: rgba(255,255,255,0.65);
-      font-size: 0.875rem; font-weight: 500;
-      cursor: pointer; transition: all 0.2s;
-      text-decoration: none; margin-bottom: 0.15rem;
-    }
-    .sidebar-nav-item:hover { background: var(--sidebar-hover); color: #fff; }
-    .sidebar-nav-item.active { background: var(--sidebar-active); color: #fff; font-weight: 600; }
-    .sidebar-nav-item i { font-size: 1rem; width: 20px; text-align: center; }
-    .sidebar-nav-item .badge-count {
-      margin-left: auto; background: var(--primary); color: white;
-      font-size: 0.7rem; font-weight: 700;
-      padding: 0.15rem 0.5rem; border-radius: 20px;
-    }
-    .sidebar-footer {
-      margin-top: auto; padding: 1rem 0.75rem;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-    .sidebar-user {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.625rem 0.875rem; border-radius: 10px;
-      cursor: pointer; transition: background 0.2s;
-    }
-    .sidebar-user:hover { background: var(--sidebar-hover); }
-    .sidebar-avatar {
-      width: 34px; height: 34px; border-radius: 50%;
-      background: linear-gradient(135deg, #4F46E5, #06B6D4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700; color: white; flex-shrink: 0;
-    }
-    .sidebar-user-info { flex: 1; min-width: 0; }
-    .sidebar-user-name { font-size: 0.82rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .sidebar-user-role { font-size: 0.72rem; color: rgba(255,255,255,0.45); }
+  @if (isMobile() && sidebarOpen()) {
+    <div class="sidebar-mobile-overlay" (click)="toggleSidebar()"></div>
+  }
 
-    /* Main */
-    .main-wrapper {
-      margin-left: 260px; flex: 1; min-height: 100vh;
-      display: flex; flex-direction: column;
-      transition: margin-left 0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    .main-wrapper.expanded { margin-left: 0; }
+  <!-- Main Wrapper -->
+  <div [class]="mainWrapperClass()">
+    <!-- Topbar -->
+    <app-topbar 
+      [userAvatar]="userInfo.avatar"
+      [userName]="userInfo.name"
+      [userRole]="userInfo.role"
+      [notificationCount]="3"
+      (toggleSidebar)="toggleSidebar()"
+      (search)="onSearch($event)"
+    />
 
-    /* Topbar */
-    .topbar {
-      background: #fff; border-bottom: 1px solid var(--border);
-      padding: 0.875rem 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
-      position: sticky; top: 0; z-index: 100;
-    }
-    .topbar-toggle {
-      background: none; border: none; color: var(--text-muted);
-      font-size: 1.25rem; cursor: pointer; padding: 0.25rem;
-      border-radius: 8px; transition: all 0.2s;
-      display: flex; align-items: center;
-    }
-    .topbar-toggle:hover { background: var(--primary-light); color: var(--primary); }
-    .topbar-search {
-      flex: 1; max-width: 320px;
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--bg); border: 1.5px solid var(--border);
-      border-radius: 10px; padding: 0.45rem 0.875rem;
-      transition: border-color 0.2s;
-    }
-    .topbar-search:focus-within { border-color: var(--primary); }
-    .topbar-search i { color: var(--text-muted); font-size: 0.9rem; }
-    .topbar-search input {
-      border: none; background: none; outline: none;
-      font-family: inherit; font-size: 0.875rem; color: var(--text-primary);
-      width: 100%;
-    }
-    .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 0.75rem; }
-    .topbar-icon-btn {
-      width: 36px; height: 36px; border-radius: 10px;
-      border: 1.5px solid var(--border); background: #fff;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-muted); cursor: pointer; transition: all 0.2s;
-      position: relative;
-    }
-    .topbar-icon-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-    .notif-badge {
-      position: absolute; top: -4px; right: -4px;
-      width: 18px; height: 18px; background: var(--danger);
-      border-radius: 50%; border: 2px solid #fff;
-      font-size: 0.6rem; font-weight: 700; color: white;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .topbar-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: linear-gradient(135deg, #4F46E5, #06B6D4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700; color: white;
-      cursor: pointer; border: 2px solid var(--border);
-      transition: border-color 0.2s;
-    }
-    .topbar-avatar:hover { border-color: var(--primary); }
+    <!-- Page Content -->
+    <main class="page-content">
+      <!-- Loading Indicator -->
+      @if (loading()) {
+        <div class="loading-overlay">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+      }
 
-    /* Page content */
-    .page-content { padding: 1.75rem; flex: 1; }
+      <!-- Welcome Banner -->
+      <app-welcome-banner 
+        [userName]="userInfo.name"
+        [clubName]="clubInfo.name"
+        [lastUpdate]="lastUpdate()"
+      />
 
-    /* Welcome banner */
-    .welcome-banner {
-      background: linear-gradient(135deg, #4F46E5 0%, #3730A3 50%, #1E1B4B 100%);
-      border-radius: 20px; padding: 2rem 2.5rem;
-      margin-bottom: 1.75rem; position: relative; overflow: hidden;
-    }
-    .welcome-banner::before {
-      content: '';
-      position: absolute; top: -40px; right: -40px;
-      width: 200px; height: 200px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%;
-    }
-    .welcome-banner::after {
-      content: '';
-      position: absolute; bottom: -60px; right: 80px;
-      width: 150px; height: 150px;
-      background: rgba(6,182,212,0.15);
-      border-radius: 50%;
-    }
-    .welcome-title { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 0.35rem; }
-    .welcome-subtitle { font-size: 0.9rem; color: rgba(255,255,255,0.7); }
-    .welcome-date {
-      font-size: 0.8rem; color: rgba(255,255,255,0.55);
-      margin-top: 0.5rem;
-    }
-    .welcome-quick-stats {
-      display: flex; gap: 1.5rem; margin-top: 1.25rem; flex-wrap: wrap;
-    }
-    .welcome-quick-stat {
-      display: flex; align-items: center; gap: 0.5rem;
-    }
-    .welcome-quick-stat-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-    }
-    .welcome-quick-stat-text { font-size: 0.82rem; color: rgba(255,255,255,0.75); font-weight: 500; }
+      <!-- Stats Cards -->
+      <app-stats-cards [stats]="statCards()" />
 
-    /* Stats grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.25rem; margin-bottom: 1.75rem;
-    }
-    .stat-card {
-      background: #fff; border-radius: 16px; padding: 1.5rem;
-      box-shadow: var(--card-shadow); position: relative; overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(79,70,229,0.12); }
-    .stat-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 3px; border-radius: 16px 16px 0 0;
-    }
-    .stat-card.indigo::before { background: linear-gradient(90deg, #4F46E5, #6366F1); }
-    .stat-card.green::before { background: linear-gradient(90deg, #10B981, #34D399); }
-    .stat-card.red::before { background: linear-gradient(90deg, #EF4444, #F87171); }
-    .stat-card.cyan::before { background: linear-gradient(90deg, #06B6D4, #0EA5E9); }
-    .stat-icon {
-      width: 48px; height: 48px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; margin-bottom: 1rem;
-    }
-    .stat-card.indigo .stat-icon { background: var(--primary-light); color: var(--primary); }
-    .stat-card.green .stat-icon { background: #ECFDF5; color: #059669; }
-    .stat-card.red .stat-icon { background: #FEF2F2; color: #DC2626; }
-    .stat-card.cyan .stat-icon { background: #ECFEFF; color: #0891B2; }
-    .stat-value { font-size: 2rem; font-weight: 800; color: var(--text-primary); line-height: 1; margin-bottom: 0.35rem; }
-    .stat-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
-    .stat-change {
-      display: inline-flex; align-items: center; gap: 0.25rem;
-      font-size: 0.75rem; font-weight: 600;
-      padding: 0.2rem 0.5rem; border-radius: 20px; margin-top: 0.75rem;
-    }
-    .stat-change.up { background: #ECFDF5; color: #059669; }
-    .stat-change.down { background: #FEF2F2; color: #DC2626; }
-    .stat-change.neutral { background: var(--primary-light); color: var(--primary); }
+      <!-- Branch Summary -->
+      @if (branchStats()) {
+        <app-branch-summary [branchStats]="branchStats()!" />
+      }
 
-    /* Section card */
-    .section-card {
-      background: #fff; border-radius: 16px;
-      box-shadow: var(--card-shadow); overflow: hidden; margin-bottom: 1.5rem;
-    }
-    .section-card-header {
-      padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem; flex-wrap: wrap;
-    }
-    .section-card-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
-    .section-card-body { padding: 1.5rem; }
+      <!-- Bottom Grid -->
+      <div class="row g-4">
+        <!-- Recent Activity -->
+        <div class="col-lg-5">
+          <app-recent-activity [activities]="recentActivity()" />
+        </div>
 
-    /* Branch cards */
-    .branch-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
-    }
-    .branch-card {
-      border-radius: 14px; padding: 1.25rem;
-      border: 1.5px solid var(--border); position: relative; overflow: hidden;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .branch-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(79,70,229,0.1); }
-    .branch-card.masculino { border-top: 3px solid #4F46E5; }
-    .branch-card.femenino { border-top: 3px solid #EC4899; }
-    .branch-card.total { border-top: 3px solid #06B6D4; background: linear-gradient(135deg, #F0F9FF, #EEF2FF); }
-    .branch-label {
-      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.5px; margin-bottom: 0.75rem;
-      display: flex; align-items: center; gap: 0.4rem;
-    }
-    .branch-label.masculino { color: #4F46E5; }
-    .branch-label.femenino { color: #EC4899; }
-    .branch-label.total { color: #0891B2; }
-    .branch-stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
-    .branch-stat-key { font-size: 0.8rem; color: var(--text-muted); }
-    .branch-stat-val { font-size: 0.875rem; font-weight: 700; color: var(--text-primary); }
-    .branch-stat-val.green { color: #059669; }
-    .branch-stat-val.red { color: #DC2626; }
-    .branch-stat-val.blue { color: #4F46E5; }
+        <!-- Quick Actions + Pending Approvals -->
+        <div class="col-lg-7">
+          <div class="row g-4">
+            <div class="col-12">
+              <app-quick-actions 
+                (addPlayer)="onAddPlayer()"
+                (registerPayment)="onRegisterPayment()"
+                (sendNotification)="onSendNotification()"
+              />
+            </div>
+            <div class="col-12">
+              <app-pending-approvals 
+                [approvals]="pendingApprovals()"
+                [pendingCount]="pendingCount()"
+                (onApprove)="onApprove($event)"
+                (onReject)="onReject($event)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
-    /* Activity feed */
-    .activity-item {
-      display: flex; align-items: flex-start; gap: 0.875rem;
-      padding: 0.875rem 0; border-bottom: 1px solid var(--border);
-    }
-    .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .activity-icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.9rem; flex-shrink: 0;
-    }
-    .activity-icon.payment { background: #ECFDF5; color: #059669; }
-    .activity-icon.player { background: var(--primary-light); color: var(--primary); }
-    .activity-icon.alert { background: #FFFBEB; color: #D97706; }
-    .activity-content { flex: 1; min-width: 0; }
-    .activity-title { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.15rem; }
-    .activity-desc { font-size: 0.8rem; color: var(--text-muted); }
-    .activity-time { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
-
-    /* Quick actions */
-    .quick-action-btn {
-      display: flex; align-items: center; gap: 0.625rem;
-      padding: 0.875rem 1.25rem; border-radius: 12px;
-      border: 1.5px solid var(--border); background: #fff;
-      font-family: inherit; font-size: 0.875rem; font-weight: 600;
-      color: var(--text-primary); cursor: pointer;
-      transition: all 0.2s; text-decoration: none; width: 100%;
-    }
-    .quick-action-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-    .quick-action-btn i { font-size: 1.1rem; }
-    .quick-action-btn.primary-btn {
-      background: var(--primary); border-color: var(--primary); color: white;
-    }
-    .quick-action-btn.primary-btn:hover { background: var(--primary-dark); border-color: var(--primary-dark); color: white; }
-
-    /* Pending approvals */
-    .approval-item {
-      display: flex; align-items: center; gap: 0.875rem;
-      padding: 0.875rem; border-radius: 12px;
-      border: 1.5px solid var(--border); margin-bottom: 0.75rem;
-      transition: border-color 0.2s;
-    }
-    .approval-item:hover { border-color: var(--primary); }
-    .approval-item:last-child { margin-bottom: 0; }
-    .approval-thumb {
-      width: 44px; height: 44px; border-radius: 10px;
-      background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; color: var(--primary); flex-shrink: 0;
-    }
-    .approval-info { flex: 1; min-width: 0; }
-    .approval-name { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
-    .approval-meta { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.1rem; }
-    .approval-amount { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); white-space: nowrap; }
-    .approval-actions { display: flex; gap: 0.4rem; }
-    .btn-approve {
-      padding: 0.3rem 0.7rem; border-radius: 8px;
-      background: #ECFDF5; color: #059669; border: none;
-      font-size: 0.78rem; font-weight: 600; cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-approve:hover { background: #059669; color: white; }
-    .btn-reject {
-      padding: 0.3rem 0.7rem; border-radius: 8px;
-      background: #FEF2F2; color: #DC2626; border: none;
-      font-size: 0.78rem; font-weight: 600; cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-reject:hover { background: #DC2626; color: white; }
-
-    /* Overlay */
-    .sidebar-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5); z-index: 150;
-    }
-    .sidebar-overlay.show { display: block; }
-
-    /* Responsive */
-    @media (max-width: 991px) {
-      .sidebar { transform: translateX(-260px); }
-      .sidebar.mobile-open { transform: translateX(0); }
-      .main-wrapper { margin-left: 0 !important; }
-    }
-    @media (max-width: 576px) {
-      .page-content { padding: 1rem; }
-      .welcome-banner { padding: 1.5rem; }
-      .welcome-title { font-size: 1.2rem; }
-      .topbar-search { display: none; }
-    }
-  </style>
-  
-  <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fclubpaylo4679back.builtwithrocket.new&_be=https%3A%2F%2Fappanalytics.rocket.new&_v=0.1.17"></script>
-  <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2"></script>
-  </head>
-<body>
-
-<!-- Sidebar Overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-<!-- Sidebar -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <div class="sidebar-logo-icon">
-      <i class="bi bi-lightning-charge-fill text-white" style="font-size:1rem;"></i>
-    </div>
-    <span class="sidebar-logo-text">ClubPay</span>
+      <!-- Botón de actualizar (opcional) -->
+      <div class="text-end mt-3">
+        <button class="btn btn-sm btn-outline-primary" (click)="refreshDashboard()">
+          <i class="bi bi-arrow-repeat"></i> Actualizar
+        </button>
+      </div>
+    </main>
   </div>
 
-  <div class="sidebar-club-info">
-    <div class="sidebar-club-avatar">FC</div>
-    <div class="sidebar-club-name">FC Deportivo Norte</div>
-    <span class="sidebar-club-role">Administrador</span>
-  </div>
-
-  <div class="sidebar-section">
-    <div class="sidebar-section-label">Principal</div>
-    <a href="admin_club_dashboard.html" class="sidebar-nav-item active">
-      <i class="bi bi-grid-1x2-fill"></i> Dashboard
-    </a>
-    <a href="#" class="sidebar-nav-item">
-      <i class="bi bi-people-fill"></i> Jugadores
-      <span class="badge-count">124</span>
-    </a>
-    <a href="#" class="sidebar-nav-item">
-      <i class="bi bi-person-badge-fill"></i> Entrenadores
-    </a>
-    <a href="admin_gesti_n_de_tesoreros.html" class="sidebar-nav-item">
-      <i class="bi bi-wallet2"></i> Tesoreros
-    </a>
-    <a href="#" class="sidebar-nav-item">
-      <i class="bi bi-credit-card-fill"></i> Pagos
-      <span class="badge-count">8</span>
-    </a>
-    <a href="#" class="sidebar-nav-item">
-      <i class="bi bi-bell-fill"></i> Notificaciones
-      <span class="badge-count">3</span>
-    </a>
-    <a href="#" class="sidebar-nav-item">
-      <i class="bi bi-gear-fill"></i> Configuración
-    </a>
-  </div>
-
-  <div class="sidebar-footer">
-    <div class="sidebar-user">
-      <div class="sidebar-avatar">CA</div>
-      <div class="sidebar-user-info">
-        <div class="sidebar-user-name">Carlos Administrador</div>
-        <div class="sidebar-user-role">Admin del Club</div>
-      </div>
-      <i class="bi bi-box-arrow-right" style="color:rgba(255,255,255,0.4);font-size:0.9rem;"></i>
-    </div>
-  </div>
-</aside>
-
-<!-- Main Wrapper -->
-<div class="main-wrapper" id="mainWrapper">
-
-  <!-- Topbar -->
-  <header class="topbar">
-    <button class="topbar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-      <i class="bi bi-list"></i>
-    </button>
-
-    <div class="topbar-search">
-      <i class="bi bi-search"></i>
-      <input type="text" placeholder="Buscar jugadores, pagos..." />
-    </div>
-
-    <div class="topbar-actions">
-      <div class="topbar-icon-btn" title="Notificaciones">
-        <i class="bi bi-bell"></i>
-        <span class="notif-badge">3</span>
-      </div>
-      <div class="topbar-avatar" data-bs-toggle="dropdown" aria-expanded="false" id="userAvatarBtn">CA</div>
-      <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" style="border-radius:12px;min-width:200px;" aria-labelledby="userAvatarBtn">
-        <li><div class="px-3 py-2 border-bottom">
-          <div style="font-size:0.875rem;font-weight:700;">Carlos Administrador</div>
-          <div style="font-size:0.78rem;color:var(--text-muted);">Admin del Club</div>
-        </div></li>
-        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-person me-2"></i>Mi Perfil</a></li>
-        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-gear me-2"></i>Configuración</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item py-2 text-danger" href="login.html"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a></li>
-      </ul>
-    </div>
-  </header>
-
-  <!-- Page Content -->
-  <main class="page-content">
-
-    <!-- Welcome Banner -->
-    <div class="welcome-banner">
-      <div class="welcome-title">¡Bienvenido, Carlos! 👋</div>
-      <div class="welcome-subtitle">FC Deportivo Norte — Panel de Administración</div>
-      <div class="welcome-date" id="currentDate"></div>
-      <div class="welcome-quick-stats">
-        <div class="welcome-quick-stat">
-          <div class="welcome-quick-stat-dot" style="background:#10B981;"></div>
-          <span class="welcome-quick-stat-text">98 jugadores al día</span>
-        </div>
-        <div class="welcome-quick-stat">
-          <div class="welcome-quick-stat-dot" style="background:#EF4444;"></div>
-          <span class="welcome-quick-stat-text">26 deudores</span>
-        </div>
-        <div class="welcome-quick-stat">
-          <div class="welcome-quick-stat-dot" style="background:#F59E0B;"></div>
-          <span class="welcome-quick-stat-text">8 comprobantes pendientes</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Stats Cards -->
-    <div class="stats-grid">
-      <div class="stat-card indigo">
-        <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-        <div class="stat-value">124</div>
-        <div class="stat-label">Total Jugadores</div>
-        <span class="stat-change up"><i class="bi bi-arrow-up"></i> +6 este mes</span>
-      </div>
-      <div class="stat-card green">
-        <div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div>
-        <div class="stat-value">98</div>
-        <div class="stat-label">Al Día</div>
-        <span class="stat-change up"><i class="bi bi-arrow-up"></i> 79% del total</span>
-      </div>
-      <div class="stat-card red">
-        <div class="stat-icon"><i class="bi bi-exclamation-circle-fill"></i></div>
-        <div class="stat-value">26</div>
-        <div class="stat-label">Deudores</div>
-        <span class="stat-change down"><i class="bi bi-arrow-down"></i> -3 vs mes anterior</span>
-      </div>
-      <div class="stat-card cyan">
-        <div class="stat-icon"><i class="bi bi-cash-stack"></i></div>
-        <div class="stat-value">$4,820</div>
-        <div class="stat-label">Ingresos del Mes</div>
-        <span class="stat-change up"><i class="bi bi-arrow-up"></i> +12% vs anterior</span>
-      </div>
-    </div>
-
-    <!-- Branch Summary -->
-    <div class="section-card">
-      <div class="section-card-header">
-        <div>
-          <div class="section-card-title">Resumen por Rama</div>
-          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Estado financiero por división</div>
-        </div>
-        <a href="#" style="font-size:0.82rem;color:var(--primary);font-weight:600;text-decoration:none;">Ver detalle completo →</a>
-      </div>
-      <div class="section-card-body">
-        <div class="branch-grid">
-          <div class="branch-card masculino">
-            <div class="branch-label masculino"><i class="bi bi-gender-male"></i> Masculino</div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Total Jugadores</span>
-              <span class="branch-stat-val">72</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Al Día</span>
-              <span class="branch-stat-val green">58</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Deudores</span>
-              <span class="branch-stat-val red">14</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Monto Adeudado</span>
-              <span class="branch-stat-val red">$1,260</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Ingresos del Mes</span>
-              <span class="branch-stat-val blue">$2,900</span>
-            </div>
-          </div>
-          <div class="branch-card femenino">
-            <div class="branch-label femenino"><i class="bi bi-gender-female"></i> Femenino</div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Total Jugadores</span>
-              <span class="branch-stat-val">52</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Al Día</span>
-              <span class="branch-stat-val green">40</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Deudores</span>
-              <span class="branch-stat-val red">12</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Monto Adeudado</span>
-              <span class="branch-stat-val red">$980</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Ingresos del Mes</span>
-              <span class="branch-stat-val blue">$1,920</span>
-            </div>
-          </div>
-          <div class="branch-card total">
-            <div class="branch-label total"><i class="bi bi-bar-chart-fill"></i> Total General</div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Total Jugadores</span>
-              <span class="branch-stat-val">124</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Al Día</span>
-              <span class="branch-stat-val green">98</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Deudores</span>
-              <span class="branch-stat-val red">26</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Monto Adeudado</span>
-              <span class="branch-stat-val red">$2,240</span>
-            </div>
-            <div class="branch-stat-row">
-              <span class="branch-stat-key">Ingresos del Mes</span>
-              <span class="branch-stat-val blue">$4,820</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottom Grid: Activity + Quick Actions + Pending -->
-    <div class="row g-4">
-
-      <!-- Recent Activity -->
-      <div class="col-lg-5">
-        <div class="section-card h-100">
-          <div class="section-card-header">
-            <div class="section-card-title">Actividad Reciente</div>
-            <a href="#" style="font-size:0.82rem;color:var(--primary);font-weight:600;text-decoration:none;">Ver todo →</a>
-          </div>
-          <div class="section-card-body">
-            <div class="activity-item">
-              <div class="activity-icon payment"><i class="bi bi-check-circle-fill"></i></div>
-              <div class="activity-content">
-                <div class="activity-title">Pago aprobado — Martín López</div>
-                <div class="activity-desc">Mensualidad Marzo · Masculino · $50</div>
-              </div>
-              <div class="activity-time">hace 12 min</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon player"><i class="bi bi-person-plus-fill"></i></div>
-              <div class="activity-content">
-                <div class="activity-title">Nuevo jugador — Sofía Ramírez</div>
-                <div class="activity-desc">Sub-18 · Femenino · Activa</div>
-              </div>
-              <div class="activity-time">hace 1 h</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon payment"><i class="bi bi-check-circle-fill"></i></div>
-              <div class="activity-content">
-                <div class="activity-title">Pago aprobado — Diego Herrera</div>
-                <div class="activity-desc">Mensualidad Marzo · Masculino · $50</div>
-              </div>
-              <div class="activity-time">hace 2 h</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon alert"><i class="bi bi-exclamation-triangle-fill"></i></div>
-              <div class="activity-content">
-                <div class="activity-title">Recordatorio enviado — 5 deudores</div>
-                <div class="activity-desc">Notificación de pago pendiente</div>
-              </div>
-              <div class="activity-time">hace 3 h</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon player"><i class="bi bi-person-plus-fill"></i></div>
-              <div class="activity-content">
-                <div class="activity-title">Nuevo jugador — Andrés Vega</div>
-                <div class="activity-desc">Primera División · Masculino · Activo</div>
-              </div>
-              <div class="activity-time">ayer</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions + Pending Approvals -->
-      <div class="col-lg-7">
-        <div class="row g-4">
-
-          <!-- Quick Actions -->
-          <div class="col-12">
-            <div class="section-card">
-              <div class="section-card-header">
-                <div class="section-card-title">Acciones Rápidas</div>
-              </div>
-              <div class="section-card-body">
-                <div class="row g-2">
-                  <div class="col-sm-4">
-                    <button class="quick-action-btn primary-btn">
-                      <i class="bi bi-person-plus-fill"></i> Agregar Jugador
-                    </button>
-                  </div>
-                  <div class="col-sm-4">
-                    <button class="quick-action-btn">
-                      <i class="bi bi-credit-card-fill"></i> Registrar Pago
-                    </button>
-                  </div>
-                  <div class="col-sm-4">
-                    <button class="quick-action-btn">
-                      <i class="bi bi-bell-fill"></i> Enviar Notificación
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pending Approvals -->
-          <div class="col-12">
-            <div class="section-card">
-              <div class="section-card-header">
-                <div>
-                  <div class="section-card-title">Comprobantes Pendientes</div>
-                  <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Requieren revisión del administrador</div>
-                </div>
-                <span style="background:#FEF2F2;color:#DC2626;font-size:0.78rem;font-weight:700;padding:0.25rem 0.625rem;border-radius:20px;">8 pendientes</span>
-              </div>
-              <div class="section-card-body">
-                <div class="approval-item">
-                  <div class="approval-thumb"><i class="bi bi-file-earmark-image"></i></div>
-                  <div class="approval-info">
-                    <div class="approval-name">Valentina Torres</div>
-                    <div class="approval-meta">Mensualidad Marzo · Femenino · Sub-15 · hace 30 min</div>
-                  </div>
-                  <div class="approval-amount me-2">$50</div>
-                  <div class="approval-actions">
-                    <button class="btn-approve"><i class="bi bi-check-lg"></i> Aprobar</button>
-                    <button class="btn-reject"><i class="bi bi-x-lg"></i></button>
-                  </div>
-                </div>
-                <div class="approval-item">
-                  <div class="approval-thumb"><i class="bi bi-file-earmark-image"></i></div>
-                  <div class="approval-info">
-                    <div class="approval-name">Rodrigo Méndez</div>
-                    <div class="approval-meta">Mensualidad Marzo · Masculino · Primera · hace 1 h</div>
-                  </div>
-                  <div class="approval-amount me-2">$50</div>
-                  <div class="approval-actions">
-                    <button class="btn-approve"><i class="bi bi-check-lg"></i> Aprobar</button>
-                    <button class="btn-reject"><i class="bi bi-x-lg"></i></button>
-                  </div>
-                </div>
-                <div class="approval-item">
-                  <div class="approval-thumb"><i class="bi bi-file-earmark-image"></i></div>
-                  <div class="approval-info">
-                    <div class="approval-name">Camila Jiménez</div>
-                    <div class="approval-meta">Mensualidad Marzo · Femenino · Sub-18 · hace 2 h</div>
-                  </div>
-                  <div class="approval-amount me-2">$50</div>
-                  <div class="approval-actions">
-                    <button class="btn-approve"><i class="bi bi-check-lg"></i> Aprobar</button>
-                    <button class="btn-reject"><i class="bi bi-x-lg"></i></button>
-                  </div>
-                </div>
-                <div class="text-center mt-3">
-                  <a href="#" style="font-size:0.82rem;color:var(--primary);font-weight:600;text-decoration:none;">Ver los 8 comprobantes pendientes →</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-  </main>
+  <!-- Toast Container -->
+  <app-toast />
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // Set current date
-  const dateEl = document.getElementById('currentDate');
-  if (dateEl) {
-    const now = new Date();
-    const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    dateEl.textContent = now.toLocaleDateString('es-ES', opts);
-  }
-
-  // Sidebar toggle
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const mainWrapper = document.getElementById('mainWrapper');
-    const overlay = document.getElementById('sidebarOverlay');
-    const isMobile = window.innerWidth < 992;
-
-    if (isMobile) {
-      sidebar.classList.toggle('mobile-open');
-      overlay.classList.toggle('show');
-    } else {
-      sidebar.classList.toggle('collapsed');
-      mainWrapper.classList.toggle('expanded');
-    }
-  }
-
-  // Approve/Reject buttons
-  document.querySelectorAll('.btn-approve').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const item = this.closest('.approval-item');
-      const name = item.querySelector('.approval-name').textContent;
-      item.style.opacity = '0.5';
-      item.style.pointerEvents = 'none';
-      showToast(`✅ Pago de ${name} aprobado correctamente`, 'success');
-    });
-  });
-
-  document.querySelectorAll('.btn-reject').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const item = this.closest('.approval-item');
-      const name = item.querySelector('.approval-name').textContent;
-      item.style.opacity = '0.5';
-      item.style.pointerEvents = 'none';
-      showToast(`❌ Pago de ${name} rechazado`, 'danger');
-    });
-  });
-
-  function showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.style.cssText = `
-      position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;
-      background:${type === 'success' ? '#059669' : '#DC2626'};
-      color:white;padding:0.875rem 1.25rem;border-radius:12px;
-      font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;font-weight:600;
-      box-shadow:0 8px 24px rgba(0,0,0,0.15);
-      animation:slideIn 0.3s ease;max-width:320px;
-    `;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
-  }
-</script>
-<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
-</body>
-</html>

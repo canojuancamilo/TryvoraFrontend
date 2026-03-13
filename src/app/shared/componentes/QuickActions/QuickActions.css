@@ -1,0 +1,92 @@
+/* src/app/features/dashboard/components/quick-actions/quick-actions.component.css */
+.section-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--card-shadow, 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(79,70,229,0.06));
+  overflow: hidden;
+}
+
+.section-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border, #E2E8F0);
+}
+
+.section-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary, #1E293B);
+  margin: 0;
+}
+
+.section-card-body {
+  padding: 1.5rem;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--border, #E2E8F0);
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #1E293B);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  width: 100%;
+  line-height: 1;
+}
+
+.quick-action-btn:hover {
+  border-color: var(--primary, #4F46E5);
+  color: var(--primary, #4F46E5);
+  background: var(--primary-light, #EEF2FF);
+  transform: translateY(-1px);
+}
+
+.quick-action-btn:active {
+  transform: translateY(0);
+}
+
+.quick-action-btn i {
+  font-size: 1.1rem;
+}
+
+.quick-action-btn.primary-btn {
+  background: var(--primary, #4F46E5);
+  border-color: var(--primary, #4F46E5);
+  color: white;
+}
+
+.quick-action-btn.primary-btn:hover {
+  background: var(--primary-dark, #3730A3);
+  border-color: var(--primary-dark, #3730A3);
+  color: white;
+}
+
+@media (max-width: 576px) {
+  .section-card-header,
+  .section-card-body {
+    padding: 1rem;
+  }
+  
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-action-btn {
+    padding: 0.75rem 1rem;
+    justify-content: flex-start;
+  }
+}

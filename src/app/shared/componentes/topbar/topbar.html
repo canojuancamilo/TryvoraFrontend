@@ -1,0 +1,92 @@
+<!-- src/app/shared/components/topbar/topbar.component.html -->
+<header class="topbar">
+  <!-- Botón toggle sidebar -->
+  <button class="topbar-toggle" (click)="onToggleSidebar()" aria-label="Toggle sidebar">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Barra de búsqueda -->
+  <div class="topbar-search" [class.focused]="searchQuery().length > 0">
+    <i class="bi bi-search"></i>
+    <input 
+      type="text" 
+      placeholder="Buscar jugadores, pagos..." 
+      [value]="searchQuery()"
+      (input)="onSearch($event)"
+      (keyup.enter)="onSearch($event)"
+    />
+    @if (searchQuery()) {
+      <button class="search-clear" (click)="clearSearch()">
+        <i class="bi bi-x"></i>
+      </button>
+    }
+  </div>
+
+  <!-- Acciones -->
+  <div class="topbar-actions">
+    <!-- Botón de notificaciones -->
+    <button 
+      class="topbar-icon-btn" 
+      (click)="onNotificationsClick()" 
+      title="Notificaciones"
+      aria-label="Notificaciones"
+    >
+      <i class="bi bi-bell"></i>
+      @if (notificationCount() > 0) {
+        <span class="notif-badge">{{ notificationCount() }}</span>
+      }
+    </button>
+    
+    <!-- Menú de usuario (dropdown personalizado) -->
+    <div class="user-menu-container">
+      <!-- Botón del avatar -->
+      <button 
+        #userMenuButton
+        class="topbar-avatar" 
+        [class.active]="isUserMenuOpen()"
+        (click)="toggleUserMenu($event)"
+        aria-label="Menú de usuario"
+        aria-expanded="{{isUserMenuOpen()}}"
+      >
+        {{ userAvatar() }}
+      </button>
+      
+      <!-- Dropdown menu -->
+      @if (isUserMenuOpen()) {
+        <div 
+          #userDropdownMenu
+          class="user-dropdown-menu show"
+          [class]="userMenuClass()"
+        >
+          <!-- Info del usuario -->
+          <div class="dropdown-header">
+            <div class="user-info">
+              <div class="user-name">{{ userName() }}</div>
+              <div class="user-role">{{ userRole() }}</div>
+            </div>
+          </div>
+          
+          <!-- Opciones del menú -->
+          <div class="dropdown-items">
+            <a class="dropdown-item" (click)="goToProfile()">
+              <i class="bi bi-person me-2"></i>
+              Mi Perfil
+            </a>
+            
+            <a class="dropdown-item" (click)="goToSettings()">
+              <i class="bi bi-gear me-2"></i>
+              Configuración
+            </a>
+            
+            <div class="dropdown-divider"></div>
+            
+            <a class="dropdown-item text-danger" (click)="onLogout()">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</header>

@@ -1,0 +1,102 @@
+<div class="section-card">
+  <div class="section-card-header">
+    <div>
+      <div class="section-card-title">Resumen por Rama</div>
+      <div class="section-card-subtitle">Estado financiero por división</div>
+    </div>
+    <a href="#" class="view-all-link">Ver detalle completo →</a>
+  </div>
+  
+  <div class="section-card-body">
+    @if (branchStats()) {
+      <div class="branch-grid">
+        <!-- Masculino -->
+        <div class="branch-card masculino">
+          <div class="branch-label masculino">
+            <i class="bi bi-gender-male"></i> Masculino
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Total Jugadores</span>
+            <span class="branch-stat-val">{{ branchStats()?.masculino?.totalPlayers }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Al Día</span>
+            <span class="branch-stat-val green">{{ branchStats()?.masculino?.upToDate }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Deudores</span>
+            <span class="branch-stat-val red">{{ branchStats()?.masculino?.debtors }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Monto Adeudado</span>
+            <span class="branch-stat-val red">${{ branchStats()?.masculino?.debtAmount }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Ingresos del Mes</span>
+            <span class="branch-stat-val blue">${{ branchStats()?.masculino?.monthlyIncome }}</span>
+          </div>
+        </div>
+
+        <!-- Femenino -->
+        <div class="branch-card femenino">
+          <div class="branch-label femenino">
+            <i class="bi bi-gender-female"></i> Femenino
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Total Jugadores</span>
+            <span class="branch-stat-val">{{ branchStats()?.femenino?.totalPlayers }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Al Día</span>
+            <span class="branch-stat-val green">{{ branchStats()?.femenino?.upToDate }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Deudores</span>
+            <span class="branch-stat-val red">{{ branchStats()?.femenino?.debtors }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Monto Adeudado</span>
+            <span class="branch-stat-val red">${{ branchStats()?.femenino?.debtAmount }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Ingresos del Mes</span>
+            <span class="branch-stat-val blue">${{ branchStats()?.femenino?.monthlyIncome }}</span>
+          </div>
+        </div>
+
+        <!-- Total General -->
+        <div class="branch-card total">
+          <div class="branch-label total">
+            <i class="bi bi-bar-chart-fill"></i> Total General
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Total Jugadores</span>
+            <span class="branch-stat-val">{{ branchStats()?.total?.totalPlayers }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Al Día</span>
+            <span class="branch-stat-val green">{{ branchStats()?.total?.upToDate }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Deudores</span>
+            <span class="branch-stat-val red">{{ branchStats()?.total?.debtors }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Monto Adeudado</span>
+            <span class="branch-stat-val red">${{ branchStats()?.total?.debtAmount }}</span>
+          </div>
+          <div class="branch-stat-row">
+            <span class="branch-stat-key">Ingresos del Mes</span>
+            <span class="branch-stat-val blue">${{ branchStats()?.total?.monthlyIncome }}</span>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>

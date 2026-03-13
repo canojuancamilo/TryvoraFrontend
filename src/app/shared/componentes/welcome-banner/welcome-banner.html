@@ -1,0 +1,24 @@
+<div class="welcome-banner">
+  <div class="welcome-title">¡Bienvenido, {{ userName() }}! 👋</div>
+  <div class="welcome-subtitle">{{ clubName() }} — Panel de Administración</div>
+  <div class="welcome-date">{{ getFormattedDate() }}</div>
+  <div class="welcome-quick-stats">
+    <div class="welcome-quick-stat">
+      <div class="welcome-quick-stat-dot" style="background:#10B981;"></div>
+      <span class="welcome-quick-stat-text">98 jugadores al día</span>
+    </div>
+    <div class="welcome-quick-stat">
+      <div class="welcome-quick-stat-dot" style="background:#EF4444;"></div>
+      <span class="welcome-quick-stat-text">26 deudores</span>
+    </div>
+    <div class="welcome-quick-stat">
+      <div class="welcome-quick-stat-dot" style="background:#F59E0B;"></div>
+      <span class="welcome-quick-stat-text">8 comprobantes pendientes</span>
+    </div>
+  </div>
+  @if (lastUpdate()) {
+    <div class="last-update">
+      Última actualización: {{ lastUpdate() | date:'HH:mm:ss' }}
+    </div>
+  }
+</div>

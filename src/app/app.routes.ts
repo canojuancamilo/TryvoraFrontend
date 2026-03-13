@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { RegistroClub } from './paginas/publicas/registro-club/registro-club';
 import { Login } from './paginas/publicas/login/login';
+import { AdminClubDashboard } from './paginas/admin/admin-club-dashboard/admin-club-dashboard';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,10 @@ export const routes: Routes = [
   {
     path: 'registro-club',
     component: RegistroClub
+  },
+  {
+    path: 'admin-club',
+    component:AdminClubDashboard
   },
   {
     path: '**',

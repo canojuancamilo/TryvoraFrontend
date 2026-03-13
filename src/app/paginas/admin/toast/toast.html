@@ -1,0 +1,8 @@
+<div class="toast-container">
+    @for (toast of notificationService.activeToasts(); track toast.id) {
+    <div class="toast-message" [class]="'toast-' + toast.type" (click)="notificationService.remove(toast.id)">
+        <i [class]="getIcon(toast.type)"></i>
+        <span>{{ toast.message }}</span>
+    </div>
+    }
+</div>
