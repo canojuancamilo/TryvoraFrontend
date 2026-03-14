@@ -1,0 +1,34 @@
+<div class="stats-grid">
+      <app-stat-card
+        icon="bi-building"
+        [value]="stats.totalClubs"
+        label="Clubs Registrados"
+        color="indigo"
+        change="+2 este mes"
+        changeDirection="up"
+      />
+      <app-stat-card
+        icon="bi-people-fill"
+        [value]="stats.activePlayers"
+        label="Jugadores Activos"
+        color="cyan"
+        change="+28 este mes"
+        changeDirection="up"
+      />
+      <app-stat-card
+        icon="bi-currency-euro"
+        [value]="stats.totalIncome"
+        label="Ingresos este Mes"
+        color="green"
+        change="+12% vs anterior"
+        changeDirection="up"
+      />
+      <app-stat-card
+        icon="bi-exclamation-triangle-fill"
+        [value]="stats.debtors"
+        label="Jugadores Deudores"
+        color="amber"
+        change="-5 esta semana"
+        changeDirection="down"
+      />
+    </div>

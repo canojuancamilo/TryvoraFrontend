@@ -1,0 +1,25 @@
+<div class="section-card h-100">
+      <div class="section-card-header">
+        <div>
+          <div class="section-card-title">Distribución por Deporte</div>
+          <div class="section-card-subtitle">Clubs activos por categoría</div>
+        </div>
+      </div>
+      <div style="padding:1.25rem 1.5rem;">
+        @for (item of distribution; track item.sport) {
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span style="font-size:0.875rem;font-weight:600;color:var(--text-primary);">{{ item.sport }}</span>
+              <span style="font-size:0.82rem;font-weight:700;color:var(--text-muted);">{{ item.count }} clubs</span>
+            </div>
+            <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden;">
+              <div 
+                style="height:100%;border-radius:4px;transition:width 0.6s ease;"
+                [style.width.%]="(item.count / total * 100).toFixed(0)"
+                [style.background]="item.color">
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>

@@ -1,0 +1,13 @@
+<div class="stat-card" [class]="color()">
+    <div class="stat-icon">
+        <i class="bi" [class]="icon()"></i>
+    </div>
+    <div class="stat-value">{{ value() }}</div>
+    <div class="stat-label">{{ label() }}</div>
+    @if (change()) {
+    <div class="stat-change" [class.up]="changeDirection() === 'up'" [class.down]="changeDirection() === 'down'">
+        <i class="bi" [class]="changeDirection() === 'up' ? 'bi-arrow-up-short' : 'bi-arrow-down-short'"></i>
+        {{ change() }}
+    </div>
+    }
+</div>

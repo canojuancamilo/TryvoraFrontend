@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Sidebar } from '../../../shared/componentes/sidebar/sidebar';
 import { Topbar } from '../../../shared/componentes/topbar/topbar';
-import { Toast } from '../toast/toast';
 import { WelcomeBanner } from '../../../shared/componentes/welcome-banner/welcome-banner';
 import { StatsCards } from '../../../shared/componentes/StatsCards/StatsCards';
 import { BranchSummary } from '../../../shared/componentes/BranchSummary/BranchSummary';
@@ -12,6 +11,7 @@ import { debounceTime, distinctUntilChanged, filter, fromEvent, map, Subject } f
 import { DashboardAdminService } from '../../../servicios/dashboard-admin.service';
 import { NotificationService } from '../../../servicios/notification.service';
 import { UiService } from '../../../servicios/ui.service';
+import { Toast } from '../../../shared/componentes/toast/toast';
 
 @Component({
   selector: 'app-admin-club-dashboard',

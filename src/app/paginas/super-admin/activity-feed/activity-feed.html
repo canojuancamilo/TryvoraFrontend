@@ -1,0 +1,22 @@
+<div class="section-card">
+      <div class="section-card-header">
+        <div>
+          <div class="section-card-title">Actividad Reciente</div>
+          <div class="section-card-subtitle">Últimas acciones en la plataforma</div>
+        </div>
+        <button class="btn-cp-outline" style="font-size:0.8rem;padding:0.4rem 0.875rem;">Ver todo</button>
+      </div>
+      <div>
+        @for (activity of activities(); track $index) {
+          <div class="activity-item">
+            <div class="activity-dot" [style.background]="activity.bg" [style.color]="activity.color">
+              <i class="bi" [class]="'bi-' + activity.icon"></i>
+            </div>
+            <div>
+              <div class="activity-text" [innerHTML]="activity.text"></div>
+              <div class="activity-time"><i class="bi bi-clock me-1"></i>{{ activity.time }}</div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>

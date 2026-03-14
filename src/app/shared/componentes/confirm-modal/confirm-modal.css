@@ -1,0 +1,172 @@
+.modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1050;
+      backdrop-filter: blur(4px);
+      animation: fadeIn 0.2s ease;
+    }
+
+    /* Contenido del modal */
+    .modal-content {
+      max-width: 420px;
+      width: 90%;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      animation: slideUp 0.3s ease;
+      overflow: hidden;
+    }
+
+    /* Header */
+    .modal-header {
+      padding: 1.25rem 1.5rem 0.5rem;
+      display: flex;
+      justify-content: flex-end;
+      border: none;
+    }
+
+    .btn-close {
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      line-height: 1;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      border-radius: 8px;
+    }
+
+    .btn-close:hover {
+      background: var(--bg);
+      color: var(--text-primary);
+    }
+
+    .btn-close::before {
+      content: "×";
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+
+    /* Body */
+    .modal-body {
+      padding: 0.5rem 1.5rem 1rem;
+      text-align: center;
+    }
+
+    .icon-container {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-size: 1.75rem;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .modal-message {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Footer */
+    .modal-footer {
+      padding: 1rem 1.5rem 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      border: none;
+    }
+
+    /* Botones */
+    .btn-cp-outline {
+      background: #fff;
+      color: var(--text-primary);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      min-width: 100px;
+      justify-content: center;
+    }
+
+    .btn-cp-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .btn-cp-primary {
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      min-width: 100px;
+      justify-content: center;
+    }
+
+    .btn-cp-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Animaciones */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Asegurar que Bootstrap Icons se vean bien */
+    .bi {
+      display: inline-block;
+      vertical-align: middle;
+    }

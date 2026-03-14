@@ -1,0 +1,22 @@
+@if (isOpen()) {
+<div class="modal-overlay" (click)="close()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header border-0 pb-0">
+            <button type="button" class="btn-close" (click)="close()"></button>
+        </div>
+        <div class="modal-body text-center pt-0 pb-2">
+            <div class="icon-container" [style.background]="iconBg()" [style.color]="iconColor()">
+                <i class="bi" [class]="icon()"></i>
+            </div>
+            <h5 class="modal-title">{{ title() }}</h5>
+            <p class="modal-message">{{ message() }}</p>
+        </div>
+        <div class="modal-footer border-0 pt-0 justify-content-center gap-2">
+            <button type="button" class="btn-cp-outline" (click)="close()">Cancelar</button>
+            <button type="button" class="btn-cp-primary" [style.background]="confirmColor()" (click)="confirm()">
+                {{ confirmText() }}
+            </button>
+        </div>
+    </div>
+</div>
+}

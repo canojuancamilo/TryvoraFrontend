@@ -1,0 +1,148 @@
+<div class="section-card">
+      <div class="section-card-header">
+        <div>
+          <div class="section-card-title">Gestión de Clubs</div>
+          <div class="section-card-subtitle">Administra todos los clubs registrados en la plataforma</div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn-cp-outline" (click)="refreshTable()">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+        </div>
+      </div>
+
+       <!-- Filters -->
+      <div class="filters-bar">
+        <div class="search-input-wrap">
+          <i class="bi bi-search"></i>
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Buscar club por nombre, ciudad..." 
+            [ngModel]="filters().search"
+            (ngModelChange)="updateFilter('search', $event)"
+          />
+        </div>
+        
+        <select class="filter-select" [ngModel]="filters().sport" (ngModelChange)="updateFilter('sport', $event)">
+          <option value="">Todos los deportes</option>
+          <option value="Fútbol">⚽ Fútbol</option>
+          <option value="Baloncesto">🏀 Baloncesto</option>
+          <option value="Voleibol">🏐 Voleibol</option>
+          <option value="Natación">🏊 Natación</option>
+          <option value="Fútbol Sala">🥅 Fútbol Sala</option>
+        </select>
+        
+        <select class="filter-select" [ngModel]="filters().status" (ngModelChange)="updateFilter('status', $event)">
+          <option value="">Todos los estados</option>
+          <option value="active">Activo</option>
+          <option value="inactive">Inactivo</option>
+          <option value="pending">Pendiente</option>
+          <option value="suspended">Suspendido</option>
+        </select>
+        
+        <select class="filter-select" [ngModel]="filters().period" (ngModelChange)="updateFilter('period', $event)">
+          <option value="">Todo el período</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+        </select>
+      </div>
+
+      <!-- Table -->
+      <div style="overflow-x:auto;">
+        <table class="cp-table">
+          <thead>
+            <tr>
+              <th (click)="sort('name')" [class.sorted]="sortField() === 'name'">Club <i class="bi bi-chevron-expand sort-icon"></i></th>
+              <th (click)="sort('sport')" [class.sorted]="sortField() === 'sport'">Deporte <i class="bi bi-chevron-expand sort-icon"></i></th>
+              <th (click)="sort('players')" [class.sorted]="sortField() === 'players'">Jugadores <i class="bi bi-chevron-expand sort-icon"></i></th>
+              <th (click)="sort('income')" [class.sorted]="sortField() === 'income'">Ingresos/Mes <i class="bi bi-chevron-expand sort-icon"></i></th>
+              <th (click)="sort('status')" [class.sorted]="sortField() === 'status'">Estado <i class="bi bi-chevron-expand sort-icon"></i></th>
+              <th (click)="sort('date')" [class.sorted]="sortField() === 'date'">Registro <i class="bi bi-chevron-expand sort-icon"></i></th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (club of paginatedClubs(); track club.id) {
+              <tr>
+                <td>
+                  <div class="club-name-cell">
+                    <div class="club-avatar" [style.background]="club.color + '20'" [style.color]="club.color">
+                      {{ getInitials(club.name) }}
+                    </div>
+                    <div>
+                      <div class="club-name">{{ club.name }}</div>
+                      <div class="club-meta"><i class="bi bi-geo-alt" style="font-size:0.7rem;"></i> {{ club.city }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="sport-badge">{{ getSportEmoji(club.sport) }} {{ club.sport }}</span></td>
+                <td>
+                  <div style="font-weight:600;">{{ club.players }}</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">{{ club.branches.join(' · ') }}</div>
+                </td>
+                <td>
+                  <div style="font-weight:700;color:var(--success);">€{{ club.income | number:'1.0-0' }}</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">este mes</div>
+                </td>
+                <td><span class="status-badge" [class]="club.status">{{ getStatusLabel(club.status) }}</span></td>
+                <td style="color:var(--text-muted);font-size:0.82rem;">{{ club.date | date:'dd MMM yyyy' }}</td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="action-btn view" title="Ver detalles" (click)="viewClub(club)"><i class="bi bi-eye"></i></button>
+                    <button class="action-btn edit" title="Editar" (click)="editClub(club)"><i class="bi bi-pencil"></i></button>
+                    <button class="action-btn toggle" title="Cambiar estado" (click)="toggleStatus(club)"><i class="bi bi-toggle-on"></i></button>
+                    <button class="action-btn delete" title="Eliminar" (click)="deleteClub(club)"><i class="bi bi-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" style="text-align:center;padding:3rem;color:var(--text-muted);">
+                  <i class="bi bi-search" style="font-size:2rem;display:block;margin-bottom:0.75rem;opacity:0.4;"></i>
+                  No se encontraron clubs con los filtros aplicados
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-bar">
+        <div class="pagination-info">
+          Mostrando {{ paginationInfo().start }}–{{ paginationInfo().end }} de {{ paginationInfo().total }} clubs
+        </div>
+        <div class="pagination-controls">
+          <button class="page-btn" (click)="changePage(-1)" [disabled]="currentPage() === 1">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          @for (page of [].constructor(totalPages()); track $index) {
+            <button 
+              class="page-btn" 
+              [class.active]="currentPage() === $index + 1"
+              (click)="goToPage($index + 1)">
+              {{ $index + 1 }}
+            </button>
+          }
+          <button class="page-btn" (click)="changePage(1)" [disabled]="currentPage() >= totalPages()">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+<app-confirm-modal 
+      #confirmModal
+      [title]="modalTitle()"
+      [message]="modalMessage()"
+      [confirmText]="modalConfirmText()"
+      [confirmColor]="modalConfirmColor()"
+      [icon]="modalIcon()"
+      [iconBg]="modalIconBg()"
+      [iconColor]="modalIconColor()"
+      (onConfirm)="handleConfirmAction()"
+      (onClose)="clearSelectedClub()"
+    />
+    <app-toast #toast />
