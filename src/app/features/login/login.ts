@@ -2,10 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Contexto } from '../../../components/login/contexto/contexto';
-import { CampoTexto } from '../../../shared/componentes/inputs/campo-texto/campo-texto';
-import { CampoCheck } from "../../../shared/componentes/inputs/campo-check/campo-check";
-import { AlertasService } from '../../../shared/servicios/alertas.service';
+import { Contexto } from '../../components/login/contexto/contexto';
+import { CampoTexto } from '../../shared/componentes/inputs/campo-texto/campo-texto';
+import { CampoCheck } from '../../shared/componentes/inputs/campo-check/campo-check';
+import { AlertasService } from '../../shared/servicios/alertas.service';
 
 @Component({
   selector: 'app-login',
