@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { PendingApproval } from '../../../models/dashboard-admin.model';
+import { PendingApproval } from '../../../core/models/dashboard-admin.model';
 
 @Component({
   selector: 'app-pending-approvals',

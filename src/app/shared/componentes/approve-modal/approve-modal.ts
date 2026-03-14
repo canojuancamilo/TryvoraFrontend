@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { Payment } from '../../../models/payment.model';
+import { Payment } from '../../../core/models/payment.model';
 
 @Component({
   selector: 'app-approve-modal',

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { NotificationModel } from '../../../models/notification.model';
+import { NotificationModel } from '../../../core/models/notification.model';
 
 @Component({
   selector: 'app-notifications',

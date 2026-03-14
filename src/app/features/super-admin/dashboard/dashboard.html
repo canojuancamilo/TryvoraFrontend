@@ -1,0 +1,43 @@
+<app-sidebar [isOpen]="uiService.sidebarOpen()" [isMobile]="uiService.isMobile()" [clubInfo]="clubInfo"
+  [userInfo]="userInfo" (toggleSidebar)="toggleSidebar()" />
+
+<div class="sidebar-overlay" [class.show]="uiService.isMobile() && uiService.sidebarOpen()" (click)="toggleSidebar()">
+</div>
+
+<div class="main-wrapper" [class.expanded]="!uiService.sidebarOpen()">
+  <app-topbar (toggleSidebar)="toggleSidebar()" />
+
+  <main class="page-content">
+    <!-- Title Row -->
+    <div class="page-title-row">
+      <div>
+        <h1 class="page-title">Dashboard General</h1>
+        <p class="page-subtitle">Supervisión completa del sistema ClubPay · Actualizado hace 2 min</p>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn-cp-outline" (click)="exportData()">
+          <i class="bi bi-download"></i> Exportar
+        </button>
+        <button class="btn-cp-primary" (click)="openAddClubModal()">
+          <i class="bi bi-plus-lg"></i> Nuevo Club
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <app-stats-grid />
+
+    <!-- Clubs Table -->
+    <app-clubs-table />
+
+    <!-- Bottom Row -->
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <app-activity-feed />
+      </div>
+      <div class="col-lg-5">
+        <app-sport-distribution />
+      </div>
+    </div>
+  </main>
+</div>

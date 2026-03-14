@@ -1,0 +1,161 @@
+
+  <app-sidebar [isOpen]="sidebarOpen()" [isMobile]="isMobile()" [clubInfo]="clubInfo" [userInfo]="userInfo"
+    (toggleSidebar)="toggleSidebar()" />
+
+  <div class="sidebar-overlay" [class.show]="uiService.isMobile() && uiService.sidebarOpen()" (click)="toggleSidebar()">
+  </div>
+
+  <div [class]="mainWrapperClass()">
+    <app-topbar [userAvatar]="userInfo.avatar" [userName]="userInfo.name" [userRole]="userInfo.role"
+      [notificationCount]="3" (toggleSidebar)="toggleSidebar()" />
+
+    <main class="page-content">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Gestión de Tesoreros</h1>
+          <p class="page-subtitle">
+            Administra los tesoreros del club y sus permisos de acceso
+          </p>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon total">
+            <i class="bi bi-people"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Total Tesoreros</span>
+            <span class="stat-value">{{ tesoreroService.totalCount() }}</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon active">
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Activos</span>
+            <span class="stat-value">{{ tesoreroService.activeCount() }}</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon inactive">
+            <i class="bi bi-x-circle"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Inactivos</span>
+            <span class="stat-value">{{ tesoreroService.inactiveCount() }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Card -->
+      <div class="section-card">
+        <!-- Action Bar -->
+        <div class="section-card-header">
+          <div class="search-bar">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Buscar tesorero..." (input)="onSearch($event)" />
+          </div>
+          <button class="btn btn-primary" (click)="openAddModal()">
+            <i class="bi bi-plus-lg"></i> Agregar Tesorero
+          </button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive" [class.d-none]="filteredTesoreros().length === 0">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (tesorero of filteredTesoreros(); track tesorero.id; let i = $index) {
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar-sm">
+                      {{ getInitials(tesorero.nombre) }}
+                    </div>
+                    <div>
+                      <div class="user-name">{{ tesorero.nombre }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-muted">{{ tesorero.email }}</td>
+                <td class="text-muted">{{ tesorero.telefono }}</td>
+                <td>
+                  <span class="badge-status" [class.active]="tesorero.estado" [class.inactive]="!tesorero.estado">
+                    {{ tesorero.estado ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="action-btn edit" title="Editar" (click)="openEditModal(tesorero)">
+                      <i class="bi bi-pencil-fill"></i>
+                    </button>
+                    <button class="action-btn" [class.deactivate]="tesorero.estado" [class.activate]="!tesorero.estado"
+                      [title]="tesorero.estado ? 'Desactivar' : 'Activar'" (click)="toggleEstado(tesorero.id!)">
+                      <i class="bi" [class.bi-toggle-on]="tesorero.estado" [class.bi-toggle-off]="!tesorero.estado"></i>
+                    </button>
+                    <button class="action-btn delete" title="Eliminar" (click)="openDeleteModal(tesorero)">
+                      <i class="bi bi-trash3-fill"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        @if (filteredTesoreros().length === 0) {
+        <div class="empty-state">
+          <div class="empty-state-icon">
+            <i class="bi bi-wallet2"></i>
+          </div>
+          <div class="empty-state-title">No hay tesoreros registrados</div>
+          <div class="empty-state-desc">
+            Agrega el primer tesorero del club para comenzar a gestionar los pagos.
+          </div>
+          <button class="btn btn-primary" (click)="openAddModal()">
+            <i class="bi bi-plus-lg me-2"></i>Agregar Tesorero
+          </button>
+        </div>
+        }
+
+        <!-- Pagination -->
+        <div class="pagination-wrapper">
+          <div class="pagination-info">
+            Mostrando {{ filteredTesoreros().length }} de {{ tesoreroService.totalCount() }} tesorero{{
+            tesoreroService.totalCount() !== 1 ? 's' : '' }}
+          </div>
+          <div class="pagination-btns">
+            <button class="page-btn" disabled>
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn" disabled>
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <app-tesorero-modal [isOpen]="isModalOpen()" [tesorero]="selectedTesorero()" (closeModal)="closeModal()"
+    (saveTesorero)="saveTesorero($event)" />
+
+  <app-delete-confirm-modal [isOpen]="isDeleteModalOpen()" [tesoreroName]="selectedTesoreroName()"
+    (closeModal)="closeDeleteModal()" (confirmDelete)="confirmDelete()" />

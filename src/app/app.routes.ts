@@ -1,15 +1,18 @@
 import { Routes } from '@angular/router';
-import { RegistroClub } from './paginas/publicas/registro-club/registro-club';
-import { Login } from './paginas/publicas/login/login';
-import { AdminClubDashboard } from './paginas/admin/admin-club-dashboard/admin-club-dashboard';
-import { DashboardSuperAdmin } from './paginas/super-admin/dashboard/dashboard';
-import { DashboardTercero } from './paginas/tesorero/dashboard/dashboard';
+import { RegistroClub } from './features/publicas/registro-club/registro-club';
+import { Login } from './features/publicas/login/login';
+import { AdminClubDashboard } from './features/admin/admin-club-dashboard/admin-club-dashboard';
+import { DashboardSuperAdmin } from './features/super-admin/dashboard/dashboard';
+import { DashboardTercero } from './features/tesorero/dashboard/dashboard';
+import { GestionTesoreros } from './features/admin/gestion-tesoreros/gestion-tesoreros';
 
 export const routes: Routes = [
   {
     path: '', redirectTo: 'login', pathMatch: 'full'
   },
-  { path: 'super-admin', component: DashboardSuperAdmin },
+  { 
+    path: 'super-admin', component: DashboardSuperAdmin 
+  },
   {
     path: 'login', component: Login
   },
@@ -21,6 +24,9 @@ export const routes: Routes = [
   },
   {
     path: 'tesorero-dashboard', component: DashboardTercero
+  },
+  {
+    path: 'admin-gestion-tesoreros', component: GestionTesoreros
   },
   {
     path: '**', redirectTo: ''

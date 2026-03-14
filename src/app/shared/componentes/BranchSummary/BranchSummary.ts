@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { BranchStats } from '../../../models/dashboard-admin.model';
+import { BranchStats } from '../../../core/models/dashboard-admin.model';
 
 @Component({
   selector: 'app-branch-summary',

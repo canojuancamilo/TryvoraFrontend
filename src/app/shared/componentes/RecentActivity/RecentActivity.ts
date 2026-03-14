@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ActivityItem } from '../../../models/dashboard-admin.model';
+import { ActivityItem } from '../../../core/models/dashboard-admin.model';
 
 @Component({
   selector: 'app-recent-activity',

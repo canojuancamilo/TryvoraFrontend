@@ -15,7 +15,7 @@
   --text-primary: #1E293B;
   --text-muted: #64748B;
   --border: #E2E8F0;
-  --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(79,70,229,0.06);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(79, 70, 229, 0.06);
 }
 
 * {
@@ -48,4 +48,16 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #CBD5E1;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 150;
+}
+
+.sidebar-overlay.show {
+  display: block;
 }

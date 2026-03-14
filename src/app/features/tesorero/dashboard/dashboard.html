@@ -1,0 +1,27 @@
+<div class="dashboard-container">
+  <app-sidebar [isOpen]="uiService.sidebarOpen()" [isMobile]="uiService.isMobile()" [clubInfo]="clubInfo"
+    [userInfo]="userInfo" (toggleSidebar)="toggleSidebar()" />
+  <div class="main-wrapper" [class.expanded]="!uiService.sidebarOpen()">
+    <app-topbar (toggleSidebar)="toggleSidebar()" />
+
+    <div class="sidebar-overlay" [class.show]="uiService.isMobile() && uiService.sidebarOpen()"
+      (click)="toggleSidebar()">
+    </div>
+
+    <main class="page-content">
+      <app-welcome-banner />
+      <app-stats-grid />
+      <app-pending-approvals />
+
+      <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+          <app-recent-payments />
+        </div>
+        <div class="col-lg-4">
+          <app-income-summary />
+        </div>
+      </div>
+      <app-notifications />
+    </main>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { StatCard } from '../../../models/dashboard-admin.model';
+import { StatCard } from '../../../core/models/dashboard-admin.model';
 
 @Component({
   selector: 'app-stats-cards',
