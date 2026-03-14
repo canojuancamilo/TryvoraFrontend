@@ -1,0 +1,17 @@
+.payment-card { border: 1.5px solid var(--border); border-radius: 14px; padding: 1.25rem; transition: all 0.2s; background: #fff; }
+    .payment-card:hover { border-color: #C7D2FE; box-shadow: 0 4px 16px rgba(79,70,229,0.08); }
+    .payment-player { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .player-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #4F46E5, #06B6D4); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: white; flex-shrink: 0; }
+    .player-name { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); }
+    .player-category { font-size: 0.75rem; color: var(--text-muted); }
+    .payment-amount { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.25rem; }
+    .payment-date { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .receipt-thumb { width: 100%; height: 80px; background: linear-gradient(135deg, #F1F5F9, #E2E8F0); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s; border: 1.5px dashed var(--border); }
+    .receipt-thumb:hover { background: var(--primary-light); border-color: var(--primary); }
+    .receipt-thumb i { font-size: 1.5rem; color: var(--text-muted); }
+    .receipt-thumb:hover i { color: var(--primary); }
+    .payment-actions { display: flex; gap: 0.5rem; }
+    .btn-approve { flex: 1; padding: 0.6rem; border-radius: 10px; border: none; background: #ECFDF5; color: #059669; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+    .btn-approve:hover { background: #059669; color: #fff; }
+    .btn-reject { flex: 1; padding: 0.6rem; border-radius: 10px; border: none; background: #FEF2F2; color: #DC2626; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+    .btn-reject:hover { background: #DC2626; color: #fff; }

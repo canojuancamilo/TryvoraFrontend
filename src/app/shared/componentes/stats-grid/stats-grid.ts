@@ -4,11 +4,11 @@ import { StatCard } from '../../../models/dashboard-admin.model';
 @Component({
   selector: 'app-stats-cards',
   imports: [],
-  templateUrl: './StatsCards.html',
-  styleUrl: './StatsCards.css',
+  templateUrl: './stats-grid.html',
+  styleUrl: './stats-grid.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StatsCards {
+export class StatsGrid {
    stats = input<StatCard[]>([]);
   
   getIconClass(icon: string): string {

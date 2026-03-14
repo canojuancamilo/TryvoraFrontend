@@ -1,0 +1,57 @@
+<div class="section-card">
+    <div class="section-card-header">
+        <div class="section-card-title">
+            <i class="bi bi-hourglass-split me-2 text-warning"></i>Pagos Pendientes de Revisión
+        </div>
+        <app-branch-filter [(activeBranch)]="activeBranch" />
+    </div>
+
+    <div class="section-card-body">
+        <div class="row g-3" id="pendingPaymentsGrid">
+            @for (payment of filteredPayments(); track payment.id) {
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="payment-card">
+                    <div class="payment-player">
+                        <div class="player-avatar">{{ payment.initials }}</div>
+                        <div>
+                            <div class="player-name">{{ payment.player }}</div>
+                            <div class="player-category">
+                                {{ payment.category }} · {{ payment.branch === 'masculino' ? 'Masculino' : 'Femenino' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="payment-amount">${{ payment.amount.toFixed(2) }}</div>
+                    <div class="payment-date">
+                        <i class="bi bi-calendar3 me-1"></i>{{ formatDate(payment.date) }}
+                    </div>
+                    <div class="receipt-thumb" (click)="showReceipt(payment)">
+                        <div style="text-align:center;">
+                            <i class="bi bi-file-earmark-image"></i>
+                            <span style="font-size:0.72rem;">Ver comprobante</span>
+                        </div>
+                    </div>
+                    <div class="payment-actions">
+                        <button class="btn-approve" (click)="openApproveModal(payment)">
+                            <i class="bi bi-check-lg"></i> Aprobar
+                        </button>
+                        <button class="btn-reject" (click)="openRejectModal(payment)">
+                            <i class="bi bi-x-lg"></i> Rechazar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            } @empty {
+            <div id="noPendingMsg" style="text-align:center;padding:2rem;color:var(--text-muted);">
+                <i class="bi bi-check-all"
+                    style="font-size:2.5rem;color:#10B981;display:block;margin-bottom:0.75rem;"></i>
+                <div style="font-weight:600;">¡Todo al día!</div>
+                <div style="font-size:0.85rem;">No hay pagos pendientes de revisión.</div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+
+<app-approve-modal [payment]="selectedPayment()" (confirmed)="onApprove()" (closed)="selectedPayment.set(null)" />
+
+<app-reject-modal [payment]="selectedPayment()" (confirmed)="onReject($event)" (closed)="selectedPayment.set(null)" />

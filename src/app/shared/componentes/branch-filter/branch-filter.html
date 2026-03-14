@@ -1,0 +1,11 @@
+<div class="branch-tabs">
+    <button class="branch-tab" [class.active]="activeBranch() === 'todos'" (click)="setBranch('todos')">
+        Todos
+    </button>
+    <button class="branch-tab" [class.active]="activeBranch() === 'masculino'" (click)="setBranch('masculino')">
+        Masculino
+    </button>
+    <button class="branch-tab" [class.active]="activeBranch() === 'femenino'" (click)="setBranch('femenino')">
+        Femenino
+    </button>
+</div>

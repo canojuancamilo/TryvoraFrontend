@@ -1,10 +1,68 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { 
+  afterNextRender,
+  ChangeDetectionStrategy, 
+  Component, 
+  inject, 
+  OnInit
+} from '@angular/core';
+import { PaymentService } from '../../../servicios/payment.service';
+import { Sidebar } from "../../../shared/componentes/sidebar/sidebar";
+import { Topbar } from "../../../shared/componentes/topbar/topbar";
+import { WelcomeBanner } from "../../../shared/componentes/welcome-banner/welcome-banner";
+import { StatsGrid } from "../../super-admin/stats-grid/stats-grid";
+import { PendingApprovals } from "../../../shared/componentes/PendingApprovals/PendingApprovals";
+import { IncomeSummary } from "../income-summary/income-summary";
+import { RecentPayments } from "../recent-payments/recent-payments";
+import { UiService } from '../../../servicios/ui.service';
+import { Notifications } from "../../../shared/componentes/notifications/notifications";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [Sidebar, Topbar, WelcomeBanner, StatsGrid, PendingApprovals, IncomeSummary, RecentPayments, Notifications],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Dashboard { }
+export class DashboardTercero implements OnInit {
+  paymentService = inject(PaymentService);
+  uiService = inject(UiService);
+
+  constructor() {
+    afterNextRender(() => {
+      console.log('Primer render completado');
+      this.animateStats();
+    });
+  }
+
+  ngOnInit() {
+    console.log('Dashboard initialized');
+  }
+
+  public readonly clubInfo = {
+    name: 'FC Deportivo Norte',
+    avatar: 'FC',
+    role: 'Administrador'
+  };
+
+  public readonly userInfo = {
+    name: 'Carlos Administrador',
+    avatar: 'CA',
+    role: 'Admin del Club'
+  };
+
+  private animateStats() {
+    document.querySelectorAll('.stat-card').forEach((card, i) => {
+      (card as HTMLElement).style.opacity = '0';
+      (card as HTMLElement).style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        (card as HTMLElement).style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        (card as HTMLElement).style.opacity = '1';
+        (card as HTMLElement).style.transform = 'translateY(0)';
+      }, 100 + i * 80);
+    });
+  }
+
+  toggleSidebar(): void {
+    this.uiService.toggleSidebar();
+  }
+}

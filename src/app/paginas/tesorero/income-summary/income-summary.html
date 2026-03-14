@@ -1,0 +1,28 @@
+<div class="section-card h-100">
+      <div class="section-card-header">
+        <div class="section-card-title">
+          <i class="bi bi-bar-chart-fill me-2 text-success"></i>Resumen de Ingresos
+        </div>
+      </div>
+      <div class="section-card-body">
+        <div class="d-flex flex-column gap-3">
+          <div class="income-card masc">
+            <div class="income-label"><i class="bi bi-gender-male me-1"></i>Masculino</div>
+            <div class="income-value">\${{ masculineTotal() }}</div>
+            <div class="income-sub">{{ incomeService.masculine().count }} jugadores al día</div>
+          </div>
+          
+          <div class="income-card fem">
+            <div class="income-label"><i class="bi bi-gender-female me-1"></i>Femenino</div>
+            <div class="income-value">\${{ feminineTotal() }}</div>
+            <div class="income-sub">{{ incomeService.feminine().count }} jugadoras al día</div>
+          </div>
+          
+          <div class="income-card total">
+            <div class="income-label"><i class="bi bi-bar-chart-fill me-1"></i>Total General</div>
+            <div class="income-value" style="color:#166534;">\${{ grandTotalFormatted() }}</div>
+            <div class="income-sub">{{ incomeService.totalPlayers() }} jugadores al día este mes</div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,3 +1,49 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  margin-left: 260px;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-wrapper.expanded {
+  margin-left: 0;
+}
+
+.page-content {
+  padding: 1.75rem;
+  flex: 1;
+}
+
 :host {
-  display: block;
+  --primary: #4F46E5;
+  --primary-light: #EEF2FF;
+  --primary-dark: #3730A3;
+  --success: #10B981;
+  --danger: #EF4444;
+  --warning: #F59E0B;
+  --bg: #F8FAFC;
+  --sidebar-bg: #1E1B4B;
+  --sidebar-hover: rgba(255, 255, 255, 0.08);
+  --sidebar-active: rgba(79, 70, 229, 0.5);
+  --text-primary: #1E293B;
+  --text-muted: #64748B;
+  --border: #E2E8F0;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(79, 70, 229, 0.06);
+}
+
+@media (max-width: 991px) {
+  .main-wrapper {
+    margin-left: 0 !important;
+  }
+
+  .page-content {
+    padding: 1rem;
+  }
 }

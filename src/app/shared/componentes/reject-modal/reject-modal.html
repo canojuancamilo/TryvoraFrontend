@@ -1,0 +1,24 @@
+@if (payment()) {
+      <div class="modal fade show" style="display:block; background:rgba(0,0,0,0.5);" (click)="close()">
+        <div class="modal-dialog modal-dialog-centered modal-sm" (click)="$event.stopPropagation()">
+          <div class="modal-content">
+            <div class="modal-body text-center p-4">
+              <div style="width:60px;height:60px;background:#FEF2F2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.5rem;color:#DC2626;">
+                <i class="bi bi-x-circle-fill"></i>
+              </div>
+              <div style="font-size:1rem;font-weight:800;color:var(--text-primary);margin-bottom:0.5rem;">¿Rechazar pago?</div>
+              <div style="font-size:0.875rem;color:var(--text-muted);margin-bottom:0.25rem;">{{ payment()?.player }}</div>
+              <div style="font-size:1.1rem;font-weight:800;color:#DC2626;margin-bottom:1rem;">\${{ payment()?.amount?.toFixed(2) }}</div>
+              <div class="form-floating mb-3">
+                <textarea class="form-control" [(ngModel)]="reason" placeholder="Motivo" style="height:80px;border-radius:10px;font-size:0.875rem;font-family:inherit;resize:none;"></textarea>
+                <label style="font-size:0.85rem;">Motivo del rechazo (opcional)</label>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-light flex-fill" (click)="close()" style="border-radius:10px;font-weight:600;">Cancelar</button>
+                <button class="btn btn-danger flex-fill" (click)="confirm()" style="border-radius:10px;font-weight:600;">Rechazar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }

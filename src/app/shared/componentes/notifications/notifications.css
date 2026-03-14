@@ -1,0 +1,12 @@
+ .section-card { background: #fff; border-radius: 16px; box-shadow: var(--card-shadow); overflow: hidden; margin-bottom: 1.5rem; }
+    .section-card-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .section-card-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+    .section-card-body { padding: 1.5rem; }
+    .unread-badge { font-size:0.78rem;font-weight:700;background:var(--primary);color:#fff;padding:0.2rem 0.6rem;border-radius:20px; }
+    .notif-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.875rem 0; border-bottom: 1px solid var(--border); }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item.unread { background: #FAFBFF; margin: 0 -1.5rem; padding: 0.875rem 1.5rem; }
+    .notif-dot-indicator { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 0.35rem; }
+    .notif-dot-read { width: 8px; height: 8px; border-radius: 50%; background: transparent; flex-shrink: 0; margin-top: 0.35rem; }
+    .notif-text { font-size: 0.85rem; color: var(--text-primary); font-weight: 500; }
+    .notif-time { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }

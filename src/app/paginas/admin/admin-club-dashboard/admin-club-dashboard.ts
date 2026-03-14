@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { Sidebar } from '../../../shared/componentes/sidebar/sidebar';
 import { Topbar } from '../../../shared/componentes/topbar/topbar';
 import { WelcomeBanner } from '../../../shared/componentes/welcome-banner/welcome-banner';
-import { StatsCards } from '../../../shared/componentes/StatsCards/StatsCards';
+import { StatsGrid } from '../../../shared/componentes/stats-grid/stats-grid';
 import { BranchSummary } from '../../../shared/componentes/BranchSummary/BranchSummary';
 import { RecentActivity } from '../../../shared/componentes/RecentActivity/RecentActivity';
 import { QuickActions } from '../../../shared/componentes/QuickActions/QuickActions';
@@ -20,7 +20,7 @@ import { Toast } from '../../../shared/componentes/toast/toast';
     Topbar,
     Toast,
     WelcomeBanner,
-    StatsCards,
+    StatsGrid,
     BranchSummary,
     RecentActivity,
     QuickActions,

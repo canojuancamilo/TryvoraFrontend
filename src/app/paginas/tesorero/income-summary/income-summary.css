@@ -1,0 +1,77 @@
+ .section-card {
+   background: #fff;
+   border-radius: 16px;
+   box-shadow: var(--card-shadow);
+   overflow: hidden;
+   height: 100%;
+ }
+
+ .section-card-header {
+   padding: 1.25rem 1.5rem;
+   border-bottom: 1px solid var(--border);
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 1rem;
+   flex-wrap: wrap;
+ }
+
+ .section-card-title {
+   font-size: 1rem;
+   font-weight: 700;
+   color: var(--text-primary);
+ }
+
+ .section-card-body {
+   padding: 1.5rem;
+ }
+
+ .income-card {
+   border-radius: 14px;
+   padding: 1.5rem;
+ }
+
+ .income-card.masc {
+   background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
+   border: 1px solid #C7D2FE;
+ }
+
+ .income-card.fem {
+   background: linear-gradient(135deg, #FDF2F8, #FCE7F3);
+   border: 1px solid #F9A8D4;
+ }
+
+ .income-card.total {
+   background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+   border: 1px solid #86EFAC;
+ }
+
+ .income-label {
+   font-size: 0.8rem;
+   font-weight: 600;
+   margin-bottom: 0.5rem;
+ }
+
+ .income-card.masc .income-label {
+   color: #3730A3;
+ }
+
+ .income-card.fem .income-label {
+   color: #9D174D;
+ }
+
+ .income-card.total .income-label {
+   color: #166534;
+ }
+
+ .income-value {
+   font-size: 1.75rem;
+   font-weight: 800;
+   color: var(--text-primary);
+ }
+
+ .income-sub {
+   font-size: 0.75rem;
+   color: var(--text-muted);
+   margin-top: 0.25rem;
+ }

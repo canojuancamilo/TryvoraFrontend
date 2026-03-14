@@ -1,0 +1,31 @@
+<div class="section-card">
+      <div class="section-card-header">
+        <div class="section-card-title">
+          <i class="bi bi-bell-fill me-2 text-primary"></i>Notificaciones del Club
+        </div>
+        <span class="unread-badge">{{ unreadCount() }} sin leer</span>
+      </div>
+      
+      <div class="section-card-body" style="padding-top:0;padding-bottom:0;">
+        @for (notification of notifications(); track notification.id) {
+          <div class="notif-item" [class.unread]="!notification.read">
+            @if (!notification.read) {
+              <div class="notif-dot-indicator"></div>
+            } @else {
+              <div class="notif-dot-read"></div>
+            }
+            <div>
+              <div class="notif-text">{{ notification.message }}</div>
+              <div class="notif-time">{{ formatTime(notification.time) }}</div>
+            </div>
+          </div>
+        }
+      </div>
+      
+      @if (notifications().length === 0) {
+        <div class="section-card-body text-center py-4">
+          <i class="bi bi-check2-circle text-success" style="font-size: 2rem;"></i>
+          <p class="mt-2 text-muted">No hay notificaciones</p>
+        </div>
+      }
+    </div>
