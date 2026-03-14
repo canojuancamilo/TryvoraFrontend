@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Tesorero } from '../../../../core/models/tesorero.model';
+import { Tesorero } from '../../../core/models/tesorero.model';
 
 @Pipe({
   name: 'filterTesoreros',

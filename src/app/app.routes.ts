@@ -1,17 +1,16 @@
 import { Routes } from '@angular/router';
-import { RegistroClub } from './features/publicas/registro-club/registro-club';
-import { Login } from './features/publicas/login/login';
 import { AdminClubDashboard } from './features/admin/admin-club-dashboard/admin-club-dashboard';
 import { DashboardSuperAdmin } from './features/super-admin/dashboard/dashboard';
 import { DashboardTercero } from './features/tesorero/dashboard/dashboard';
 import { GestionTesoreros } from './features/admin/gestion-tesoreros/gestion-tesoreros';
+import { Login } from './features/login/login';
+import { RegistroClub } from './features/registro-club/registro-club';
+import { AuthGuard } from './core/guards/auth.guard';
+import { RoleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
     path: '', redirectTo: 'login', pathMatch: 'full'
-  },
-  { 
-    path: 'super-admin', component: DashboardSuperAdmin 
   },
   {
     path: 'login', component: Login
@@ -19,14 +18,17 @@ export const routes: Routes = [
   {
     path: 'registro-club', component: RegistroClub
   },
-  {
-    path: 'admin-club', component: AdminClubDashboard
+  { 
+    path: 'super-admin', component: DashboardSuperAdmin, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin']} 
   },
   {
-    path: 'tesorero-dashboard', component: DashboardTercero
+    path: 'admin-club', component: AdminClubDashboard, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','club-admin']}
   },
   {
-    path: 'admin-gestion-tesoreros', component: GestionTesoreros
+    path: 'admin-gestion-tesoreros', component: GestionTesoreros, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','club-admin']}
+  },
+  {
+    path: 'tesorero-dashboard', component: DashboardTercero, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','club-admin']}
   },
   {
     path: '**', redirectTo: ''

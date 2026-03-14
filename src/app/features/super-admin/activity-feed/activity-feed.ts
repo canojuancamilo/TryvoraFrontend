@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ActivityService } from '../../../servicios/activity.service';
+import { ActivityService } from '../../../core/services/activity.service';
 
 @Component({
   selector: 'app-activity-feed',

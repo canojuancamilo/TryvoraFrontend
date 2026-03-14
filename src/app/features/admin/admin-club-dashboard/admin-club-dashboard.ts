@@ -9,9 +9,9 @@ import { QuickActions } from '../../../shared/componentes/QuickActions/QuickActi
 import { PendingApprovals } from '../../../shared/componentes/PendingApprovals/PendingApprovals';
 import { debounceTime, distinctUntilChanged, filter, fromEvent, map, Subject } from 'rxjs';
 import { Toast } from '../../../shared/componentes/toast/toast';
-import { UiService } from '../../../core/servicios/ui.service';
-import { DashboardAdminService } from '../../../core/servicios/dashboard-admin.service';
-import { NotificationService } from '../../../core/servicios/notification.service';
+import { UiService } from '../../../core/services/ui.service';
+import { DashboardAdminService } from '../../../core/services/dashboard-admin.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-admin-club-dashboard',

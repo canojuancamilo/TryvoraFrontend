@@ -8,7 +8,7 @@ import { PasoRamas } from '../../components/login/registro/paso-ramas/paso-ramas
 import { PasoCategorias } from '../../components/login/registro/paso-categorias/paso-categorias';
 import { PasoAdmin } from '../../components/login/registro/paso-admin/paso-admin';
 import { RegistroExito } from '../../components/login/registro/registro-exito/registro-exito';
-import { RegistroService } from '../../core/servicios/registro.service';
+import { RegistroService } from '../../core/services/registro.service';
 @Component({
   selector: 'app-registro',
   standalone: true,

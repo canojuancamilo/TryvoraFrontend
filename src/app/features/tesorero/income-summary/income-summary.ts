@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { IncomeService } from '../../../servicios/income.service';
+import { IncomeService } from '../../../core/services/income.service';
 
 @Component({
   selector: 'app-income-summary',

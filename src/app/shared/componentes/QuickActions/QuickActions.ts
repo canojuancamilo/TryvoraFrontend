@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
-import { NotificationService } from '../../../servicios/notification.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../core/services/notification.service';
 export interface QuickAction {
   id: string;
   label: string;

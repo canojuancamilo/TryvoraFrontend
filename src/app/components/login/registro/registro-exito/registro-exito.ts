@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { RegistroService } from '../../../../servicios/registro.service';
 import { Router, RouterLink } from '@angular/router';
+import { RegistroService } from '../../../../core/services/registro.service';
 
 @Component({
   selector: 'app-registro-exito',

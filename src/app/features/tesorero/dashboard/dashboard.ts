@@ -5,7 +5,6 @@ import {
   inject, 
   OnInit
 } from '@angular/core';
-import { PaymentService } from '../../../servicios/payment.service';
 import { Sidebar } from "../../../shared/componentes/sidebar/sidebar";
 import { Topbar } from "../../../shared/componentes/topbar/topbar";
 import { WelcomeBanner } from "../../../shared/componentes/welcome-banner/welcome-banner";
@@ -13,8 +12,9 @@ import { StatsGrid } from "../../super-admin/stats-grid/stats-grid";
 import { PendingApprovals } from "../../../shared/componentes/PendingApprovals/PendingApprovals";
 import { IncomeSummary } from "../income-summary/income-summary";
 import { RecentPayments } from "../recent-payments/recent-payments";
-import { UiService } from '../../../servicios/ui.service';
 import { Notifications } from "../../../shared/componentes/notifications/notifications";
+import { PaymentService } from '../../../core/services/payment.service';
+import { UiService } from '../../../core/services/ui.service';
 
 @Component({
   selector: 'app-dashboard',

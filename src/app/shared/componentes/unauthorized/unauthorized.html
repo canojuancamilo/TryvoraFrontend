@@ -1,0 +1,23 @@
+<div class="unauthorized-container">
+    <div class="error-code" *ngIf="!useMaterial">403</div>
+
+    <h1>Acceso No Autorizado</h1>
+
+    <div class="error-details" *ngIf="reason">
+        <p><strong>Motivo:</strong> {{ getReasonMessage() }}</p>
+        <p *ngIf="requiredRoles"><strong>Rol requerido:</strong> {{ requiredRoles }}</p>
+        <p *ngIf="userRoles"><strong>Tu rol:</strong> {{ userRoles }}</p>
+    </div>
+
+    <div class="actions">
+        <button (click)="goBack()" class="btn-primary">
+            ← Volver
+        </button>
+        <button (click)="goToDashboard()" class="btn-secondary">
+            Ir a Dashboard
+        </button>
+        <button (click)="logout()" class="btn-text">
+            Cerrar Sesión
+        </button>
+    </div>
+</div>

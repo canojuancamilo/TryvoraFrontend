@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { PaymentService } from '../../../servicios/payment.service';
-import { NotificationService } from '../../../servicios/notification.service';
+import { PaymentService } from '../../../core/services/payment.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-recent-payments',

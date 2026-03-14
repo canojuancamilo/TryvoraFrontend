@@ -2,7 +2,7 @@
 import { Component, computed, inject, input, output, signal, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
-import { NotificationService } from '../../../core/servicios/notification.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-topbar',

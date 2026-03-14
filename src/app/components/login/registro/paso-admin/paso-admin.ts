@@ -11,10 +11,10 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
-import { RegistroService } from '../../../../servicios/registro.service';
 import { CampoCheck } from "../../../../shared/componentes/inputs/campo-check/campo-check";
 import { CampoTexto } from "../../../../shared/componentes/inputs/campo-texto/campo-texto";
 import { PasswordStrength } from "../password-strength/password-strength";
+import { RegistroService } from '../../../../core/services/registro.service';
 
 @Component({
   selector: 'app-paso-admin',

@@ -13,7 +13,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { BranchCard } from '../branch-card/branch-card';
 import { CampoTexto } from '../../../../shared/componentes/inputs/campo-texto/campo-texto';
-import { RegistroService } from '../../../../servicios/registro.service';
+import { RegistroService } from '../../../../core/services/registro.service';
 
 @Component({
   selector: 'app-paso-ramas',

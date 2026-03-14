@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, Pipe, signal, viewChild } from '@angular/core';
 import { ConfirmModal } from "../../../shared/componentes/confirm-modal/confirm-modal";
-import { NotificationService, ToastType } from '../../../servicios/notification.service';
 import { Toast } from '../../../shared/componentes/toast/toast';
-import { ClubService } from '../../../servicios/club.service';
 import { ClubFilters, SortField } from '../../../core/models/club.model';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ClubService } from '../../../core/services/club.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-clubs-table',

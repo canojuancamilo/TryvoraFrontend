@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { ApproveModal } from '../../../shared/componentes/approve-modal/approve-modal';
 import { RejectModal } from '../../../shared/componentes/reject-modal/reject-modal';
 import { BranchFilter } from '../../../shared/componentes/branch-filter/branch-filter';
-import { PaymentService } from '../../../core/servicios/payment.service';
-import { NotificationService } from '../../../core/servicios/notification.service';
+import { PaymentService } from '../../../core/services/payment.service';
+import { NotificationService } from '../../../core/services/notification.service';
 import { Payment } from '../../../core/models/payment.model';
 
 @Component({

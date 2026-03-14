@@ -3,9 +3,9 @@ import { Sidebar } from "../../../shared/componentes/sidebar/sidebar";
 import { Topbar } from "../../../shared/componentes/topbar/topbar";
 import { TesoreroModal } from "../../../shared/componentes/Modals/tesorero-modal/tesorero-modal";
 import { DeleteConfirmModal } from "../../../shared/componentes/Modals/delete-confirm-modal/delete-confirm-modal";
-import { UiService } from '../../../core/servicios/ui.service';
-import { TesoreroService } from '../../../core/servicios/tesorero.service';
-import { NotificationService } from '../../../core/servicios/notification.service';
+import { UiService } from '../../../core/services/ui.service';
+import { TesoreroService } from '../../../core/services/tesorero.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-gestion-tesoreros',

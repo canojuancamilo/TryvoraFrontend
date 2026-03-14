@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
-import { ClubService } from '../../../servicios/club.service';
 import { Sidebar } from '../../../shared/componentes/sidebar/sidebar';
 import { Topbar } from "../../../shared/componentes/topbar/topbar";
 import { StatsGrid } from "../stats-grid/stats-grid";
 import { ClubsTable } from "../clubs-table/clubs-table";
 import { ActivityFeed } from "../activity-feed/activity-feed";
 import { SportDistribution } from "../sport-distribution/sport-distribution";
-import { UiService } from '../../../servicios/ui.service';
+import { ClubService } from '../../../core/services/club.service';
+import { UiService } from '../../../core/services/ui.service';
 
 @Component({
   selector: 'app-dashboard',

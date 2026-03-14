@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
-import { RegistroService } from '../../../../servicios/registro.service';
 import { CampoTexto } from "../../../../shared/componentes/inputs/campo-texto/campo-texto";
 import { CampoDropDown } from "../../../../shared/componentes/inputs/campo-dropdown/campo-dropdown";
 import { CampoAreaTexto } from "../../../../shared/componentes/inputs/campo-area-texto/campo-area-texto";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RegistroService } from '../../../../core/services/registro.service';
 
 @Component({
   selector: 'app-paso-club',

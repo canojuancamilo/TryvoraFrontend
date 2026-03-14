@@ -9,8 +9,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CategorySection } from '../CategorySection/CategorySection';
 import { CategoriasInfo, RamasInfo } from '../../../../core/models/registro.models';
-import { RegistroService } from '../../../../servicios/registro.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RegistroService } from '../../../../core/services/registro.service';
 
 @Component({
   selector: 'app-paso-categorias',

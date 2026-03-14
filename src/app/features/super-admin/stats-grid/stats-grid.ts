@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ClubService } from '../../../servicios/club.service';
 import { StatCard } from "../../../shared/componentes/stat-card/stat-card";
+import { ClubService } from '../../../core/services/club.service';
 
 @Component({
   selector: 'app-stats-grid',

@@ -2,7 +2,7 @@
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
-import { NotificationService } from '../../../servicios/notification.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 export interface NavItem {
   label: string;
