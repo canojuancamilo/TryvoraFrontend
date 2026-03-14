@@ -7,6 +7,7 @@ import { Login } from './features/login/login';
 import { RegistroClub } from './features/registro-club/registro-club';
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
+import { Unauthorized } from './shared/componentes/unauthorized/unauthorized';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,10 @@ export const routes: Routes = [
   {
     path: 'tesorero-dashboard', component: DashboardTercero, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','club-admin']}
   },
+  {
+    path: 'unauthorized', component: Unauthorized
+  },
+  
   {
     path: '**', redirectTo: ''
   }

@@ -28,7 +28,7 @@ export class Login implements OnInit {
 
   constructor() {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       remember: [false]
     });
@@ -37,10 +37,8 @@ export class Login implements OnInit {
   ngOnInit(): void {
     // Si ya está autenticado, redirigir al dashboard
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/dashboard']);
+      this.redirigirSegunRol(this.authService.getUserInfo());
     }
-
-    this.redirigirSegunRol(this.authService.getUserInfo());
   }
 
   onSubmit(): void {
