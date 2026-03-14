@@ -412,7 +412,7 @@ export class AuthService {
     const mockUsers: User[] = [
       {
         id: 1,
-        username: 'admin',
+        username: 'super-admin',
         email: 'admin@ejemplo.com',
         firstName: 'Admin',
         lastName: 'Sistema',
@@ -422,7 +422,7 @@ export class AuthService {
       },
       {
         id: 2,
-        username: 'manager',
+        username: 'admin',
         email: 'manager@ejemplo.com',
         firstName: 'Manager',
         lastName: 'Empresa',
@@ -432,7 +432,7 @@ export class AuthService {
       },
       {
         id: 3,
-        username: 'editor',
+        username: 'tesorero',
         email: 'editor@ejemplo.com',
         firstName: 'Editor',
         lastName: 'Contenido',
@@ -442,7 +442,7 @@ export class AuthService {
       },
       {
         id: 4,
-        username: 'user',
+        username: 'jugador',
         email: 'user@ejemplo.com',
         firstName: 'Usuario',
         lastName: 'Regular',

@@ -1,3 +1,4 @@
+// src/app/pages/login/login.ts
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -6,6 +7,7 @@ import { Contexto } from '../../components/login/contexto/contexto';
 import { CampoTexto } from '../../shared/componentes/inputs/campo-texto/campo-texto';
 import { CampoCheck } from '../../shared/componentes/inputs/campo-check/campo-check';
 import { AlertasService } from '../../shared/servicios/alertas.service';
+import { AuthService } from '../../core/services/auth.service'; // Ajusta la ruta según tu estructura
 
 @Component({
   selector: 'app-login',
@@ -19,8 +21,10 @@ export class Login implements OnInit {
   showPassword = false;
   isLoading = false;
 
-  fb = inject(FormBuilder)
-  alertaServices = inject(AlertasService)
+  fb = inject(FormBuilder);
+  alertaServices = inject(AlertasService);
+  authService = inject(AuthService); // Inyecta AuthService
+  router = inject(Router);
 
   constructor() {
     this.loginForm = this.fb.group({
@@ -31,7 +35,12 @@ export class Login implements OnInit {
   }
 
   ngOnInit(): void {
-   
+    // Si ya está autenticado, redirigir al dashboard
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/dashboard']);
+    }
+
+    this.redirigirSegunRol(this.authService.getUserInfo());
   }
 
   onSubmit(): void {
@@ -44,14 +53,34 @@ export class Login implements OnInit {
     }
 
     this.isLoading = true;
-
-    // Simular llamada API
-    setTimeout(() => {
-      this.isLoading = false;
-
-      // Aquí iría la lógica real de autenticación
-      // Si el login es exitoso:
-      // this.router.navigate(['/dashboard']);
-    }, 1800);
+    
+    // Extraer credenciales del formulario
+    const { email, password } = this.loginForm.value;
+    
+    // Usar el método de login del AuthService
+    this.authService.loginMock(email, password).subscribe({
+      next: (user) => {
+        this.isLoading = false;
+        
+        // Redirigir según el rol del usuario
+        this.redirigirSegunRol(user);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.alertaServices.error('Credenciales inválidas');
+      }
+    });
+  }
+  
+  private redirigirSegunRol(user: any): void {
+    if (user.roles.includes('super-admin')) {
+      this.router.navigate(['/super-admin']);
+    } else if (user.roles.includes('admin')) {
+      this.router.navigate(['/admin-club']);
+    } else if (user.roles.includes('tesorero')) {
+      this.router.navigate(['/tesorero-dashboard']);
+    } else {
+      this.router.navigate(['/tesorero-dashboard']);
+    }
   }
 }

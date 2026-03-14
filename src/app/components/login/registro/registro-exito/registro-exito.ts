@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { RegistroService } from '../../../../core/services/registro.service';
 
 @Component({
   selector: 'app-registro-exito',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './registro-exito.html',
   styleUrl: './registro-exito.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
