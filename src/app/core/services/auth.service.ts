@@ -21,7 +21,7 @@ export interface User {
   expiresIn?: number;
 }
 
-export type UserRole = 'admin' | 'manager' | 'editor' | 'user' | 'guest';
+export type UserRole = 'super-admin' | 'club-admin' | 'tesorero' | 'jugador';
 
 export interface Permission {
   resource: string;
@@ -224,14 +224,14 @@ export class AuthService {
    * Verificar si el usuario es admin
    */
   isAdmin(): boolean {
-    return this.hasRole('admin');
+    return this.hasAnyRole(['super-admin', 'club-admin']);
   }
 
   /**
    * Verificar si el usuario es manager o admin
    */
   isManager(): boolean {
-    return this.hasAnyRole(['admin', 'manager']);
+    return this.hasAnyRole(['super-admin', 'club-admin', 'tesorero']);
   }
 
   // ============== MÉTODOS DE PERMISOS ==============
@@ -416,7 +416,7 @@ export class AuthService {
         email: 'admin@ejemplo.com',
         firstName: 'Admin',
         lastName: 'Sistema',
-        roles: ['admin', 'manager'],
+        roles: ['super-admin'],
         permissions: ['users:manage', 'products:manage', 'settings:manage', 'dashboard:view'],
         avatar: 'https://ui-avatars.com/api/?name=Admin+Sistema'
       },
@@ -426,7 +426,7 @@ export class AuthService {
         email: 'manager@ejemplo.com',
         firstName: 'Manager',
         lastName: 'Empresa',
-        roles: ['manager', 'editor'],
+        roles: ['club-admin'],
         permissions: ['products:manage', 'products:create', 'products:edit', 'dashboard:view'],
         avatar: 'https://ui-avatars.com/api/?name=Manager+Empresa'
       },
@@ -436,7 +436,7 @@ export class AuthService {
         email: 'editor@ejemplo.com',
         firstName: 'Editor',
         lastName: 'Contenido',
-        roles: ['editor'],
+        roles: ['tesorero'],
         permissions: ['products:edit', 'products:view', 'dashboard:view'],
         avatar: 'https://ui-avatars.com/api/?name=Editor+Contenido'
       },
@@ -446,7 +446,7 @@ export class AuthService {
         email: 'user@ejemplo.com',
         firstName: 'Usuario',
         lastName: 'Regular',
-        roles: ['user'],
+        roles: ['jugador'],
         permissions: ['products:view', 'profile:manage'],
         avatar: 'https://ui-avatars.com/api/?name=Usuario+Regular'
       }

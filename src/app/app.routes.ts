@@ -29,7 +29,7 @@ export const routes: Routes = [
     path: 'admin-gestion-tesoreros', component: GestionTesoreros, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','club-admin']}
   },
   {
-    path: 'tesorero-dashboard', component: DashboardTercero, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','club-admin']}
+    path: 'tesorero-dashboard', component: DashboardTercero, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','tesorero']}
   },
   {
     path: 'unauthorized', component: Unauthorized

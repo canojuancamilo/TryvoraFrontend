@@ -11,6 +11,7 @@ export interface PermissionGuardData {
 }
 
 export const permissionGuard: CanActivateFn = (route, state) => {
+    debugger;
   const authService = inject(AuthService);
   const router = inject(Router);
   
