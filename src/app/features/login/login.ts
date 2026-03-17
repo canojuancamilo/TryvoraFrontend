@@ -51,15 +51,15 @@ export class Login implements OnInit {
     }
 
     this.isLoading = true;
-    
+
     // Extraer credenciales del formulario
     const { email, password } = this.loginForm.value;
-    
+
     // Usar el método de login del AuthService
     this.authService.loginMock(email, password).subscribe({
       next: (user) => {
         this.isLoading = false;
-        
+
         // Redirigir según el rol del usuario
         this.redirigirSegunRol(user);
       },
@@ -69,16 +69,20 @@ export class Login implements OnInit {
       }
     });
   }
-  
+
   private redirigirSegunRol(user: any): void {
-    if (user.roles.includes('super-admin')) {
-      this.router.navigate(['/super-admin']);
-    } else if (user.roles.includes('admin')) {
-      this.router.navigate(['/admin-club']);
-    } else if (user.roles.includes('tesorero')) {
-      this.router.navigate(['/tesorero-dashboard']);
+    if (user && user.roles && Array.isArray(user.roles)) {
+      if (user.roles.includes('super-admin')) {
+        this.router.navigate(['/super-admin']);
+      } else if (user.roles.includes('club-admin')) {
+        this.router.navigate(['/admin-club']);
+      } else if (user.roles.includes('tesorero')) {
+        this.router.navigate(['/tesorero-dashboard']);
+      } else {
+        this.router.navigate(['/tesorero-dashboard']);
+      }
     } else {
-      this.router.navigate(['/tesorero-dashboard']);
+      this.router.navigate(['/login']);
     }
   }
 }

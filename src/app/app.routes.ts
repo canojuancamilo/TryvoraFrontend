@@ -8,6 +8,7 @@ import { RegistroClub } from './features/registro-club/registro-club';
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { Unauthorized } from './shared/componentes/unauthorized/unauthorized';
+import { NotFound } from './shared/componentes/not-found/not-found';
 
 export const routes: Routes = [
   {
@@ -19,23 +20,27 @@ export const routes: Routes = [
   {
     path: 'registro-club', component: RegistroClub
   },
-  { 
-    path: 'super-admin', component: DashboardSuperAdmin, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin']} 
+  {
+    path: 'super-admin', component: DashboardSuperAdmin, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin'] }
   },
   {
-    path: 'admin-club', component: AdminClubDashboard, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','club-admin']}
+    path: 'admin-club', component: AdminClubDashboard, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin', 'club-admin'] }
   },
   {
-    path: 'admin-gestion-tesoreros', component: GestionTesoreros, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','club-admin']}
+    path: 'admin-gestion-tesoreros', component: GestionTesoreros, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin', 'club-admin'] }
   },
   {
-    path: 'tesorero-dashboard', component: DashboardTercero, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin','tesorero']}
+    path: 'tesorero-dashboard', component: DashboardTercero, canActivate: [AuthGuard, RoleGuard], data: { roles: ['super-admin', 'tesorero'] }
   },
   {
     path: 'unauthorized', component: Unauthorized
   },
-  
   {
-    path: '**', redirectTo: ''
+    path: '404',
+    component: NotFound
+  },
+  {
+    path: '**',
+    redirectTo: '/404'
   }
 ];
