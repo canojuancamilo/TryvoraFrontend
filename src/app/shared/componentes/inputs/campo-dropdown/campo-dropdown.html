@@ -7,26 +7,26 @@
 
 <div class="input-icon-wrap">
 
-  <select
-    class="form-select"
-    [class.is-invalid]="hasError() && formControlGet.touched"
+  <ng-select class="cp-select"
+    [items]="opcionesFiltradas()"
+    [bindLabel]="textoOpciones()"
+    [bindValue]="keyOpciones()"
+
     [formControl]="formControlGet"
+
+    [searchable]="filterable()"
+    [clearable]="true"
+    [closeOnSelect]="true"
+
+    [placeholder]="placeholder()"
+
+    [class.is-invalid]="hasError() && formControlGet.touched"
+
+    (search)="handleFilter($event.term)"
     (blur)="onBlur()"
+  (clear)="handleClear()" 
   >
-
-    @if (placeholder()) {
-      <option value="">
-        {{ placeholder() }}
-      </option>
-    }
-
-    @for (opcion of opcionesFiltradas(); track opcion[keyOpciones()]) {
-      <option [ngValue]="opcion[keyOpciones()]">
-        {{ opcion[textoOpciones()] }}
-      </option>
-    }
-
-  </select>
+  </ng-select>
 
 </div>
 

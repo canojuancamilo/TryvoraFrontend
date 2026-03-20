@@ -1,134 +1,124 @@
-.form-control,
-.form-select {
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  padding: 0.65rem 0.875rem;
-  font-size: 0.9rem;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  color: var(--text-primary);
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background: #fff;
-}
+/* =========================
+   NG-SELECT CUSTOM (FULL)
+========================= */
 
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
-  outline: none;
-}
-
-.form-control.is-invalid,
-.form-select.is-invalid {
-  border-color: var(--danger);
-}
-
-.branch-card.selected {
-  border-color: var(--primary);
-  background: var(--primary-light);
-}
-
-
-.branch-card.selected .branch-check {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-
-.cp-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.4rem;
-  display: block;
-}
-
-.cp-input {
+:host ::ng-deep .cp-select {
   width: 100%;
-  height: 48px;
-  padding: 0 1rem 0 2.75rem;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  background: var(--bg);
-  transition: border-color 0.2s, box-shadow 0.2s;
-  outline: none;
 }
 
-.cp-input {
-  width: 100%;
-  height: 48px;
-  padding: 0 1rem 0 2.75rem;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  background: var(--bg);
-  transition: border-color 0.2s, box-shadow 0.2s;
-  outline: none;
-}
+/* 🔥 CONTENEDOR PRINCIPAL */
+:host ::ng-deep .cp-select .ng-select-container {
+  border: 1.5px solid var(--border) !important;
+  border-radius: 10px !important;
+  min-height: 48px !important;
+  height: 48px !important;
 
-.cp-input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  display: flex !important;
+  align-items: center !important;
+
+  font-size: 0.9rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-primary);
   background: #fff;
+
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.cp-input.is-invalid {
-  border-color: var(--danger);
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-.cp-input.is-valid {
-  border-color: var(--success);
-}
-
-.input-icon-wrap {
-  position: relative;
-}
-
-.input-icon {
-  position: absolute;
-  left: 0.875rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94A3B8;
-  font-size: 1rem;
-  pointer-events: none;
-}
-
-.input-suffix-btn {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #94A3B8;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 6px;
+:host ::ng-deep .cp-select .ng-value {
   display: flex;
   align-items: center;
-  font-size: 1rem;
-  transition: color 0.2s;
-  min-height: unset;
-  height: auto;
 }
 
-.input-suffix-btn:hover {
-  color: var(--primary);
+/* 🔥 CONTENEDOR INTERNO (ESPACIADO CORRECTO) */
+:host ::ng-deep .cp-select .ng-select-container .ng-value-container {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 1rem !important;
 }
 
-.field-error {
-  font-size: 0.75rem;
-  color: var(--danger);
-  margin-top: 0.3rem;
-  display: none;
+/* 🔥 INPUT INTERNO */
+:host ::ng-deep .cp-select .ng-input {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
-.field-error.show {
-  display: block;
+:host ::ng-deep .cp-select .ng-input input {
+  padding-left: 1rem !important;
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  font-size: 0.9rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+
+  /* 🔥 IMPORTANTE: ya NO ocultamos */
+  color: var(--text-primary) !important;
+  caret-color: auto !important;
+}
+
+/* 🔥 PLACEHOLDER */
+:host ::ng-deep .cp-select .ng-placeholder {
+  color: #94A3B8 !important;
+  font-size: 0.9rem;
+}
+
+/* 🔥 VALOR SELECCIONADO */
+:host ::ng-deep .cp-select .ng-value {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* 🔥 FOCUS */
+:host ::ng-deep .cp-select.ng-select-focused .ng-select-container {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12) !important;
+}
+
+/* 🔥 ERROR */
+:host ::ng-deep .cp-select.ng-invalid.ng-touched .ng-select-container {
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* 🔥 FLECHA */
+:host ::ng-deep .cp-select .ng-arrow-wrapper {
+  padding-right: 0.75rem;
+}
+
+/* =========================
+   DROPDOWN PANEL
+========================= */
+
+/* 🔥 PANEL PRINCIPAL */
+:host ::ng-deep .ng-dropdown-panel {
+  background: #fff !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow: hidden;
+  z-index: 9999 !important;
+}
+
+/* 🔥 CONTENIDO INTERNO */
+:host ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items {
+  background: #fff !important;
+}
+
+/* 🔥 OPCIONES */
+:host ::ng-deep .ng-dropdown-panel .ng-option {
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
+/* 🔥 HOVER */
+:host ::ng-deep .ng-dropdown-panel .ng-option:hover {
+  background: var(--primary-light) !important;
+}
+
+/* 🔥 SELECCIONADO */
+:host ::ng-deep .ng-dropdown-panel .ng-option-selected {
+  background: var(--primary-light) !important;
+  color: var(--primary) !important;
 }
