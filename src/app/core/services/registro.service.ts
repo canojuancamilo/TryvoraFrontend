@@ -141,13 +141,17 @@ export class RegistroService {
 
   submitRegistro(): void {
     const data = this.dataSignal();
-    const datosApi = this.prepararCuerpo(data);
-    this.authApiService.registrarClub(datosApi).subscribe();
-   // localStorage.removeItem(this.storageKey);
+    const datosApi = this.prepararCuerpo(data); 
+    debugger;
+    this.authApiService.registrarClub(datosApi).subscribe({
+      next: (result) => {
+        localStorage.removeItem(this.storageKey);        
+        this.nextStep();        
+      }
+    });
   }
 
   prepararCuerpo(datosTemporales: RegistroData): IRegistrarClub {
-    debugger;
     const ramas: IRama[] = [];
     const categorias: ICategoria[] = [];
 
@@ -164,7 +168,8 @@ export class RegistroService {
         categorias.push({
           nombre: cat,
           ramaNombre: datosTemporales.ramas.nombreMasculina == "" ? 'Rama Masculina' : datosTemporales.ramas.nombreMasculina,
-          descripcion: ''
+          descripcion: '',
+          tipoRamaId: 1
         });
       });
     }
@@ -182,7 +187,8 @@ export class RegistroService {
         categorias.push({
           nombre: cat,
           ramaNombre: datosTemporales.ramas.nombreFemenina == "" ? 'Rama Femenina' : datosTemporales.ramas.nombreFemenina,
-          descripcion: ''
+          descripcion: '',
+          tipoRamaId: 2
         });
       });
     }
@@ -200,7 +206,8 @@ export class RegistroService {
         categorias.push({
           nombre: cat,
           ramaNombre: 'Mixta',
-          descripcion: ''
+          descripcion: '',
+          tipoRamaId: 3
         });
       });
     }

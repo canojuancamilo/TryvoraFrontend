@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { ApiResponse } from '../../interfaces/apis/IApiResponse';
 import { IRegistrarClub } from '../../interfaces/apis/auth/IRegistrarClub';
+import { ILogin, LoginResultDto } from '../../interfaces/apis/auth/ILogin';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,6 @@ export class AuthApiService {
   }
 
   registrarClub(datos: IRegistrarClub): Observable<string> {
-    debugger
     return this.http
       .post<ApiResponse<string>>(
         `${this.baseUrl}/RegistrarClub`, datos,
@@ -35,6 +35,25 @@ export class AuthApiService {
       )
       .pipe(
         map((resp) => resp.serverResponse.mensaje)
+      );
+  }
+
+  login(datos: ILogin): Observable<LoginResultDto> {
+    return this.http
+      .post<ApiResponse<LoginResultDto>>(
+        `${this.baseUrl}/Login`, datos,
+        { headers: this.getHeaders() }
+      )
+      .pipe(
+        map((resp) => resp.data as LoginResultDto)
+      );
+  }
+
+  logout(): Observable<void> {
+    return this.http
+      .post<ApiResponse<void>>(`${this.baseUrl}/Logout`, {})
+      .pipe(
+        map(response => response.data)
       );
   }
 }

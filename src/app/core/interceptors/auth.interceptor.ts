@@ -12,7 +12,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   
   // No interceptar peticiones de autenticación
-  if (req.url.includes('/auth/')) {
+  if (req.url.includes('/auth/login') || req.url.includes('/auth/refresh-token')) {
     return next(req);
   }
 
@@ -29,9 +29,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     
     return next(authReq).pipe(
       catchError((error) => {
-        if (error.status === 401) {
+        if (error.status === 401 && !req.url.includes('/auth/logout')) {
           // Token expirado - intentar refresh
-          if (!req.url.includes('/auth/refresh')) {
+          if (!req.url.includes('/auth/refresh') ) {
             return authService.refreshToken().pipe(
               switchMap((newToken) => {
                 // Reintentar con nuevo token

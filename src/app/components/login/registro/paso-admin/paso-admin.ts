@@ -98,7 +98,7 @@ export class PasoAdmin {
   }
 
   onSubmit(): void {
-    if (this.adminForm.invalid) {      
+    if (this.adminForm.invalid) {
       Object.keys(this.adminForm.controls).forEach(key => {
         const control = this.adminForm.get(key);
         control?.markAsTouched();
@@ -107,14 +107,8 @@ export class PasoAdmin {
       return;
     }
 
-      this.isSubmitting.set(true);
-
-      // Simular envío
-      setTimeout(() => {
-        this.registroService.submitRegistro();
-        this.registroService.nextStep(); // Va al paso 5 (éxito)
-        this.isSubmitting.set(false);
-      }, 1800);
-    
+    this.isSubmitting.set(true);
+    this.registroService.submitRegistro();
+    this.isSubmitting.set(false);
   }
 }

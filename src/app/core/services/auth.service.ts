@@ -6,26 +6,21 @@ import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap, delay } from 'rxjs/operators';
 import { TokenService } from './token.service';
 import { environment } from '../../../environments/environment';
+import { AuthApiService } from './apis/auth.api.services';
+import { ILogin, IPermiso, IRol } from '../interfaces/apis/auth/ILogin';
 
 export interface User {
   id: number;
   username: string;
   email: string;
   firstName?: string;
-  lastName?: string;
-  roles: UserRole[];
-  permissions: string[];
-  avatar?: string;
+  lastName?: string | null;
+  roles: IRol[];
+  permissions: IPermiso[];
+  avatar?: string | null;
   token?: string;
   refreshToken?: string;
-  expiresIn?: number;
-}
-
-export type UserRole = 'super-admin' | 'club-admin' | 'tesorero' | 'jugador';
-
-export interface Permission {
-  resource: string;
-  action: 'create' | 'read' | 'update' | 'delete' | 'manage';
+  expiresIn?: string | Date;
 }
 
 export interface AuthState {
@@ -39,127 +34,98 @@ export interface AuthState {
   providedIn: 'root'
 })
 export class AuthService {
+  tokenService = inject(TokenService);
+  uthApiService = inject(AuthApiService);
+  http = inject(HttpClient);
+  router = inject(Router);
 
-    tokenService = inject(TokenService);
-
-  // Signals para estado reactivo
-  private authState = signal<AuthState>({
+  public authState = signal<AuthState>({
     user: null,
     isAuthenticated: false,
     isLoading: false,
     error: null
   });
 
-  // Signals computados
   public user = computed(() => this.authState().user);
   public isAuthenticated = computed(() => this.authState().isAuthenticated);
   public isLoading = computed(() => this.authState().isLoading);
   public error = computed(() => this.authState().error);
 
-  // Getters para roles y permisos (mantener compatibilidad)
   public get currentUser(): User | null {
     return this.authState().user;
   }
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {
+  constructor() {
     this.loadStoredUser();
   }
 
-  // ============== MÉTODOS DE AUTENTICACIÓN ==============
+  login(email: string, password: string, recordarSesion: boolean) {
+    const data: ILogin = {
+      email: email,
+      password: password,
+      recordarSesion: recordarSesion
+    };
 
-  /**
-   * LOGIN - Versión real con backend
-   */
-  login(username: string, password: string): Observable<User> {
-    this.setLoading(true);
-    
-    return this.http.post<{ user: User; token: string; refreshToken: string }>(
-      `${environment.apiUrl}/auth/login`,
-      { username, password }
-    ).pipe(
-      tap(response => {
-        this.tokenService.setToken(response.token);
-        this.tokenService.setRefreshToken(response.refreshToken);
-        this.setUser(response.user);
-        this.setLoading(false);
-      }),
-      map(response => response.user),
-      catchError(error => {
-        this.setError('Error al iniciar sesión');
-        this.setLoading(false);
-        return throwError(() => error);
-      })
-    );
+    this.uthApiService.login(data).subscribe({
+      next: (result) => {
+        this.tokenService.setToken(result.data.token);
+        this.tokenService.setRefreshToken(result.data.refreshToken);
+        this.setUser({
+          id: result.data.usuarioId,
+          username: result.data.username,
+          email: result.data.email,
+          firstName: result.data.nombre,
+          lastName: result.data.apellido,
+          roles: result.data.roles,
+          permissions: result.data.permisos,
+          avatar: result.data.avatar,
+          token: result.data.token,
+          refreshToken: result.data.refreshToken,
+          expiresIn: result.data.expiration
+        });
+
+        this.redirigirSegunRol(this.authState().user!);
+      }
+    });
   }
 
-  /**
-   * LOGIN SIMULADO (para desarrollo sin backend)
-   */
-  loginMock(username: string, password: string): Observable<User> {
-    this.setLoading(true);
-    
-    // Simular delay de red
-    return of(this.mockAuthenticate(username, password)).pipe(
-      delay(1000),
-      tap(user => {
-        if (user) {
-          const token = `fake-jwt-token-${user.id}-${Date.now()}`;
-          this.tokenService.setToken(token);
-          this.setUser(user);
-        }
-        this.setLoading(false);
-      }),
-      map(user => {
-        if (!user) throw new Error('Credenciales inválidas');
-        return user;
-      }),
-      catchError(error => {
-        this.setError('Credenciales inválidas');
-        this.setLoading(false);
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * REGISTRO
-   */
-  register(userData: Partial<User> & { password: string }): Observable<User> {
-    this.setLoading(true);
-    
-    return this.http.post<{ user: User; token: string }>(
-      `${environment.apiUrl}/auth/register`,
-      userData
-    ).pipe(
-      tap(response => {
-        this.tokenService.setToken(response.token);
-        this.setUser(response.user);
-        this.setLoading(false);
-      }),
-      map(response => response.user),
-      catchError(error => {
-        this.setError('Error al registrar usuario');
-        this.setLoading(false);
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * LOGOUT
-   */
-  logout(): void {
-    // Opcional: notificar al backend
-    if (this.isAuthenticated() && !environment.production) {
-      this.http.post(`${environment.apiUrl}/auth/logout`, {}).subscribe({
-        error: () => {} // Ignorar errores
-      });
+  public redirigirSegunRol(user: User): void {
+    if (!user || !user.roles || !Array.isArray(user.roles)) {
+      this.router.navigate(['/login']);
+      return;
     }
-    
-    // Limpiar todo
+
+    const roleNames = user.roles.map(rol => rol.nombre);
+
+    if (roleNames.includes('super-admin')) {
+      this.router.navigate(['/super-admin']);
+    }
+    else if (roleNames.includes('club-admin')) {
+      this.router.navigate(['/admin-club']);
+    }
+    else if (roleNames.includes('liga-admin')) {
+      this.router.navigate(['/admin-liga']);
+    }
+    else if (roleNames.includes('tesorero')) {
+      this.router.navigate(['/tesorero-dashboard']);
+    }
+    else if (roleNames.includes('entrenador')) {
+      this.router.navigate(['/entrenador-dashboard']);
+    }
+    else if (roleNames.includes('jugador')) {
+      this.router.navigate(['/jugador-dashboard']);
+    }
+    else {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
+
+  logout(): void {
+    if (this.isAuthenticated()) {
+      this.uthApiService.logout().subscribe({});
+    }
+
     this.tokenService.clearTokens();
     this.clearUser();
     this.router.navigate(['/login']);
@@ -170,11 +136,11 @@ export class AuthService {
    */
   refreshToken(): Observable<string> {
     const refreshToken = this.tokenService.getRefreshToken();
-    
+
     if (!refreshToken) {
       return throwError(() => new Error('No refresh token available'));
     }
-    
+
     return this.http.post<{ token: string }>(
       `${environment.apiUrl}/auth/refresh`,
       { refreshToken }
@@ -190,126 +156,129 @@ export class AuthService {
 
   // ============== MÉTODOS DE ROLES ==============
 
-  /**
-   * Obtener roles del usuario actual
-   */
-  getUserRoles(): UserRole[] {
+  getUserRoles(): IRol[] {
     return this.authState().user?.roles || [];
   }
 
-  /**
-   * Verificar si el usuario tiene un rol específico
-   */
-  hasRole(role: UserRole): boolean {
-    return this.getUserRoles().includes(role);
+  getUserRoleNames(): string[] {
+    return this.getUserRoles().map(rol => rol.nombre);
   }
 
-  /**
-   * Verificar si el usuario tiene ALGUNO de los roles especificados
-   */
-  hasAnyRole(roles: UserRole[]): boolean {
+  hasRole(roleName: string): boolean {
     const userRoles = this.getUserRoles();
-    return roles.some(role => userRoles.includes(role));
+    return userRoles.some(rol => rol.nombre === roleName);
   }
 
-  /**
-   * Verificar si el usuario tiene TODOS los roles especificados
-   */
-  hasAllRoles(roles: UserRole[]): boolean {
+  hasAnyRole(roleNames: string[]): boolean {
     const userRoles = this.getUserRoles();
-    return roles.every(role => userRoles.includes(role));
+    return roleNames.some(roleName =>
+      userRoles.some(rol => rol.nombre === roleName)
+    );
   }
 
-  /**
-   * Verificar si el usuario es admin
-   */
+  hasAllRoles(roleNames: string[]): boolean {
+    const userRoles = this.getUserRoles();
+    return roleNames.every(roleName =>
+      userRoles.some(rol => rol.nombre === roleName)
+    );
+  }
+
+  hasRol(rol: IRol): boolean {
+    return this.hasRole(rol.nombre);
+  }
+
+  hasAnyRol(roles: IRol[]): boolean {
+    const roleNames = roles.map(r => r.nombre);
+    return this.hasAnyRole(roleNames);
+  }
+
+  hasAllRols(roles: IRol[]): boolean {
+    const roleNames = roles.map(r => r.nombre);
+    return this.hasAllRoles(roleNames);
+  }
+
   isAdmin(): boolean {
     return this.hasAnyRole(['super-admin', 'club-admin']);
   }
 
-  /**
-   * Verificar si el usuario es manager o admin
-   */
+  isLigaAdmin(): boolean {
+    return this.hasRole('liga-admin');
+  }
+
+  isTesorero(): boolean {
+    return this.hasRole('tesorero');
+  }
+
   isManager(): boolean {
-    return this.hasAnyRole(['super-admin', 'club-admin', 'tesorero']);
+    return this.hasAnyRole(['super-admin', 'club-admin', 'tesorero', 'liga-admin']);
+  }
+
+  isSuperAdmin(): boolean {
+    return this.hasRole('super-admin');
+  }
+
+  isEntrenador(): boolean {
+    return this.hasRole('entrenador');
+  }
+
+  isJugador(): boolean {
+    return this.hasRole('jugador');
+  }
+
+  hasFinancialAccess(): boolean {
+    return this.hasAnyRole(['super-admin', 'club-admin', 'tesorero', 'liga-admin']);
   }
 
   // ============== MÉTODOS DE PERMISOS ==============
 
-  /**
-   * Obtener permisos del usuario actual
-   */
-  getUserPermissions(): string[] {
+  getUserPermissions(): IPermiso[] {
     return this.authState().user?.permissions || [];
   }
 
-  /**
-   * Verificar si el usuario tiene un permiso específico
-   */
-  hasPermission(permission: string): boolean {
-    return this.getUserPermissions().includes(permission);
+  getUserPermissionNames(): string[] {
+    return this.getUserPermissions().map(p => p.nombre);
   }
 
-  /**
-   * Verificar permiso por recurso y acción
-   */
+  hasPermission(permissionName: string): boolean {
+    return this.getUserPermissionNames().includes(permissionName);
+  }
+
+  hasPermiso(permiso: IPermiso): boolean {
+    return this.hasPermission(permiso.nombre);
+  }
+
   can(resource: string, action: string): boolean {
+    if (this.isSuperAdmin()) return true;
+
     const permissionString = `${resource}:${action}`;
-    return this.hasPermission(permissionString) || this.isAdmin(); // Admin tiene todos los permisos
+    return this.hasPermission(permissionString);
   }
 
-  /**
-   * Verificar múltiples permisos
-   */
   canAny(permissions: string[]): boolean {
-    return permissions.some(p => this.hasPermission(p)) || this.isAdmin();
+    if (this.isSuperAdmin()) return true;
+    return permissions.some(p => this.hasPermission(p));
   }
 
-  /**
-   * Verificar todos los permisos
-   */
   canAll(permissions: string[]): boolean {
-    return permissions.every(p => this.hasPermission(p)) || this.isAdmin();
+    if (this.isSuperAdmin()) return true;
+    return permissions.every(p => this.hasPermission(p));
   }
 
+  canWithPermisos(resource: string, action: string): boolean {
+    const permissionString = `${resource}:${action}`;
+    return this.hasPermission(permissionString) || this.isSuperAdmin();
+  }
   // ============== MÉTODOS DE GESTIÓN DE USUARIO ==============
 
   /**
    * Obtener información del usuario
    */
   getUserInfo(): Observable<User> {
-    this.setLoading(true);
-    
     return this.http.get<User>(`${environment.apiUrl}/auth/me`).pipe(
       tap(user => {
         this.setUser(user);
-        this.setLoading(false);
       }),
       catchError(error => {
-        this.setError('Error al obtener información del usuario');
-        this.setLoading(false);
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * Actualizar perfil
-   */
-  updateProfile(userData: Partial<User>): Observable<User> {
-    this.setLoading(true);
-    
-    return this.http.patch<User>(
-      `${environment.apiUrl}/auth/profile`,
-      userData
-    ).pipe(
-      tap(user => {
-        this.updateUser(user);
-        this.setLoading(false);
-      }),
-      catchError(error => {
-        this.setError('Error al actualizar perfil');
-        this.setLoading(false);
         return throwError(() => error);
       })
     );
@@ -319,17 +288,12 @@ export class AuthService {
    * Cambiar contraseña
    */
   changePassword(currentPassword: string, newPassword: string): Observable<boolean> {
-    this.setLoading(true);
-    
     return this.http.post<{ success: boolean }>(
       `${environment.apiUrl}/auth/change-password`,
       { currentPassword, newPassword }
     ).pipe(
-      tap(() => this.setLoading(false)),
       map(response => response.success),
       catchError(error => {
-        this.setError('Error al cambiar contraseña');
-        this.setLoading(false);
         return throwError(() => error);
       })
     );
@@ -347,7 +311,7 @@ export class AuthService {
       isAuthenticated: true,
       error: null
     }));
-    
+
     // Guardar en localStorage para persistencia
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
@@ -376,23 +340,6 @@ export class AuthService {
     localStorage.removeItem('currentUser');
   }
 
-  /**
-   * Establecer estado de carga
-   */
-  private setLoading(isLoading: boolean): void {
-    this.authState.update(state => ({ ...state, isLoading }));
-  }
-
-  /**
-   * Establecer error
-   */
-  private setError(error: string): void {
-    this.authState.update(state => ({ ...state, error }));
-  }
-
-  /**
-   * Cargar usuario almacenado
-   */
   private loadStoredUser(): void {
     const stored = localStorage.getItem('currentUser');
     if (stored) {
@@ -403,55 +350,5 @@ export class AuthService {
         localStorage.removeItem('currentUser');
       }
     }
-  }
-
-  /**
-   * Simulación de autenticación (para desarrollo)
-   */
-  private mockAuthenticate(username: string, password: string): User | null {
-    const mockUsers: User[] = [
-      {
-        id: 1,
-        username: 'super-admin',
-        email: 'admin@ejemplo.com',
-        firstName: 'Admin',
-        lastName: 'Sistema',
-        roles: ['super-admin'],
-        permissions: ['users:manage', 'products:manage', 'settings:manage', 'dashboard:view'],
-        avatar: 'https://ui-avatars.com/api/?name=Admin+Sistema'
-      },
-      {
-        id: 2,
-        username: 'admin',
-        email: 'manager@ejemplo.com',
-        firstName: 'Manager',
-        lastName: 'Empresa',
-        roles: ['club-admin'],
-        permissions: ['products:manage', 'products:create', 'products:edit', 'dashboard:view'],
-        avatar: 'https://ui-avatars.com/api/?name=Manager+Empresa'
-      },
-      {
-        id: 3,
-        username: 'tesorero',
-        email: 'editor@ejemplo.com',
-        firstName: 'Editor',
-        lastName: 'Contenido',
-        roles: ['tesorero'],
-        permissions: ['products:edit', 'products:view', 'dashboard:view'],
-        avatar: 'https://ui-avatars.com/api/?name=Editor+Contenido'
-      },
-      {
-        id: 4,
-        username: 'jugador',
-        email: 'user@ejemplo.com',
-        firstName: 'Usuario',
-        lastName: 'Regular',
-        roles: ['jugador'],
-        permissions: ['products:view', 'profile:manage'],
-        avatar: 'https://ui-avatars.com/api/?name=Usuario+Regular'
-      }
-    ];
-
-    return mockUsers.find(u => u.username === username) || null;
   }
 }

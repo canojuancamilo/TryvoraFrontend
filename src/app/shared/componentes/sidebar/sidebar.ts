@@ -3,6 +3,7 @@ import { Component, computed, inject, input, output, signal } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { NotificationService } from '../../../core/services/notification.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 export interface NavItem {
   label: string;
@@ -21,6 +22,7 @@ export interface NavItem {
 export class Sidebar{
   private router = inject(Router);
   private notificationService = inject(NotificationService);
+  private authService = inject(AuthService);
   
   isOpen = input<boolean>(true);
   isMobile = input<boolean>(false);
@@ -94,9 +96,7 @@ export class Sidebar{
     this.notificationService.info('Cerrando sesión...');
     
     // Aquí iría la lógica real de logout
-    // this.authService.logout().subscribe(() => {
-    //   this.router.navigate(['/login']);
-    // });
+    this.authService.logout();
     
     // Simulación
     setTimeout(() => {

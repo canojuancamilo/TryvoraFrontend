@@ -27,4 +27,5 @@ export interface ICategoria {
   nombre: string;
   ramaNombre: string;
   descripcion: '';
+  tipoRamaId: number;
 }

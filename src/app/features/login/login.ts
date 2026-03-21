@@ -1,4 +1,3 @@
-// src/app/pages/login/login.ts
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -21,21 +20,20 @@ export class Login implements OnInit {
   isLoading = false;
 
   fb = inject(FormBuilder);
-  authService = inject(AuthService); // Inyecta AuthService
+  authService = inject(AuthService);
   router = inject(Router);
 
   constructor() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
       remember: [false]
     });
   }
 
   ngOnInit(): void {
-    // Si ya está autenticado, redirigir al dashboard
-    if (this.authService.isAuthenticated()) {
-      this.redirigirSegunRol(this.authService.getUserInfo());
+    if (this.authService.isAuthenticated() && this.authService.authState().user) {
+      this.authService.redirigirSegunRol(this.authService.authState().user!);
     }
   }
 
@@ -49,34 +47,8 @@ export class Login implements OnInit {
     }
 
     this.isLoading = true;
-
-    // Extraer credenciales del formulario
-    const { email, password } = this.loginForm.value;
-
-    // Usar el método de login del AuthService
-    this.authService.loginMock(email, password).subscribe({
-      next: (user) => {
-        this.isLoading = false;
-
-        // Redirigir según el rol del usuario
-        this.redirigirSegunRol(user);
-      }
-    });
-  }
-
-  private redirigirSegunRol(user: any): void {
-    if (user && user.roles && Array.isArray(user.roles)) {
-      if (user.roles.includes('super-admin')) {
-        this.router.navigate(['/super-admin']);
-      } else if (user.roles.includes('club-admin')) {
-        this.router.navigate(['/admin-club']);
-      } else if (user.roles.includes('tesorero')) {
-        this.router.navigate(['/tesorero-dashboard']);
-      } else {
-        this.router.navigate(['/tesorero-dashboard']);
-      }
-    } else {
-      this.router.navigate(['/login']);
-    }
-  }
+    const { email, password, remember } = this.loginForm.value;
+    this.authService.login(email, password, remember);
+    this.isLoading = false;
+  }  
 }

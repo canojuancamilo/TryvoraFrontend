@@ -3,6 +3,7 @@ import { Component, computed, inject, input, output, signal, HostListener, Eleme
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { NotificationService } from '../../../core/services/notification.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-topbar',
@@ -15,30 +16,31 @@ export class Topbar {
   private router = inject(Router);
   private notificationService = inject(NotificationService);
   private elementRef = inject(ElementRef);
-  
+  private authService = inject(AuthService);
+
   // Inputs
   userAvatar = input<string>('CA');
   userName = input<string>('Carlos Administrador');
   userRole = input<string>('Admin del Club');
   notificationCount = input<number>(3);
-  
+
   // Outputs
   toggleSidebar = output<void>();
   search = output<string>();
-  
+
   // Estado
   searchQuery = signal<string>('');
   isUserMenuOpen = signal<boolean>(false);
-  
+
   // Referencias al DOM
   @ViewChild('userMenuButton') userMenuButton!: ElementRef;
   @ViewChild('userDropdownMenu') userDropdownMenu!: ElementRef;
-  
+
   // Señal computada para clases del menú
   userMenuClass = computed(() => ({
     'show': this.isUserMenuOpen()
   }));
-  
+
   /**
    * Alterna el menú de usuario
    */
@@ -48,34 +50,34 @@ export class Topbar {
     }
     this.isUserMenuOpen.update(open => !open);
   }
-  
+
   /**
    * Cierra el menú de usuario
    */
   closeUserMenu(): void {
     this.isUserMenuOpen.set(false);
   }
-  
+
   /**
    * Maneja el click en notificaciones
    */
   onNotificationsClick(): void {
     this.notificationService.info('Abriendo notificaciones...');
-    
+
     if (this.notificationCount() > 0) {
       this.notificationService.info(`Tienes ${this.notificationCount()} notificaciones sin leer`);
     } else {
       this.notificationService.info('No tienes notificaciones nuevas');
     }
   }
-  
+
   /**
    * Maneja el toggle del sidebar
    */
   onToggleSidebar(): void {
     this.toggleSidebar.emit();
   }
-  
+
   /**
    * Maneja la búsqueda
    */
@@ -85,7 +87,7 @@ export class Topbar {
     this.searchQuery.set(value);
     this.search.emit(value);
   }
-  
+
   /**
    * Limpia la búsqueda
    */
@@ -93,7 +95,7 @@ export class Topbar {
     this.searchQuery.set('');
     this.search.emit('');
   }
-  
+
   /**
    * Navega al perfil
    */
@@ -101,7 +103,7 @@ export class Topbar {
     this.closeUserMenu();
     this.router.navigate(['/perfil']);
   }
-  
+
   /**
    * Navega a configuración
    */
@@ -109,21 +111,23 @@ export class Topbar {
     this.closeUserMenu();
     this.router.navigate(['/configuracion']);
   }
-  
+
   /**
    * Maneja el logout
    */
   onLogout(): void {
     this.closeUserMenu();
     this.notificationService.info('Cerrando sesión...');
-    
+
+    this.authService.logout();
+
     setTimeout(() => {
       this.router.navigate(['/login']);
     }, 1500);
   }
-  
+
   // ===== CORRECCIÓN: HostListeners con tipado correcto =====
-  
+
   /**
    * Listener global para cerrar menú al hacer click fuera
    * NOTA: Usamos Event en lugar de MouseEvent porque el evento real puede ser de diferentes tipos
@@ -133,13 +137,13 @@ export class Topbar {
     if (this.isUserMenuOpen()) {
       const target = event.target as HTMLElement;
       const isClickInside = this.elementRef.nativeElement.contains(target);
-      
+
       if (!isClickInside) {
         this.closeUserMenu();
       }
     }
   }
-  
+
   /**
    * Listener para tecla ESC
    * CORRECCIÓN: No pasamos el evento porque no lo necesitamos
@@ -150,7 +154,7 @@ export class Topbar {
       this.closeUserMenu();
     }
   }
-  
+
   /**
    * Alternativa si necesitas el evento (con tipado correcto)
    */
