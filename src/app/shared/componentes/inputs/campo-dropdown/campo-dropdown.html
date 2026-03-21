@@ -1,32 +1,29 @@
 <label class="cp-label">
   {{ nombreCampo() }}
   @if (esRequerido()) {
-    <span class="text-danger">*</span>
+  <span class="text-danger">*</span>
   }
 </label>
 
 <div class="input-icon-wrap">
 
-  <ng-select class="cp-select"
-  [items]="opcionesFiltradas()"
-  [bindLabel]="textoOpciones()"
-  [bindValue]="keyOpciones()"
-  [formControl]="formControlGet"
-  [editableSearchTerm]="false"
-  [clearable]="true"
-  [closeOnSelect]="true"
-  [placeholder]="placeholder()"
-  [class.is-invalid]="hasError() && formControlGet.touched"
-  (blur)="onBlur()"
-  (clear)="handleClear()"
->
-</ng-select>
+  <i class="bi input-icon {{icono()}}"></i>
+
+  <div class="select-wrapper">
+    <ng-select
+      class="cp-select"
+      [items]="opcionesFiltradas()"
+      [bindLabel]="textoOpciones()"
+      [bindValue]="keyOpciones()"
+      [formControl]="formControlGet"
+      [placeholder]="placeholder()"
+      [clearable]="true"
+      [closeOnSelect]="true">
+    </ng-select>
+  </div>
 
 </div>
 
 <div class="field-error show">
-  <app-form-validation
-    [control]="formControlGet"
-    [label]="nombreCampo()"
-  />
+  <app-form-validation [control]="formControlGet" [label]="nombreCampo()" />
 </div>

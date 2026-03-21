@@ -1,11 +1,12 @@
 export interface ClubInfo {
   nombre: string;
-  deporte: string | null;
-  ciudad: string;
+  deporteId: number | null;
+  ciudadId: number | null;
   telefono: string;
   email: string;
   direccion?: string;
   descripcion?: string;
+  departamentoId: number | null;
 }
 
 export interface RamasInfo {

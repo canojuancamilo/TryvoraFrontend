@@ -18,7 +18,7 @@ export class RegistroExito {
 
   // Señales computadas para el resumen
   clubNombre = computed(() => this.data().club.nombre);
-  deporte = computed(() => this.data().club.deporte);
+  deporte = computed(() => this.data().club.deporteId);
   adminNombre = computed(() => this.data().admin.nombre);
 
   ramasTexto = computed(() => {

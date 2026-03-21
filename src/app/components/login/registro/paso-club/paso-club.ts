@@ -7,11 +7,14 @@ import { CampoAreaTexto } from "../../../../shared/componentes/inputs/campo-area
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RegistroService } from '../../../../core/services/registro.service';
 import { CatalogosApiService } from '../../../../core/services/apis/catalogos.api.service';
-import { IDepartamento } from '../../../../core/interfaces/apis/IDepartamento';
+import { IDepartamento } from '../../../../core/interfaces/apis/catalogos/IDepartamento';
+import { IDeporte } from '../../../../core/interfaces/apis/catalogos/IDeporte';
+import { ICiudad } from '../../../../core/interfaces/apis/catalogos/ICiudad';
+import { ScrollErrorDirective } from '../../../../core/directives/scroll-error.directive';
 
 @Component({
   selector: 'app-paso-club',
-  imports: [ReactiveFormsModule, CampoTexto, CampoDropDown, CampoAreaTexto],
+  imports: [ReactiveFormsModule, CampoTexto, CampoDropDown, CampoAreaTexto, ScrollErrorDirective],
   templateUrl: './paso-club.html',
   styleUrl: './paso-club.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,44 +26,48 @@ export class PasoClub implements OnInit {
   private catalogosApiService = inject(CatalogosApiService);
 
   opcionesDepartamentos = signal<IDepartamento[]>([]);
-  
+  opcionesDeportes = signal<IDeporte[]>([]);
+  opcionesCiudades = signal<ICiudad[]>([]);
 
   clubForm: FormGroup;
-
-  opcionesDeportes = [
-    { valor: 'futbol', label: '⚽ Fútbol' },
-    { valor: 'futsal', label: '🥅 Fútbol Sala' },
-    { valor: 'baloncesto', label: '🏀 Baloncesto' },
-    { valor: 'voleibol', label: '🏐 Voleibol' },
-    { valor: 'natacion', label: '🏊 Natación' },
-    { valor: 'atletismo', label: '🏃 Atletismo' },
-    { valor: 'tenis', label: '🎾 Tenis' },
-    { valor: 'rugby', label: '🏉 Rugby' },
-    { valor: 'hockey', label: '🏑 Hockey' },
-    { valor: 'otro', label: '🏅 Otro' }
-  ];
 
   constructor() {
     this.clubForm = this.fb.group({
       nombre: [null, [Validators.required, Validators.minLength(2)]],
-      deporte: [null, Validators.required],
-      ciudad: [null, [Validators.required, Validators.minLength(2)]],
+      deporteId: [null, Validators.required],
+      ciudadId: [null, [Validators.required, Validators.minLength(2)]],
       telefono: [null, [Validators.required, Validators.minLength(6)]],
       email: [null, [Validators.required, Validators.email]],
       direccion: [null],
       descripcion: [null],
-      departamento:[null, [Validators.required]] 
+      departamentoId: [null, [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this.cargarCatalogos();
 
-
     const data = this.registroService.data();
     if (data.club) {
       this.clubForm.patchValue(data.club, { emitEvent: false });
     }
+
+    this.clubForm.get('departamentoId')!
+      .valueChanges
+      .pipe(
+        debounceTime(300),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((departamentoId) => {
+
+        if (!departamentoId) {
+          this.opcionesCiudades.set([]);
+          this.clubForm.get('ciudadId')?.setValue(null);
+          return;
+        }
+
+        this.cargarCiudades(departamentoId);
+      });
 
     // Guardar cambios automáticamente con debounce
     this.clubForm.valueChanges.pipe(
@@ -72,13 +79,12 @@ export class PasoClub implements OnInit {
   }
 
   onSiguiente(): void {
-
     if (this.clubForm.invalid) {
       Object.keys(this.clubForm.controls).forEach(key => {
         const control = this.clubForm.get(key);
         control?.markAsTouched();
       });
-
+      
       return;
     }
 
@@ -88,8 +94,22 @@ export class PasoClub implements OnInit {
   cargarCatalogos() {
     this.catalogosApiService.obtenerDepartamentos().subscribe({
       next: (res) => {
-        debugger;
         this.opcionesDepartamentos.set(res);
+      },
+    });
+
+    this.catalogosApiService.obtenerDeportes().subscribe({
+      next: (res) => {
+        this.opcionesDeportes.set(res);
+      },
+    });
+  }
+
+  cargarCiudades(departamentoId: number) {
+    this.catalogosApiService.obtenerCiudades(departamentoId).subscribe({
+      next: (res) => {
+        debugger;
+        this.opcionesCiudades.set(res);
       },
     });
   }

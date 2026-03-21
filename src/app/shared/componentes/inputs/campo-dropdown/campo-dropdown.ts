@@ -27,6 +27,7 @@ export class CampoDropDown {
   opciones = input.required<any[]>();
   textoOpciones = input.required<string>();
   keyOpciones = input.required<string>();
+  icono = input.required<string>();
 
   placeholder = input<string>("Seleccionar...");
   filterable = input<boolean>(true);

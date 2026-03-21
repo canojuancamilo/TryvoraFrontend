@@ -45,12 +45,13 @@ export class RegistroService {
     return {
       club: {
         nombre: '',
-        deporte: null,
-        ciudad: '',
+        deporteId: null,
+        ciudadId: null,
         telefono: '',
         email: '',
         direccion: '',
-        descripcion: ''
+        descripcion: '',
+        departamentoId: null
       },
       ramas: {
         masculina: false,
@@ -173,8 +174,9 @@ export class RegistroService {
   private validateStep1(club: ClubInfo): boolean {
     return !!(
       club.nombre?.trim() &&
-      club.deporte &&
-      club.ciudad?.trim() &&
+      club.deporteId &&
+      club.ciudadId &&
+      club.departamentoId &&
       club.telefono?.trim() &&
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(club.email)
     );
