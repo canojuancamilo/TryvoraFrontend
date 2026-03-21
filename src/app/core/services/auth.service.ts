@@ -131,9 +131,6 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  /**
-   * REFRESH TOKEN
-   */
   refreshToken(): Observable<string> {
     const refreshToken = this.tokenService.getRefreshToken();
 
@@ -142,16 +139,22 @@ export class AuthService {
     }
 
     return this.http.post<{ token: string }>(
-      `${environment.apiUrl}/auth/refresh`,
-      { refreshToken }
-    ).pipe(
-      map(response => response.token),
-      tap(token => this.tokenService.setToken(token)),
-      catchError(error => {
-        this.logout(); // Si falla refresh, hacer logout
-        return throwError(() => error);
-      })
-    );
+    `${environment.apiUrl}/auth/Refresh-token`,
+    { refreshToken }, 
+    { 
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': environment.apiKey
+      }
+    }
+  ).pipe(
+    map(response => response.token),
+    tap(token => this.tokenService.setToken(token)),
+    catchError(error => {
+      this.logout();
+      return throwError(() => error);
+    })
+  );
   }
 
   // ============== MÉTODOS DE ROLES ==============

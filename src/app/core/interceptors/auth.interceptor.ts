@@ -1,22 +1,19 @@
-// src/app/core/interceptors/auth.interceptor.ts
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { TokenService } from '../services/token.service'; // ← IMPORTAR
+import { TokenService } from '../services/token.service'; 
 import { catchError, switchMap, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const tokenService = inject(TokenService); // ← INYECTAR
+  const tokenService = inject(TokenService); 
   const router = inject(Router);
   
-  // No interceptar peticiones de autenticación
-  if (req.url.includes('/auth/login') || req.url.includes('/auth/refresh-token')) {
+  if (req.url.includes('/auth/login') || req.url.includes('/auth/Refresh-token')) {
     return next(req);
   }
 
-  // Usar TokenService para obtener el token
   const token = tokenService.getToken();
   
   if (token) {
@@ -31,7 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       catchError((error) => {
         if (error.status === 401 && !req.url.includes('/auth/logout')) {
           // Token expirado - intentar refresh
-          if (!req.url.includes('/auth/refresh') ) {
+          if (!req.url.includes('/auth/Refresh-token') ) {
             return authService.refreshToken().pipe(
               switchMap((newToken) => {
                 // Reintentar con nuevo token
