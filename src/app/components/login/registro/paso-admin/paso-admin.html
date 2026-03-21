@@ -3,7 +3,7 @@
   <h2 class="step-title">Administrador Principal</h2>
   <p class="step-subtitle">Crea las credenciales del administrador del club</p>
 
-  <form [formGroup]="adminForm">
+  <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" appScrollError>
     <div class="row g-3">
       <!-- Nombre -->
       <div class="col-md-6">
@@ -93,9 +93,7 @@
         }
       </div>
     </div>
-  </form>
-
-  <!-- Términos -->
+      <!-- Términos -->
   <div class="terms-box mt-4">
     <div class="mb-2">
       <app-campo-check
@@ -123,8 +121,8 @@
     
     <button 
       class="btn-cp-success ms-auto" 
-      (click)="onSubmit()"
-      [disabled]="!isValid() || isSubmitting()"
+      type="submit"
+      [disabled]="isSubmitting()"
     >
       @if (!isSubmitting()) {
         <span><i class="bi bi-check-circle"></i> Registrar Club</span>
@@ -134,4 +132,5 @@
       }
     </button>
   </div>
+  </form>
 </div>

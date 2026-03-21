@@ -1,4 +1,3 @@
-// app/pages/registro/componentes/paso-ramas/paso-ramas.component.ts
 import {
   ChangeDetectionStrategy,
   Component,
@@ -24,64 +23,74 @@ import { RegistroService } from '../../../../core/services/registro.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasoRamas implements OnInit {
-  // Inyección moderna con inject()
   private fb = inject(FormBuilder);
   private registroService = inject(RegistroService);
   private destroyRef = inject(DestroyRef);
 
-  // Formulario
-  ramasForm: FormGroup;
+  ramasForm: FormGroup = this.fb.group({
+    masculina: [false],
+    femenina: [false],
+    nombreMasculina: [''],
+    nombreFemenina: ['']
+  });
 
   esMasculina = signal<boolean>(false);
   esFemenina = signal<boolean>(false);
 
-  // Señales computadas (podemos crear getters o signals computadas)
   tieneRamasSeleccionadas = computed(() =>
     this.esMasculina() || this.esFemenina()
   );
 
-  constructor() {
-    // Inicializar formulario
-    this.ramasForm = this.fb.group({
-      masculina: [false],
-      femenina: [false],
-      nombreMasculina: [''],
-      nombreFemenina: ['']
+  ngOnInit(): void {
+    this.cargarDatosGuardados();    
+    this.sincronizarSignalsConFormulario();    
+    this.guardarCambiosAutomaticos();
+  }
+
+  private cargarDatosGuardados(): void {
+    const data = this.registroService.data();
+    console.log('Cargando datos en paso-ramas:', data);
+    
+    if (data.ramas) {
+      this.ramasForm.patchValue(data.ramas, { emitEvent: false });      
+      this.esMasculina.set(data.ramas.masculina || false);
+      this.esFemenina.set(data.ramas.femenina || false);
+    }
+  }
+
+  private sincronizarSignalsConFormulario(): void {
+    this.ramasForm.get('masculina')?.valueChanges.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(value => {
+      console.log('masculina cambió a:', value);
+      this.esMasculina.set(value);
+    });
+
+    this.ramasForm.get('femenina')?.valueChanges.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(value => {
+      console.log('femenina cambió a:', value);
+      this.esFemenina.set(value);
     });
   }
 
-  ngOnInit(): void {
-    // Cargar datos guardados - usando la señal directamente
-    const data = this.registroService.data();
-    if (data.ramas) {
-      this.ramasForm.patchValue(data.ramas, { emitEvent: false });
-    }
-
-    // Guardar cambios automáticamente con debounce
+  private guardarCambiosAutomaticos(): void {
     this.ramasForm.valueChanges.pipe(
-      debounceTime(300), // Pequeño debounce para mejor rendimiento
+      debounceTime(300),
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(value => {
+      console.log('Guardando cambios:', value);
       this.registroService.updateRamasData(value);
     });
   }
 
-  onToggleRama(rama: 'masculina' | 'femenina', value: boolean): void {
-    if (rama === 'masculina') {
-      this.esMasculina.set(value);
-    } else {
-      this.esFemenina.set(value);
-    }
-
-    // Actualizar formulario en una sola operación
+  onToggleRama(rama: 'masculina' | 'femenina', value: boolean): void {    
     const update: any = { [rama]: value };
-
-    // Si se deselecciona, limpiar el nombre
     if (!value) {
       const nombreCampo = rama === 'masculina' ? 'nombreMasculina' : 'nombreFemenina';
       update[nombreCampo] = '';
     }
-
+    
     this.ramasForm.patchValue(update);
   }
 

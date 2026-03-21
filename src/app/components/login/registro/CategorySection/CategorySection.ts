@@ -21,7 +21,6 @@ export class CategorySection {
   }
 
   agregarCategoria(): void {
-    debugger;
     const cat = this.nuevaCategoria().trim();
     if (!cat) return;
 

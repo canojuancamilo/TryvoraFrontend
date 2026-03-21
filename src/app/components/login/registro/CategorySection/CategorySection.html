@@ -18,7 +18,7 @@
     </div>
 
     <div class="add-category-wrap">
-        <input type="text" class="form-control" [ngModel]="nuevaCategoria()" (keydown.enter)="agregarCategoria()"
+        <input type="text" class="form-control" [(ngModel)]="nuevaCategoria" (keydown.enter)="agregarCategoria()"
             placeholder="Nueva categoría (ej. Sub-12)" />
         <button class="btn-add-cat" (click)="agregarCategoria()">
             <i class="bi bi-plus-lg me-1"></i>Añadir

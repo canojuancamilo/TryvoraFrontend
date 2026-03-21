@@ -15,11 +15,12 @@ import { CampoCheck } from "../../../../shared/componentes/inputs/campo-check/ca
 import { CampoTexto } from "../../../../shared/componentes/inputs/campo-texto/campo-texto";
 import { PasswordStrength } from "../password-strength/password-strength";
 import { RegistroService } from '../../../../core/services/registro.service';
+import { ScrollErrorDirective } from "../../../../core/directives/scroll-error.directive";
 
 @Component({
   selector: 'app-paso-admin',
   standalone: true,
-  imports: [CampoCheck, CampoTexto, PasswordStrength, ReactiveFormsModule],
+  imports: [CampoCheck, CampoTexto, PasswordStrength, ReactiveFormsModule, ScrollErrorDirective],
   templateUrl: './paso-admin.html',
   styleUrls: ['./paso-admin.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -107,11 +108,14 @@ export class PasoAdmin {
   }
 
   onSubmit(): void {
-    if (this.adminForm.valid) {
-      // Marcar todos los campos como tocados para mostrar errores
+    if (this.adminForm.invalid) {      
       Object.keys(this.adminForm.controls).forEach(key => {
-        this.adminForm.get(key)?.markAsTouched();
+        const control = this.adminForm.get(key);
+        control?.markAsTouched();
       });
+
+      return;
+    }
 
       this.isSubmitting.set(true);
 
@@ -121,6 +125,6 @@ export class PasoAdmin {
         this.registroService.nextStep(); // Va al paso 5 (éxito)
         this.isSubmitting.set(false);
       }, 1800);
-    }
+    
   }
 }
