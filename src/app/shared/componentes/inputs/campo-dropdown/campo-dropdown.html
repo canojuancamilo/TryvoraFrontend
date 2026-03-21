@@ -8,25 +8,19 @@
 <div class="input-icon-wrap">
 
   <ng-select class="cp-select"
-    [items]="opcionesFiltradas()"
-    [bindLabel]="textoOpciones()"
-    [bindValue]="keyOpciones()"
-
-    [formControl]="formControlGet"
-
-    [searchable]="filterable()"
-    [clearable]="true"
-    [closeOnSelect]="true"
-
-    [placeholder]="placeholder()"
-
-    [class.is-invalid]="hasError() && formControlGet.touched"
-
-    (search)="handleFilter($event.term)"
-    (blur)="onBlur()"
-  (clear)="handleClear()" 
-  >
-  </ng-select>
+  [items]="opcionesFiltradas()"
+  [bindLabel]="textoOpciones()"
+  [bindValue]="keyOpciones()"
+  [formControl]="formControlGet"
+  [editableSearchTerm]="false"
+  [clearable]="true"
+  [closeOnSelect]="true"
+  [placeholder]="placeholder()"
+  [class.is-invalid]="hasError() && formControlGet.touched"
+  (blur)="onBlur()"
+  (clear)="handleClear()"
+>
+</ng-select>
 
 </div>
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CampoTexto } from "../../../../shared/componentes/inputs/campo-texto/campo-texto";
@@ -6,6 +6,8 @@ import { CampoDropDown } from "../../../../shared/componentes/inputs/campo-dropd
 import { CampoAreaTexto } from "../../../../shared/componentes/inputs/campo-area-texto/campo-area-texto";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RegistroService } from '../../../../core/services/registro.service';
+import { CatalogosApiService } from '../../../../core/services/apis/catalogos.api.service';
+import { IDepartamento } from '../../../../core/interfaces/apis/IDepartamento';
 
 @Component({
   selector: 'app-paso-club',
@@ -18,6 +20,10 @@ export class PasoClub implements OnInit {
   private fb = inject(FormBuilder);
   private registroService = inject(RegistroService);
   private destroyRef = inject(DestroyRef);
+  private catalogosApiService = inject(CatalogosApiService);
+
+  opcionesDepartamentos = signal<IDepartamento[]>([]);
+  
 
   clubForm: FormGroup;
 
@@ -42,12 +48,15 @@ export class PasoClub implements OnInit {
       telefono: [null, [Validators.required, Validators.minLength(6)]],
       email: [null, [Validators.required, Validators.email]],
       direccion: [null],
-      descripcion: [null]
+      descripcion: [null],
+      departamento:[null, [Validators.required]] 
     });
   }
 
   ngOnInit(): void {
-    // Cargar datos guardados desde la señal
+    this.cargarCatalogos();
+
+
     const data = this.registroService.data();
     if (data.club) {
       this.clubForm.patchValue(data.club, { emitEvent: false });
@@ -74,5 +83,14 @@ export class PasoClub implements OnInit {
     }
 
     this.registroService.nextStep();
+  }
+
+  cargarCatalogos() {
+    this.catalogosApiService.obtenerDepartamentos().subscribe({
+      next: (res) => {
+        debugger;
+        this.opcionesDepartamentos.set(res);
+      },
+    });
   }
 }

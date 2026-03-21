@@ -6,8 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Contexto } from '../../components/login/contexto/contexto';
 import { CampoTexto } from '../../shared/componentes/inputs/campo-texto/campo-texto';
 import { CampoCheck } from '../../shared/componentes/inputs/campo-check/campo-check';
-import { AlertasService } from '../../shared/servicios/alertas.service';
-import { AuthService } from '../../core/services/auth.service'; // Ajusta la ruta según tu estructura
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +21,6 @@ export class Login implements OnInit {
   isLoading = false;
 
   fb = inject(FormBuilder);
-  alertaServices = inject(AlertasService);
   authService = inject(AuthService); // Inyecta AuthService
   router = inject(Router);
 
@@ -62,10 +60,6 @@ export class Login implements OnInit {
 
         // Redirigir según el rol del usuario
         this.redirigirSegunRol(user);
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.alertaServices.error('Credenciales inválidas');
       }
     });
   }

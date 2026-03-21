@@ -1,13 +1,13 @@
 // src/app/app.component.ts
 import { Component, signal, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Alerta } from "./shared/componentes/Alerta/Alerta";
 import { Confirm } from "./shared/componentes/Modals/confirm/confirm";
 import { Loading } from "./shared/componentes/loading/loading";
+import { Toast } from "./shared/componentes/toast/toast";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Alerta, Confirm, Loading],
+  imports: [RouterOutlet, Confirm, Loading, Toast],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

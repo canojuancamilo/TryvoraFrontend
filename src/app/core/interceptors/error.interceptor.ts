@@ -1,40 +1,38 @@
-// src/app/core/interceptors/error.interceptor.ts
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, throwError } from 'rxjs';
+import { NotificationService } from '../services/notification.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const snackBar = inject(MatSnackBar);
-  
-  return next(req).pipe(
-    catchError((error: HttpErrorResponse) => {
-      let message = 'Ha ocurrido un error';
-      
-      if (error.error instanceof ErrorEvent) {
-        // Error de cliente
-        message = `Error de conexión: ${error.error.message}`;
-      } else {
-        // Error de servidor
-        switch (error.status) {
-          case 400: message = 'Solicitud incorrecta'; break;
-          case 401: message = 'Sesión expirada'; break;
-          case 403: message = 'Acceso prohibido'; break;
-          case 404: message = 'Recurso no encontrado'; break;
-          case 409: message = 'Conflicto de datos'; break;
-          case 422: message = 'Datos inválidos'; break;
-          case 500: message = 'Error interno del servidor'; break;
-          default: message = `Error ${error.status}`;
-        }
+  const notificationService = inject(NotificationService);
+
+  function getErrorMessage(error: HttpErrorResponse): string {
+    debugger;
+    if (error.error?.errors) {
+      const firstError = Object.values(error.error.errors)[0];
+      if (Array.isArray(firstError) && firstError.length) {
+        return firstError[0];
       }
-      
-      snackBar.open(message, 'Cerrar', {
-        duration: 5000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
-      });
-      
+    }
+
+    switch (error.status) {
+      case 0: return 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
+      case 400: return 'La solicitud no pudo ser procesada. Verifica los datos ingresados.';
+      case 401: return 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.';
+      case 403: return 'No tienes permisos para realizar esta acción.';
+      case 404: return 'El recurso solicitado no existe.';
+      case 422: return 'Los datos proporcionados no son válidos.';
+      case 500: return 'Error interno del servidor. Estamos trabajando para solucionarlo.';
+      case 503: return 'El servicio está temporalmente no disponible. Intenta más tarde.';
+      default: return `Error ${error.status}: ${error.message || 'Ha ocurrido un error inesperado.'}`;
+    }
+  }
+
+   return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      let message = getErrorMessage(error);
+      notificationService.error(message, 7000);
+
       return throwError(() => error);
     })
   );

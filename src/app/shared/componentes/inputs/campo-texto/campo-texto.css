@@ -85,14 +85,3 @@
 .input-suffix-btn:hover {
   color: var(--primary);
 }
-
-.field-error {
-  font-size: 0.75rem;
-  color: var(--danger);
-  margin-top: 0.3rem;
-  display: none;
-}
-
-.field-error.show {
-  display: block;
-}

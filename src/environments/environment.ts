@@ -1,9 +1,9 @@
-// src/environments/environment.ts (desarrollo)
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api',
+  apiUrl: 'https://localhost:7030/Api',
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   useSessionStorage: false,
-  cacheEnabled: true
+  cacheEnabled: true,
+  apiKey: "qR8mKpQ3vN5bR7yW2fH4jL9nC1xV6tY0"
 };

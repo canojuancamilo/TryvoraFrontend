@@ -25,6 +25,17 @@
             />
           </div>
 
+           <div class="col-md-6">
+            <app-campo-dropdown
+              nombreCampo="Departamento"
+              [controlForm]="clubForm.get('departamento')!"
+              [opciones]="opcionesDepartamentos()"
+              placeholder="Seleccionar departamento..."
+              textoOpciones="nombre"
+              keyOpciones="id"
+            />
+          </div>
+
           <!-- Ciudad -->
           <div class="col-md-6">
             <app-campo-texto 

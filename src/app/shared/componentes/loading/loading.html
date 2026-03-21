@@ -1,6 +1,27 @@
-@if (loadingService.loading()) {
-<div class="loading-overlay">
-    <div class="spinner-grow text-primary" role="status">
+<div 
+      *ngIf="isLoading$ | async" 
+      class="loading-overlay"
+      [class.fade-in]="showOverlay"
+      [class.fade-out]="!showOverlay">
+      
+      <div class="loading-container">
+        <!-- Spinner moderno -->
+        <div class="spinner">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div>
+        
+        <!-- Texto con animación de puntos -->
+        <div class="loading-text">
+          {{ loadingMessage }}
+          <span class="dots">
+            <span>.</span><span>.</span><span>.</span>
+          </span>
+        </div>
+        
+        <!-- Mensaje opcional para peticiones largas -->
+        <div *ngIf="showLongWaitMessage" class="long-wait-message">
+          Esto puede tomar unos segundos...
+        </div>
+      </div>
     </div>
-</div>
-}

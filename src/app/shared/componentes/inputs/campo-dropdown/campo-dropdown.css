@@ -49,11 +49,6 @@
   caret-color: auto !important;
 }
 
-:host ::ng-deep .cp-select .ng-placeholder {
-  color: #94A3B8 !important;
-  font-size: 0.9rem;
-}
-
 :host ::ng-deep .cp-select .ng-value {
   font-size: 0.9rem;
   color: var(--text-primary);
@@ -99,4 +94,20 @@
 :host ::ng-deep .ng-dropdown-panel .ng-option-selected {
   background: var(--primary-light) !important;
   color: var(--primary) !important;
+}
+
+:host ::ng-deep .cp-select .ng-select-container.ng-has-value .ng-input {
+  width: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+:host ::ng-deep .cp-select .ng-select-container.ng-has-value .ng-placeholder {
+  display: none !important;
+}
+
+:host ::ng-deep .cp-select .ng-placeholder {
+  color: #94A3B8 !important;
+  font-size: 0.9rem;
 }
