@@ -69,6 +69,10 @@ export class PasoClub implements OnInit {
         this.cargarCiudades(departamentoId);
       });
 
+    if (this.clubForm.get('departamentoId')?.value) {
+      this.cargarCiudades(this.clubForm.get('departamentoId')?.value);
+    }
+
     // Guardar cambios automáticamente con debounce
     this.clubForm.valueChanges.pipe(
       debounceTime(300),
@@ -84,7 +88,7 @@ export class PasoClub implements OnInit {
         const control = this.clubForm.get(key);
         control?.markAsTouched();
       });
-      
+
       return;
     }
 
@@ -108,7 +112,6 @@ export class PasoClub implements OnInit {
   cargarCiudades(departamentoId: number) {
     this.catalogosApiService.obtenerCiudades(departamentoId).subscribe({
       next: (res) => {
-        debugger;
         this.opcionesCiudades.set(res);
       },
     });

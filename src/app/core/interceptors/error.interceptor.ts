@@ -7,7 +7,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
 
   function getErrorMessage(error: HttpErrorResponse): string {
-    debugger;
     if (error.error?.errors) {
       const firstError = Object.values(error.error.errors)[0];
       if (Array.isArray(firstError) && firstError.length) {

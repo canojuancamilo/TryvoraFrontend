@@ -1,6 +1,7 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { finalize } from 'rxjs/operators';
+import { finalize, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { LoadingService } from '../services/loading.service';
 
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
@@ -11,30 +12,29 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
   
-  let loadingMessage = getLoadingMessage(req.url, req.method);
-  
-  if (req.method === 'POST') {
-    loadingMessage = 'Guardando información';
-  } else if (req.method === 'PUT') {
-    loadingMessage = 'Actualizando datos';
-  } else if (req.method === 'DELETE') {
-    loadingMessage = 'Eliminando registro';
-  } else if (req.method === 'GET') {
-    loadingMessage = getLoadingMessage(req.url);
-  }
+  const loadingMessage = getLoadingMessage(req.url, req.method);
   
   loadingService.showLoading(loadingMessage);
   
+  console.log(`[Interceptor] Iniciando petición: ${req.method} ${req.url}`, loadingMessage);
+  
   return next(req).pipe(
-    finalize(() => loadingService.hideLoading())
+    catchError((error: HttpErrorResponse) => {
+      console.error(`[Interceptor] Error en petición: ${req.method} ${req.url}`, error);
+      return throwError(() => error);
+    }),
+    finalize(() => {
+      console.log(`[Interceptor] Finalizando petición: ${req.method} ${req.url}`);
+      loadingService.hideLoading();
+    })
   );
 };
 
 function getLoadingMessage(url: string, method?: string): string {
-  if (url.includes('Departamentos')) return 'Cargando departamentos';
-  if (url.includes('Ciudadades')) return 'Cargando ciudades';
-  if (url.includes('Deportes')) return 'Cargando deportes';
-  if (url.includes('registro')) return 'Procesando registro';
-  if (url.includes('login')) return 'Iniciando sesión';
+  if (method === 'POST') return 'Guardando información';
+  if (method === 'PUT') return 'Actualizando datos';
+  if (method === 'DELETE') return 'Eliminando registro';
+  if (method === 'GET') return 'Cargando información';
+  
   return 'Cargando información';
 }

@@ -67,8 +67,6 @@ export class PasoRamas implements OnInit {
   }
 
   onToggleRama(rama: 'masculina' | 'femenina', value: boolean): void {
-    // Actualizar la signal correspondiente
-    debugger;
     if (rama === 'masculina') {
       this.esMasculina.set(value);
     } else {
