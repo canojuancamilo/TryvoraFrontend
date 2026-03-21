@@ -12,8 +12,8 @@ export interface ClubInfo {
 export interface RamasInfo {
   masculina: boolean;
   femenina: boolean;
-  nombreMasculina?: string;
-  nombreFemenina?: string;
+  nombreMasculina: string;
+  nombreFemenina: string;
 }
 
 export interface CategoriasInfo {
@@ -22,7 +22,8 @@ export interface CategoriasInfo {
 }
 
 export interface AdminInfo {
-  nombre: string;
+  nombres: string;
+  apellidos: string;
   documento: string;
   telefono: string;
   email: string;

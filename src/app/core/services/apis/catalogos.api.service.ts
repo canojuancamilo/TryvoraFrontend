@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, finalize, map, retry, timeout } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { IDepartamento } from '../../interfaces/apis/catalogos/IDepartamento';
 import { ApiResponse } from '../../interfaces/apis/IApiResponse';
@@ -12,7 +12,7 @@ import { ICiudad } from '../../interfaces/apis/catalogos/ICiudad';
   providedIn: 'root'
 })
 export class CatalogosApiService {
-  protected baseUrl: string = environment.apiUrl;
+  protected baseUrl: string = `${environment.apiUrl}/Catalogos`;
   protected apiKey: string = environment.apiKey;
   private http = inject(HttpClient);
 
@@ -32,7 +32,7 @@ export class CatalogosApiService {
   obtenerDepartamentos(): Observable<IDepartamento[]> {
     return this.http
       .get<ApiResponse<IDepartamento[]>>(
-        `${this.baseUrl}/Catalogos/Departamentos`,
+        `${this.baseUrl}/Departamentos`,
         { headers: this.getHeaders() }
       )
       .pipe(
@@ -43,7 +43,7 @@ export class CatalogosApiService {
   obtenerCiudades(departamentoId: number): Observable<ICiudad[]> {
     return this.http
       .get<ApiResponse<ICiudad[]>>(
-        `${this.baseUrl}/Catalogos/Ciudades/${departamentoId}`,
+        `${this.baseUrl}/Ciudades/${departamentoId}`,
         { headers: this.getHeaders() }
       )
       .pipe(
@@ -54,7 +54,7 @@ export class CatalogosApiService {
   obtenerDeportes(): Observable<IDeporte[]> {
     return this.http
       .get<ApiResponse<IDeporte[]>>(
-        `${this.baseUrl}/Catalogos/Deportes`,
+        `${this.baseUrl}/Deportes`,
         { headers: this.getHeaders() }
       )
       .pipe(

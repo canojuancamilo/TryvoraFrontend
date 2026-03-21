@@ -1,4 +1,3 @@
-<!-- app/pages/registro/componentes/paso-admin/paso-admin.html -->
 <div class="step-content active">
   <h2 class="step-title">Administrador Principal</h2>
   <p class="step-subtitle">Crea las credenciales del administrador del club</p>
@@ -9,8 +8,17 @@
       <div class="col-md-6">
         <app-campo-texto
           nombreCampo="Nombre"
-          [controlForm]="adminForm.get('nombre')!"
+          [controlForm]="adminForm.get('nombres')!"
           placeholder="Nombre completo"
+          icono="bi-person"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <app-campo-texto
+          nombreCampo="Apellidos"
+          [controlForm]="adminForm.get('apellidos')!"
+          placeholder="Apellidos"
           icono="bi-person"
         />
       </div>

@@ -1,43 +1,39 @@
-import { computed, effect, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { AdminInfo, CategoriasInfo, ClubInfo, RamasInfo, RegistroData, StepNumber } from '../models/registro.models';
+import { AuthApiService } from './apis/auth.api.services';
+import { ICategoria, IRama, IRegistrarClub } from '../interfaces/apis/auth/IRegistrarClub';
 
 @Injectable({ providedIn: 'root' })
 export class RegistroService {
   private readonly storageKey = 'registro_temp_data';
-  
-  // Señales de estado
+  private authApiService = inject(AuthApiService);
+
   private dataSignal = signal<RegistroData>(this.getInitialData());
   private stepSignal = signal<StepNumber>(1);
-  
-  // Señales de solo lectura (expuestas)
+
   readonly data = this.dataSignal.asReadonly();
   readonly step = this.stepSignal.asReadonly();
-  
-  // Señales computadas
+
   readonly canGoNext = computed(() => {
     const currentStep = this.step();
     return this.validateStep(currentStep);
   });
-  
+
   readonly canGoPrev = computed(() => this.step() > 1);
-  
   readonly isLastStep = computed(() => this.step() === 4);
-  
   readonly isSuccessStep = computed(() => this.step() === 5);
-  
+
   readonly progreso = computed(() => {
     const step = this.step();
     return step === 5 ? 100 : (step - 1) * 25;
   });
 
   constructor() {
-    // Efecto para guardar en localStorage cuando los datos cambian
     effect(() => {
       const currentData = this.dataSignal();
       localStorage.setItem(this.storageKey, JSON.stringify(currentData));
     });
-    
-    // Cargar datos guardados al iniciar
+
     this.loadFromStorage();
   }
 
@@ -64,7 +60,8 @@ export class RegistroService {
         femenina: ['M-14', 'M-18', 'Tercera', 'Segunda', 'Primera']
       },
       admin: {
-        nombre: '',
+        nombres: '',
+        apellidos: '',
         documento: '',
         telefono: '',
         email: '',
@@ -88,7 +85,6 @@ export class RegistroService {
     }
   }
 
-  // Actualizadores (setters)
   updateClubData(club: Partial<ClubInfo>): void {
     this.dataSignal.update(current => ({
       ...current,
@@ -117,7 +113,6 @@ export class RegistroService {
     }));
   }
 
-  // Navegación
   goToStep(step: StepNumber): void {
     if (step >= 1 && step <= 5) {
       this.stepSignal.set(step);
@@ -138,19 +133,98 @@ export class RegistroService {
     }
   }
 
-  // Reset
   resetForm(): void {
     localStorage.removeItem(this.storageKey);
     this.dataSignal.set(this.getInitialData());
     this.stepSignal.set(1);
   }
 
-  // Submit
   submitRegistro(): void {
     const data = this.dataSignal();
-    console.log('Registrando club:', data);
-    // Aquí iría la llamada a la API
-    localStorage.removeItem(this.storageKey);
+    const datosApi = this.prepararCuerpo(data);
+    this.authApiService.registrarClub(datosApi).subscribe();
+   // localStorage.removeItem(this.storageKey);
+  }
+
+  prepararCuerpo(datosTemporales: RegistroData): IRegistrarClub {
+    debugger;
+    const ramas: IRama[] = [];
+    const categorias: ICategoria[] = [];
+
+    if (datosTemporales.ramas.masculina) {
+      ramas.push(
+        {
+          tipoRamaId: 1,
+          nombre: datosTemporales.ramas.nombreMasculina == "" ? 'Rama Masculina' : datosTemporales.ramas.nombreMasculina,
+          descripcion: ''
+        }
+      );
+
+      datosTemporales.categorias.masculina.forEach(cat => {
+        categorias.push({
+          nombre: cat,
+          ramaNombre: datosTemporales.ramas.nombreMasculina == "" ? 'Rama Masculina' : datosTemporales.ramas.nombreMasculina,
+          descripcion: ''
+        });
+      });
+    }
+
+    if (datosTemporales.ramas.femenina) {
+      ramas.push(
+        {
+          tipoRamaId: 2,
+          nombre: datosTemporales.ramas.nombreFemenina == "" ? 'Rama Femenina' : datosTemporales.ramas.nombreFemenina,
+          descripcion: ''
+        }
+      );
+
+      datosTemporales.categorias.femenina.forEach(cat => {
+        categorias.push({
+          nombre: cat,
+          ramaNombre: datosTemporales.ramas.nombreFemenina == "" ? 'Rama Femenina' : datosTemporales.ramas.nombreFemenina,
+          descripcion: ''
+        });
+      });
+    }
+
+    if (!datosTemporales.ramas.masculina && !datosTemporales.ramas.femenina) {
+      ramas.push(
+        {
+          tipoRamaId: 3,
+          nombre: 'Mixta',
+          descripcion: ''
+        }
+      );
+
+      datosTemporales.categorias.masculina.forEach(cat => {
+        categorias.push({
+          nombre: cat,
+          ramaNombre: 'Mixta',
+          descripcion: ''
+        });
+      });
+    }
+
+    const datos: IRegistrarClub = {
+      nombre: datosTemporales.club.nombre,
+      deporteId: datosTemporales.club.deporteId!,
+      ciudadId: datosTemporales.club.ciudadId!,
+      direccion: datosTemporales.club.direccion,
+      telefono: datosTemporales.club.telefono,
+      email: datosTemporales.club.email,
+      descripcion: datosTemporales.club.descripcion,
+      ramas: ramas,
+      adminEmail: datosTemporales.admin.email,
+      adminUsername: '',
+      adminPassword: datosTemporales.admin.password,
+      adminNombre: datosTemporales.admin.nombres,
+      adminApellido: datosTemporales.admin.apellidos,
+      adminDocumento: datosTemporales.admin.documento,
+      adminTelefono: datosTemporales.admin.telefono,
+      categorias: categorias
+    };
+
+    return datos;
   }
 
   // Validaciones
@@ -186,7 +260,7 @@ export class RegistroService {
     if (!ramas.masculina && !ramas.femenina) {
       return categorias.masculina.length > 0;
     }
-    
+
     let valid = true;
     if (ramas.masculina) {
       valid = valid && categorias.masculina.length > 0;
@@ -204,7 +278,7 @@ export class RegistroService {
     const termsAccepted = admin.aceptaTerminos;
 
     return !!(
-      admin.nombre?.trim() &&
+      admin.nombres?.trim() &&
       admin.documento?.trim() &&
       admin.telefono?.trim() &&
       emailValid &&
