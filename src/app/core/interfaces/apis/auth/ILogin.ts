@@ -9,7 +9,7 @@ export interface ILoginResponse {
   email: string;
   username: string;
   nombre: string;
-  apellido?: string | null;
+  apellido: string | null;
   avatar?: string | null;
   token: string;
   refreshToken: string;
@@ -18,7 +18,7 @@ export interface ILoginResponse {
   permisos: IPermiso[];
   clubs: IClubBasico[];
   emailConfirmed: boolean;
-  clubActivo?: IClubBasico | null; // Club seleccionado actualmente
+  clubActivo?: IClubBasico;
 }
 
 export interface IRol {
@@ -38,6 +38,8 @@ export interface IClubBasico {
   nombre: string;
   deporte: number;
   deporteNombre?: string | null;
+  email?: string | null;
+  logo?: string | null;
 }
 
 export interface LoginResultDto {

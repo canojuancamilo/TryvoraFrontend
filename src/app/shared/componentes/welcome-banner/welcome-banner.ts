@@ -11,18 +11,10 @@ import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core
 export class WelcomeBanner {
   userName = input<string>('Usuario');
   clubName = input<string>('Club');
-  lastUpdate = input<Date | null>(null);
 
   currentDate = new Date();
 
   constructor() {
-    // Actualizar fecha cada minuto
-    effect(() => {
-      // Si hay lastUpdate, podríamos hacer algo
-      if (this.lastUpdate()) {
-        console.log('Dashboard actualizado:', this.lastUpdate());
-      }
-    });
   }
 
   getFormattedDate(): string {

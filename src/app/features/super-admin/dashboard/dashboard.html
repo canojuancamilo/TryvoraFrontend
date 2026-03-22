@@ -1,5 +1,4 @@
-<app-sidebar [isOpen]="uiService.sidebarOpen()" [isMobile]="uiService.isMobile()" [clubInfo]="clubInfo"
-  [userInfo]="userInfo" (toggleSidebar)="toggleSidebar()" />
+<app-sidebar [isOpen]="uiService.sidebarOpen()" [isMobile]="uiService.isMobile()" [usuarioInfo]="usuarioLogueado()" (toggleSidebar)="toggleSidebar()" />
 
 <div class="sidebar-overlay" [class.show]="uiService.isMobile() && uiService.sidebarOpen()" (click)="toggleSidebar()">
 </div>

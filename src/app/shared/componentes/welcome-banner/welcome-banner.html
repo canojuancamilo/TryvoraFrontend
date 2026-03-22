@@ -1,6 +1,6 @@
 <div class="welcome-banner">
   <div class="welcome-title">¡Bienvenido, {{ userName() }}! 👋</div>
-  <div class="welcome-subtitle">{{ clubName() }} — Panel de Administración</div>
+  <div class="welcome-subtitle">{{ clubName() }} — Panel administrativo</div>
   <div class="welcome-date">{{ getFormattedDate() }}</div>
   <div class="welcome-quick-stats">
     <div class="welcome-quick-stat">
@@ -16,9 +16,4 @@
       <span class="welcome-quick-stat-text">8 comprobantes pendientes</span>
     </div>
   </div>
-  @if (lastUpdate()) {
-    <div class="last-update">
-      Última actualización: {{ lastUpdate() | date:'HH:mm:ss' }}
-    </div>
-  }
 </div>

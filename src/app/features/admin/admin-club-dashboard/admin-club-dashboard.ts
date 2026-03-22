@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Sidebar } from '../../../shared/componentes/sidebar/sidebar';
 import { Topbar } from '../../../shared/componentes/topbar/topbar';
 import { WelcomeBanner } from '../../../shared/componentes/welcome-banner/welcome-banner';
@@ -7,18 +7,18 @@ import { BranchSummary } from '../../../shared/componentes/BranchSummary/BranchS
 import { RecentActivity } from '../../../shared/componentes/RecentActivity/RecentActivity';
 import { QuickActions } from '../../../shared/componentes/QuickActions/QuickActions';
 import { PendingApprovals } from '../../../shared/componentes/PendingApprovals/PendingApprovals';
-import { debounceTime, distinctUntilChanged, filter, fromEvent, map, Subject } from 'rxjs';
-import { Toast } from '../../../shared/componentes/toast/toast';
+import { Subject } from 'rxjs';
 import { UiService } from '../../../core/services/ui.service';
 import { DashboardAdminService } from '../../../core/services/dashboard-admin.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { IUser } from '../../../core/interfaces/apis/auth/IUser';
 
 @Component({
   selector: 'app-admin-club-dashboard',
   imports: [
     Sidebar,
     Topbar,
-    Toast,
     WelcomeBanner,
     StatsGrid,
     BranchSummary,
@@ -30,51 +30,49 @@ import { NotificationService } from '../../../core/services/notification.service
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminClubDashboard {
-  // Servicios
   uiService = inject(UiService);
   private dashboardService = inject(DashboardAdminService);
   private notificationService = inject(NotificationService);
+  private authService = inject(AuthService);
 
-  // Señales del UI Service
   public readonly sidebarOpen = this.uiService.sidebarOpen;
   public readonly isMobile = this.uiService.isMobile;
   public readonly sidebarClass = this.uiService.sidebarClass;
   public readonly mainWrapperClass = this.uiService.mainWrapperClass;
 
-  // Datos del club y usuario
-  public readonly clubInfo = {
-    name: 'FC Deportivo Norte',
-    avatar: 'FC',
-    role: 'Administrador'
-  };
-
-  public readonly userInfo = {
-    name: 'Carlos Administrador',
-    avatar: 'CA',
-    role: 'Admin del Club'
-  };
-
-  // Señales del Dashboard Service
   public readonly statCards = this.dashboardService.statCards;
   public readonly branchStats = this.dashboardService.branchStats;
   public readonly recentActivity = this.dashboardService.recentActivity;
   public readonly pendingApprovals = this.dashboardService.pendingApprovals;
   public readonly pendingCount = this.dashboardService.pendingCount;
-  public readonly loading = this.dashboardService.loading;
   public readonly lastUpdate = this.dashboardService.lastUpdate;
+
+  usuarioLogueado = signal<IUser>({
+    id: 0,
+    nombre:'',
+    apellido: '',
+    username: '',
+    email: '',
+    roles: [],
+    permissions: [],
+  })
+
+  constructor(){
+    this.usuarioLogueado.set(this.authService.currentUser!)
+  }
 
   ngOnInit(): void {
     // Cargar datos iniciales
-    this.dashboardService.refreshDashboard();
+    // this.dashboardService.refreshDashboard();
 
     // Configurar debounce para búsqueda
-    this.searchSubscription = this.searchSubject.pipe(
-      debounceTime(300), // Esperar 300ms después de que el usuario deje de escribir
-      distinctUntilChanged(), // Solo buscar si el valor cambió
-      filter(query => query.length === 0 || query.length > 2) // Buscar si está vacío o tiene más de 2 caracteres
-    ).subscribe(query => {
-      this.performSearch(query);
-    });
+    // this.searchSubscription = this.searchSubject.pipe(
+    //   debounceTime(300), // Esperar 300ms después de que el usuario deje de escribir
+    //   distinctUntilChanged(), // Solo buscar si el valor cambió
+    //   filter(query => query.length === 0 || query.length > 2) // Buscar si está vacío o tiene más de 2 caracteres
+    // ).subscribe(query => {
+    //   this.performSearch(query);
+    // });
   }
 
   ngOnDestroy(): void {

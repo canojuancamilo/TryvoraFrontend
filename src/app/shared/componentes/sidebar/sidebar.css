@@ -1,5 +1,6 @@
-/* src/app/shared/components/sidebar/sidebar.component.css */
-
+/* ============================================
+   SIDEBAR PRINCIPAL
+   ============================================ */
 .sidebar {
   width: 260px;
   min-height: 100vh;
@@ -9,17 +10,19 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000; /* Aumentado para asegurar que esté por encima */
+  z-index: 1000;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   color: white;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15); /* Sombra para destacar */
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar.collapsed {
   transform: translateX(-260px);
 }
 
-/* En móvil, el sidebar se oculta por defecto */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 991px) {
   .sidebar {
     transform: translateX(-260px);
@@ -32,7 +35,9 @@
   }
 }
 
-/* Resto de estilos del sidebar (los que ya tenías) */
+/* ============================================
+   LOGO DEL SIDEBAR
+   ============================================ */
 .sidebar-logo {
   padding: 1.5rem 1.25rem 1.25rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -65,50 +70,113 @@
   letter-spacing: -0.5px;
 }
 
+/* ============================================
+   INFORMACIÓN DEL CLUB (CON LOGO)
+   ============================================ */
 .sidebar-club-info {
   padding: 1rem 1.25rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  position: relative;
 }
 
 .sidebar-club-info:hover {
   background: var(--sidebar-hover, rgba(255, 255, 255, 0.08));
+  transform: translateX(2px);
 }
 
+/* Contenedor del avatar del club */
 .sidebar-club-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 0.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
   background: linear-gradient(135deg, #4F46E5, #06B6D4);
+  flex-shrink: 0;
+}
+
+.sidebar-club-info:hover .sidebar-club-avatar {
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Imagen del logo */
+.club-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.sidebar-club-info:hover .club-logo-image {
+  transform: scale(1.05);
+}
+
+/* Placeholder cuando no hay logo */
+.club-logo-placeholder {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: white;
-  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #4F46E5, #06B6D4);
+  text-transform: uppercase;
 }
 
+/* Nombre del club */
 .sidebar-club-name {
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #fff;
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+  transition: color 0.2s ease;
 }
 
+.sidebar-club-info:hover .sidebar-club-name {
+  color: #A5B4FC;
+}
+
+/* Rol del usuario */
 .sidebar-club-role {
   font-size: 0.7rem;
   font-weight: 600;
   background: rgba(79, 70, 229, 0.4);
+  backdrop-filter: blur(4px);
   color: #A5B4FC;
-  padding: 0.15rem 0.5rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 20px;
   display: inline-block;
-  margin-top: 0.25rem;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
 }
 
+.sidebar-club-info:hover .sidebar-club-role {
+  background: rgba(79, 70, 229, 0.6);
+  color: #C7D2FE;
+}
+
+/* ============================================
+   NAVEGACIÓN PRINCIPAL
+   ============================================ */
 .sidebar-section {
   padding: 1.25rem 0.75rem 0.5rem;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .sidebar-section-label {
@@ -139,12 +207,26 @@
 .sidebar-nav-item:hover {
   background: var(--sidebar-hover, rgba(255, 255, 255, 0.08));
   color: #fff;
+  transform: translateX(4px);
 }
 
 .sidebar-nav-item.active {
   background: var(--sidebar-active, rgba(79, 70, 229, 0.5));
   color: #fff;
   font-weight: 600;
+  position: relative;
+}
+
+.sidebar-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: linear-gradient(135deg, #4F46E5, #06B6D4);
+  border-radius: 0 3px 3px 0;
 }
 
 .sidebar-nav-item i {
@@ -155,105 +237,253 @@
 
 .sidebar-nav-item .badge-count {
   margin-left: auto;
-  background: var(--primary, #4F46E5);
+  background: linear-gradient(135deg, #4F46E5, #06B6D4);
   color: white;
   font-size: 0.7rem;
   font-weight: 700;
   padding: 0.15rem 0.5rem;
   border-radius: 20px;
+  min-width: 24px;
+  text-align: center;
 }
 
+/* ============================================
+   FOOTER DEL SIDEBAR (MENÚ USUARIO - ESTILO MEJORADO)
+   ============================================ */
 .sidebar-footer {
   margin-top: auto;
   padding: 1rem 0.75rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
 }
 
 .user-menu-container {
   position: relative;
 }
 
+/* Estilo del usuario - Diferente al club */
 .sidebar-user {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.625rem 0.875rem;
-  border-radius: 10px;
+  padding: 0.75rem 0.875rem;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-user:hover,
 .sidebar-user.active {
-  background: var(--sidebar-hover, rgba(255, 255, 255, 0.08));
+  background: rgba(79, 70, 229, 0.15);
+  border-color: rgba(79, 70, 229, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+/* Contenedor del avatar con efecto de anillo */
+.sidebar-avatar-container {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.sidebar-avatar-container::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4F46E5, #06B6D4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.sidebar-user:hover .sidebar-avatar-container::before {
+  opacity: 1;
+}
+
+/* Avatar del usuario */
 .sidebar-avatar {
-  width: 34px;
-  height: 34px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   background: linear-gradient(135deg, #4F46E5, #06B6D4);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: white;
-  flex-shrink: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
+.sidebar-user:hover .sidebar-avatar {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+}
+
+/* Imagen del avatar */
+.user-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+  border-radius: 50%;
+}
+
+.sidebar-user:hover .user-avatar-image {
+  transform: scale(1.1);
+}
+
+/* Placeholder del avatar (iniciales) */
+.user-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #4F46E5, #06B6D4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 50%;
+}
+
+/* Indicador de estado online/offline */
+.user-status-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--sidebar-bg, #1E1B4B);
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.user-status-dot.online {
+  background: #10B981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.user-status-dot.away {
+  background: #F59E0B;
+}
+
+.user-status-dot.busy {
+  background: #EF4444;
+}
+
+.user-status-dot.offline {
+  background: #6B7280;
+}
+
+/* Información del usuario */
 .sidebar-user-info {
   flex: 1;
   min-width: 0;
 }
 
 .sidebar-user-name {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -0.2px;
+  transition: color 0.2s ease;
+}
+
+.sidebar-user:hover .sidebar-user-name {
+  color: #A5B4FC;
 }
 
 .sidebar-user-role {
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.2s ease;
 }
 
+.sidebar-user-role::before {
+  content: '•';
+  font-size: 0.8rem;
+  color: #4F46E5;
+}
+
+.sidebar-user:hover .sidebar-user-role {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Icono de chevron */
 .sidebar-user i.bi-chevron-down {
   color: rgba(255, 255, 255, 0.4);
   font-size: 0.9rem;
-  transition: transform 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 20px;
+  text-align: center;
 }
 
 .sidebar-user i.bi-chevron-down.rotated {
   transform: rotate(180deg);
+  color: #A5B4FC;
 }
 
+/* ============================================
+   DROPDOWN MENÚ USUARIO (Estilo mejorado)
+   ============================================ */
 .user-dropdown-menu {
   position: absolute;
   bottom: 100%;
   left: 0;
   right: 0;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-  margin-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 0.75rem;
   overflow: hidden;
-  z-index: 1001; /* Mayor que el sidebar */
-  animation: slideUp 0.2s ease;
+  z-index: 1001;
+  animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.user-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #4F46E5, #06B6D4);
+  border-radius: 16px 16px 0 0;
 }
 
 .user-dropdown-menu .dropdown-item {
@@ -262,27 +492,53 @@
   padding: 0.75rem 1rem;
   color: var(--text-primary, #1E293B);
   text-decoration: none;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
   cursor: pointer;
   font-size: 0.875rem;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.user-dropdown-menu .dropdown-item i {
+  font-size: 1rem;
+  width: 20px;
+  color: #6B7280;
+  transition: all 0.2s ease;
 }
 
 .user-dropdown-menu .dropdown-item:hover {
-  background: var(--primary-light, #EEF2FF);
-  color: var(--primary, #4F46E5);
+  background: linear-gradient(90deg, rgba(79, 70, 229, 0.08), rgba(6, 182, 212, 0.08));
+  color: #4F46E5;
+  padding-left: 1.25rem;
+}
+
+.user-dropdown-menu .dropdown-item:hover i {
+  color: #4F46E5;
+  transform: scale(1.1);
+}
+
+.user-dropdown-menu .dropdown-item.text-danger {
+  color: #DC2626;
+}
+
+.user-dropdown-menu .dropdown-item.text-danger i {
+  color: #DC2626;
 }
 
 .user-dropdown-menu .dropdown-item.text-danger:hover {
-  background: #FEF2F2;
-  color: #DC2626 !important;
+  background: linear-gradient(90deg, rgba(220, 38, 38, 0.08), rgba(220, 38, 38, 0.04));
+  color: #DC2626;
 }
 
 .user-dropdown-menu .dropdown-divider {
   height: 1px;
-  background: var(--border, #E2E8F0);
+  background: linear-gradient(90deg, transparent, var(--border, #E2E8F0), transparent);
   margin: 0.5rem 0;
 }
 
+/* ============================================
+   OVERLAY
+   ============================================ */
 .user-menu-overlay {
   position: fixed;
   top: 0;
@@ -291,4 +547,102 @@
   bottom: 0;
   z-index: 999;
   background: transparent;
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animación de pulso para el status dot */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+.user-status-dot.online {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADA
+   ============================================ */
+.sidebar-section::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-section::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.sidebar-section::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.sidebar-section::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+   UTILIDADES ADICIONALES
+   ============================================ */
+.sidebar-club-info {
+  position: relative;
+}
+
+.sidebar-club-info[data-club-name]:hover::after {
+  content: attr(data-club-name);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 1;
+  z-index: 1000;
+  transition: opacity 0.2s;
+  margin-left: 8px;
+}
+
+.sidebar-club-info::after {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-club-info.active {
+  background: var(--sidebar-active, rgba(79, 70, 229, 0.3));
+  border-left: 3px solid #4F46E5;
+}
+
+.sidebar-club-name,
+.sidebar-user-name {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-nav-item:hover i,
+.sidebar-user:hover i,
+.sidebar-club-info:hover i {
+  filter: drop-shadow(0 0 2px rgba(79, 70, 229, 0.5));
 }

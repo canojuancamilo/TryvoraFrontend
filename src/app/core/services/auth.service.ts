@@ -1,34 +1,14 @@
-// src/app/core/services/auth.service.ts
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { map, catchError, tap, delay } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
 import { TokenService } from './token.service';
 import { environment } from '../../../environments/environment';
 import { AuthApiService } from './apis/auth.api.services';
 import { ILogin, IPermiso, IRol } from '../interfaces/apis/auth/ILogin';
-
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  firstName?: string;
-  lastName?: string | null;
-  roles: IRol[];
-  permissions: IPermiso[];
-  avatar?: string | null;
-  token?: string;
-  refreshToken?: string;
-  expiresIn?: string | Date;
-}
-
-export interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  error: string | null;
-}
+import { IUser } from '../interfaces/apis/auth/IUser';
+import { IAuthState } from '../interfaces/apis/auth/IAuthState';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +19,7 @@ export class AuthService {
   http = inject(HttpClient);
   router = inject(Router);
 
-  public authState = signal<AuthState>({
+  public authState = signal<IAuthState>({
     user: null,
     isAuthenticated: false,
     isLoading: false,
@@ -51,7 +31,7 @@ export class AuthService {
   public isLoading = computed(() => this.authState().isLoading);
   public error = computed(() => this.authState().error);
 
-  public get currentUser(): User | null {
+  public get currentUser(): IUser | null {
     return this.authState().user;
   }
 
@@ -74,14 +54,15 @@ export class AuthService {
           id: result.data.usuarioId,
           username: result.data.username,
           email: result.data.email,
-          firstName: result.data.nombre,
-          lastName: result.data.apellido,
+          nombre: result.data.nombre,
+          apellido: result.data.apellido,
           roles: result.data.roles,
           permissions: result.data.permisos,
           avatar: result.data.avatar,
           token: result.data.token,
           refreshToken: result.data.refreshToken,
-          expiresIn: result.data.expiration
+          expiresIn: result.data.expiration,
+          clubInfo: result.data.clubActivo
         });
 
         this.redirigirSegunRol(this.authState().user!);
@@ -89,7 +70,7 @@ export class AuthService {
     });
   }
 
-  public redirigirSegunRol(user: User): void {
+  public redirigirSegunRol(user: IUser): void {
     if (!user || !user.roles || !Array.isArray(user.roles)) {
       this.router.navigate(['/login']);
       return;
@@ -276,8 +257,8 @@ export class AuthService {
   /**
    * Obtener información del usuario
    */
-  getUserInfo(): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/auth/me`).pipe(
+  getUserInfo(): Observable<IUser> {
+    return this.http.get<IUser>(`${environment.apiUrl}/auth/me`).pipe(
       tap(user => {
         this.setUser(user);
       }),
@@ -302,12 +283,7 @@ export class AuthService {
     );
   }
 
-  // ============== MÉTODOS PRIVADOS ==============
-
-  /**
-   * Establecer usuario en el estado
-   */
-  private setUser(user: User): void {
+  private setUser(user: IUser): void {
     this.authState.update(state => ({
       ...state,
       user,
@@ -315,14 +291,13 @@ export class AuthService {
       error: null
     }));
 
-    // Guardar en localStorage para persistencia
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
   /**
    * Actualizar usuario parcialmente
    */
-  private updateUser(userData: Partial<User>): void {
+  private updateUser(userData: Partial<IUser>): void {
     const currentUser = this.authState().user;
     if (currentUser) {
       const updatedUser = { ...currentUser, ...userData };

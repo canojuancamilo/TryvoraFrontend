@@ -1,38 +1,30 @@
-
-<!-- src/app/shared/components/sidebar/sidebar.component.html -->
 <aside [class]="sidebarClass()">
-  <!-- Logo - clickeable -->
   <div class="sidebar-logo" (click)="onLogoClick()">
     <div class="sidebar-logo-icon">
       <i class="bi bi-lightning-charge-fill text-white"></i>
     </div>
-    <span class="sidebar-logo-text">ClubPay</span>
+    <span class="sidebar-logo-text">Tryvora</span>
   </div>
 
-  <!-- Club Info - clickeable -->
   <div class="sidebar-club-info" (click)="onClubInfoClick()">
-    <div class="sidebar-club-avatar">{{ clubInfo().avatar }}</div>
-    <div class="sidebar-club-name">{{ clubInfo().name }}</div>
-    <span class="sidebar-club-role">{{ clubInfo().role }}</span>
+    <div class="sidebar-club-avatar">
+      <img [src]="usuarioInfo().clubInfo?.logo ?? 'logo-club-default.png'" [alt]="usuarioInfo().clubInfo?.nombre"
+        class="club-logo-image">
+    </div>
+    <div class="sidebar-club-name">{{ usuarioInfo().clubInfo?.nombre }}</div>
   </div>
-
-  <!-- Navigation -->
   <div class="sidebar-section">
-    <div class="sidebar-section-label">Principal</div>
+    <!-- <div class="sidebar-section-label">Principal</div> -->
     @for (item of mainNavItems(); track item.route) {
-      <a 
-        [routerLink]="[item.route]" 
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
-        class="sidebar-nav-item"
-        (click)="onNavItemClick(item)"
-      >
-        <i [class]="'bi ' + item.icon"></i>
-        <span>{{ item.label }}</span>
-        @if (item.badge) {
-          <span class="badge-count">{{ item.badge }}</span>
-        }
-      </a>
+    <a [routerLink]="[item.route]" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }" class="sidebar-nav-item"
+      (click)="onNavItemClick(item)">
+      <i [class]="'bi ' + item.icon"></i>
+      <span>{{ item.label }}</span>
+      @if (item.badge) {
+      <span class="badge-count">{{ item.badge }}</span>
+      }
+    </a>
     }
   </div>
 
@@ -40,63 +32,41 @@
   <div class="sidebar-footer">
     <div class="user-menu-container">
       <!-- Botón de usuario -->
-      <div 
-        class="sidebar-user" 
-        (click)="toggleUserMenu()"
-        [class.active]="isUserMenuOpen()"
-      >
-        <div class="sidebar-avatar">{{ userInfo().avatar }}</div>
+      <div class="sidebar-user" (click)="toggleUserMenu()" [class.active]="isUserMenuOpen()">
+        <div class="sidebar-avatar-container">
+          <img [src]="usuarioInfo().avatar ?? 'logo-user-default.jpg'" [alt]="usuarioInfo().nombre" class="user-avatar-image">
+          <div class="user-status-dot online"></div>
+        </div>
         <div class="sidebar-user-info">
-          <div class="sidebar-user-name">{{ userInfo().name }}</div>
-          <div class="sidebar-user-role">{{ userInfo().role }}</div>
+          <div class="sidebar-user-name">{{ usuarioInfo().nombre }} {{usuarioInfo().apellido}}</div>
+          <div class="sidebar-user-role">{{ usuarioInfo().roles[0].descripcion }}</div>
         </div>
         <i class="bi bi-chevron-down" [class.rotated]="isUserMenuOpen()"></i>
       </div>
-      
-      <!-- Dropdown menu -->
       @if (isUserMenuOpen()) {
-        <div class="user-dropdown-menu">
-          <!-- Perfil -->
-          <a class="dropdown-item" (click)="goToProfile()">
-            <i class="bi bi-person me-2"></i>
-            Mi Perfil
-          </a>
-          
-          <!-- Configuración -->
-          <a class="dropdown-item" (click)="goToSettings()">
-            <i class="bi bi-gear me-2"></i>
-            Configuración
-          </a>
-          
-          <!-- Divisor -->
-          <div class="dropdown-divider"></div>
-          
-          <!-- Cerrar Sesión -->
-          <a class="dropdown-item text-danger" (click)="onLogout()">
-            <i class="bi bi-box-arrow-right me-2"></i>
-            Cerrar Sesión 111
-          </a>
-        </div>
+      <div class="user-dropdown-menu">
+        <a class="dropdown-item" (click)="goToProfile()">
+          <i class="bi bi-person me-2"></i>
+          Mi Perfil
+        </a>
+
+        <a class="dropdown-item" (click)="goToSettings()">
+          <i class="bi bi-gear me-2"></i>
+          Configuración
+        </a>
+
+        <div class="dropdown-divider"></div>
+
+        <a class="dropdown-item text-danger" (click)="onLogout()">
+          <i class="bi bi-box-arrow-right me-2"></i>
+          Cerrar Sesión
+        </a>
+      </div>
       }
     </div>
   </div>
-
-  <!-- Versión simplificada alternativa (comentar la anterior y descomentar esta si prefieres versión simple) -->
-  <!--
-  <div class="sidebar-footer">
-    <div class="sidebar-user" (click)="onUserClick()">
-      <div class="sidebar-avatar">{{ userInfo().avatar }}</div>
-      <div class="sidebar-user-info">
-        <div class="sidebar-user-name">{{ userInfo().name }}</div>
-        <div class="sidebar-user-role">{{ userInfo().role }}</div>
-      </div>
-      <i class="bi bi-box-arrow-right" (click)="onLogout(); $event.stopPropagation()"></i>
-    </div>
-  </div>
-  -->
 </aside>
 
-<!-- Overlay para cerrar menú al hacer click fuera (opcional) -->
 @if (isUserMenuOpen()) {
-  <div class="user-menu-overlay" (click)="closeUserMenu()"></div>
+<div class="user-menu-overlay" (click)="closeUserMenu()"></div>
 }

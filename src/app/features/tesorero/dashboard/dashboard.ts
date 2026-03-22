@@ -1,9 +1,10 @@
-import { 
+import {
   afterNextRender,
-  ChangeDetectionStrategy, 
-  Component, 
-  inject, 
-  OnInit
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal
 } from '@angular/core';
 import { Sidebar } from "../../../shared/componentes/sidebar/sidebar";
 import { Topbar } from "../../../shared/componentes/topbar/topbar";
@@ -15,6 +16,8 @@ import { RecentPayments } from "../recent-payments/recent-payments";
 import { Notifications } from "../../../shared/componentes/notifications/notifications";
 import { PaymentService } from '../../../core/services/payment.service';
 import { UiService } from '../../../core/services/ui.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { IUser } from '../../../core/interfaces/apis/auth/IUser';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,23 +29,30 @@ import { UiService } from '../../../core/services/ui.service';
 export class DashboardTercero implements OnInit {
   paymentService = inject(PaymentService);
   uiService = inject(UiService);
+  private authService = inject(AuthService);
+
+  usuarioLogueado = signal<IUser>({
+    id: 0,
+    nombre: '',
+    apellido: '',
+    username: '',
+    email: '',
+    roles: [],
+    permissions: [],
+  })
 
   constructor() {
     afterNextRender(() => {
-      console.log('Primer render completado');
       this.animateStats();
     });
+
+    this.usuarioLogueado.set(this.authService.currentUser!)
   }
 
   ngOnInit() {
     console.log('Dashboard initialized');
   }
 
-  public readonly clubInfo = {
-    name: 'FC Deportivo Norte',
-    avatar: 'FC',
-    role: 'Administrador'
-  };
 
   public readonly userInfo = {
     name: 'Carlos Administrador',

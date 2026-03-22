@@ -6,6 +6,8 @@ import { DeleteConfirmModal } from "../../../shared/componentes/Modals/delete-co
 import { UiService } from '../../../core/services/ui.service';
 import { TesoreroService } from '../../../core/services/tesorero.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { IUser } from '../../../core/interfaces/apis/auth/IUser';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-gestion-tesoreros',
@@ -18,6 +20,7 @@ export class GestionTesoreros {
   uiService = inject(UiService);  
   tesoreroService = inject(TesoreroService);
   toastService = inject(NotificationService);
+    private authService = inject(AuthService);
 
   isModalOpen = signal(false);
   isDeleteModalOpen = signal(false);
@@ -31,18 +34,26 @@ export class GestionTesoreros {
   public readonly sidebarClass = this.uiService.sidebarClass;
   public readonly mainWrapperClass = this.uiService.mainWrapperClass;
 
-  // Datos del club y usuario
-  public readonly clubInfo = {
-    name: 'FC Deportivo Norte',
-    avatar: 'FC',
-    role: 'Administrador'
-  };
+   usuarioLogueado = signal<IUser>({
+    id: 0,
+    nombre:'',
+    apellido: '',
+    username: '',
+    email: '',
+    roles: [],
+    permissions: [],
+  })
 
   public readonly userInfo = {
     name: 'Carlos Administrador',
     avatar: 'CA',
     role: 'Admin del Club'
   };
+
+   constructor(){
+    this.usuarioLogueado.set(this.authService.currentUser!)
+  }
+
 
   filteredTesoreros = computed(() => {
     const term = this.tesoreroService.searchTerm();

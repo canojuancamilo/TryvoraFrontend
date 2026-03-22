@@ -142,7 +142,6 @@ export class RegistroService {
   submitRegistro(): void {
     const data = this.dataSignal();
     const datosApi = this.prepararCuerpo(data); 
-    debugger;
     this.authApiService.registrarClub(datosApi).subscribe({
       next: (result) => {
         localStorage.removeItem(this.storageKey);        

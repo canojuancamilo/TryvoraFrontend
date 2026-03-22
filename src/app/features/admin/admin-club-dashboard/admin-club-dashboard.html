@@ -1,47 +1,24 @@
-<!-- src/app/features/dashboard/pages/dashboard-page/dashboard-page.component.html -->
 <div class="dashboard-container">
-  <!-- Sidebar -->
-  <app-sidebar [isOpen]="sidebarOpen()" [isMobile]="isMobile()" [clubInfo]="clubInfo" [userInfo]="userInfo"
-    (toggleSidebar)="toggleSidebar()" />
+  <app-sidebar [isOpen]="sidebarOpen()" [isMobile]="isMobile()" [usuarioInfo]="usuarioLogueado()" (toggleSidebar)="toggleSidebar()" />
 
   <div class="sidebar-overlay" [class.show]="uiService.isMobile() && uiService.sidebarOpen()" (click)="toggleSidebar()">
   </div>
-  <!-- Main Wrapper -->
   <div [class]="mainWrapperClass()">
-    <!-- Topbar -->
-    <app-topbar [userAvatar]="userInfo.avatar" [userName]="userInfo.name" [userRole]="userInfo.role"
+    <app-topbar [userAvatar]="usuarioLogueado().avatar ?? ''" [userName]="usuarioLogueado().nombre" [userRole]="usuarioLogueado().roles[0].nombre"
       [notificationCount]="3" (toggleSidebar)="toggleSidebar()" (search)="onSearch($event)" />
 
-    <!-- Page Content -->
     <main class="page-content">
-      <!-- Loading Indicator -->
-      @if (loading()) {
-      <div class="loading-overlay">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Cargando...</span>
-        </div>
-      </div>
-      }
-
-      <!-- Welcome Banner -->
-      <app-welcome-banner [userName]="userInfo.name" [clubName]="clubInfo.name" [lastUpdate]="lastUpdate()" />
-
-      <!-- Stats Cards -->
+      <app-welcome-banner [userName]="usuarioLogueado().nombre" [clubName]="usuarioLogueado().clubInfo?.nombre ?? ''"/>
       <app-stats-cards [stats]="statCards()" />
 
-      <!-- Branch Summary -->
       @if (branchStats()) {
       <app-branch-summary [branchStats]="branchStats()!" />
       }
 
-      <!-- Bottom Grid -->
       <div class="row g-4">
-        <!-- Recent Activity -->
         <div class="col-lg-5">
           <app-recent-activity [activities]="recentActivity()" />
         </div>
-
-        <!-- Quick Actions + Pending Approvals -->
         <div class="col-lg-7">
           <div class="row g-4">
             <div class="col-12">
@@ -56,7 +33,6 @@
         </div>
       </div>
 
-      <!-- Botón de actualizar (opcional) -->
       <div class="text-end mt-3">
         <button class="btn btn-sm btn-outline-primary" (click)="refreshDashboard()">
           <i class="bi bi-arrow-repeat"></i> Actualizar
@@ -64,7 +40,4 @@
       </div>
     </main>
   </div>
-
-  <!-- Toast Container -->
-  <app-toast />
 </div>

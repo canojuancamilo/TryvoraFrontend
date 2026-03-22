@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { Sidebar } from '../../../shared/componentes/sidebar/sidebar';
 import { Topbar } from "../../../shared/componentes/topbar/topbar";
 import { StatsGrid } from "../stats-grid/stats-grid";
@@ -7,6 +7,8 @@ import { ActivityFeed } from "../activity-feed/activity-feed";
 import { SportDistribution } from "../sport-distribution/sport-distribution";
 import { ClubService } from '../../../core/services/club.service';
 import { UiService } from '../../../core/services/ui.service';
+import { IUser } from '../../../core/interfaces/apis/auth/IUser';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,9 +19,24 @@ import { UiService } from '../../../core/services/ui.service';
 })
 export class DashboardSuperAdmin {
   private clubService = inject(ClubService);
+  private authService = inject(AuthService);
   uiService = inject(UiService);
 
   sidebar = viewChild.required(Sidebar);
+
+  usuarioLogueado = signal<IUser>({
+    id: 0,
+    nombre: '',
+    apellido: '',
+    username: '',
+    email: '',
+    roles: [],
+    permissions: [],
+  })
+  
+  constructor() {
+    this.usuarioLogueado.set(this.authService.currentUser!)
+  }
 
   exportData() {
     const clubs = this.clubService.clubs();
@@ -46,7 +63,7 @@ export class DashboardSuperAdmin {
     this.uiService.toggleSidebar();
   }
 
-    public readonly clubInfo = {
+  public readonly clubInfo = {
     name: 'FC Deportivo Norte',
     avatar: 'FC',
     role: 'Administrador'

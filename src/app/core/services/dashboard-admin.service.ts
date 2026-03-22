@@ -94,7 +94,6 @@ export class DashboardAdminService {
   
   constructor() {
     this.loadInitialData();
-    this.startAutoRefresh();
   }
   
   private loadInitialData(): void {
@@ -213,22 +212,15 @@ export class DashboardAdminService {
       }
     ];
   }
-  
-  private startAutoRefresh(): void {
-    this.refreshSubscription = interval(this.refreshInterval).subscribe(() => {
-      this.refreshDashboard();
-    });
-  }
-  
+
   public refreshDashboard(): void {
     this.loadingSignal.set(true);
     
     // Simular llamada API
-    setTimeout(() => {
+
       this.loadMockData();
       this.loadingSignal.set(false);
       this.notificationService.info('Dashboard actualizado');
-    }, 1000);
   }
   
   public approvePayment(approvalId: string): void {
