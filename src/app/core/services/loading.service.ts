@@ -16,20 +16,7 @@ export class LoadingService {
     return messages.length > 0 ? messages[messages.length - 1] : 'Cargando información';
   });
   
-  // Para debug (eliminar en producción)
-  constructor() {
-    effect(() => {
-      console.log('[LoadingService] Estado:', {
-        activeRequests: this.activeRequests(),
-        isLoading: this.isLoading(),
-        message: this.currentMessage(),
-        messages: this.messages()
-      });
-    });
-  }
-
   showLoading(message?: string): void {
-    console.log('[LoadingService] showLoading llamado', { message });
     
     // Incrementar contador
     this.activeRequests.update(count => count + 1);
@@ -41,7 +28,6 @@ export class LoadingService {
   }
 
   hideLoading(): void {
-    console.log('[LoadingService] hideLoading llamado');
     
     // Decrementar contador (nunca menor a 0)
     this.activeRequests.update(count => Math.max(0, count - 1));
@@ -57,7 +43,6 @@ export class LoadingService {
   
   // Método para resetear en caso de error
   reset(): void {
-    console.log('[LoadingService] reset llamado');
     this.activeRequests.set(0);
     this.messages.set([]);
   }

@@ -19,9 +19,6 @@ export class Topbar {
   private authService = inject(AuthService);
 
   // Inputs
-  userAvatar = input<string>('CA');
-  userName = input<string>('Carlos Administrador');
-  userRole = input<string>('Admin del Club');
   notificationCount = input<number>(3);
 
   // Outputs

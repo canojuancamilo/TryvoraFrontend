@@ -44,7 +44,7 @@ export class DashboardAdminService {
     return total > 0 ? Math.round((this.debtorsCount() / total) * 100) : 0;
   });
   
-  // Computar tarjetas de estadísticas
+
   public readonly statCards = computed<StatCard[]>(() => {
     const data = this.dashboardData();
     if (!data) return [];

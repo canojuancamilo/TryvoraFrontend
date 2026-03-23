@@ -12,17 +12,7 @@ import { ScrollService } from './core/services/scroll.service';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit {
+export class App {
   protected readonly title = signal('TryvoraFrontend');  
   private scrollService = inject(ScrollService);
-  
-  ngOnInit() {
-    // Verificar sesión al iniciar
-    this.checkInitialAuth();
-  }
-  
-  private checkInitialAuth(): void {
-    // Implementar lógica de verificación de token
-    console.log('Verificando autenticación inicial...');
-  }
 }

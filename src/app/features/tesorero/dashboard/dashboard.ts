@@ -31,26 +31,17 @@ export class DashboardTercero implements OnInit {
   uiService = inject(UiService);
   private authService = inject(AuthService);
 
-  usuarioLogueado = signal<IUser>({
-    id: 0,
-    nombre: '',
-    apellido: '',
-    username: '',
-    email: '',
-    roles: [],
-    permissions: [],
-  })
+  usuarioLogueado = signal<IUser | null>(null)
 
   constructor() {
     afterNextRender(() => {
       this.animateStats();
     });
 
-    this.usuarioLogueado.set(this.authService.currentUser!)
+    this.usuarioLogueado.set(this.authService.user())
   }
 
   ngOnInit() {
-    console.log('Dashboard initialized');
   }
 
 

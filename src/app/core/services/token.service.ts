@@ -48,10 +48,6 @@ export class TokenService {
           localStorage.setItem(this.TOKEN_EXPIRY_KEY, expiryTime.toString());
         }
       }
-      
-      if (!environment.production) {
-        console.log('🔐 Token guardado correctamente');
-      }
     } catch (error) {
       console.error('Error al guardar el token:', error);
     }
@@ -230,10 +226,6 @@ export class TokenService {
       localStorage.removeItem(this.TOKEN_KEY);
       localStorage.removeItem(this.REFRESH_TOKEN_KEY);
       localStorage.removeItem(this.TOKEN_EXPIRY_KEY);
-      
-      if (!environment.production) {
-        console.log('🧹 Tokens eliminados');
-      }
     } catch (error) {
       console.error('Error al limpiar tokens:', error);
     }

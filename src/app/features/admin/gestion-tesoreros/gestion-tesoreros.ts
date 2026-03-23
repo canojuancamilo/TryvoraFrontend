@@ -34,15 +34,7 @@ export class GestionTesoreros {
   public readonly sidebarClass = this.uiService.sidebarClass;
   public readonly mainWrapperClass = this.uiService.mainWrapperClass;
 
-   usuarioLogueado = signal<IUser>({
-    id: 0,
-    nombre:'',
-    apellido: '',
-    username: '',
-    email: '',
-    roles: [],
-    permissions: [],
-  })
+   usuarioLogueado = signal<IUser | null>(null)
 
   public readonly userInfo = {
     name: 'Carlos Administrador',
@@ -51,7 +43,7 @@ export class GestionTesoreros {
   };
 
    constructor(){
-    this.usuarioLogueado.set(this.authService.currentUser!)
+    this.usuarioLogueado.set(this.authService.user())
   }
 
 

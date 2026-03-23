@@ -47,11 +47,8 @@ export class ScrollErrorDirective implements AfterViewInit, OnDestroy {
     });
 
     if (!target) {
-      console.log('No se encontró campo con error');
       return;
     }
-
-    console.log('Scrolleando a:', target);
 
     target.scrollIntoView({
       behavior: 'smooth',

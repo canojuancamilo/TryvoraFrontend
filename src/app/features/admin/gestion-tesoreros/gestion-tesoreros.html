@@ -5,8 +5,7 @@
   </div>
 
   <div [class]="mainWrapperClass()">
-    <app-topbar [userAvatar]="userInfo.avatar" [userName]="userInfo.name" [userRole]="userInfo.role"
-      [notificationCount]="3" (toggleSidebar)="toggleSidebar()" />
+    <app-topbar [notificationCount]="3" (toggleSidebar)="toggleSidebar()" />
 
     <main class="page-content">
       <!-- Page Header -->

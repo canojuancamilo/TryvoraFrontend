@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { Sidebar } from '../../../shared/componentes/sidebar/sidebar';
 import { Topbar } from '../../../shared/componentes/topbar/topbar';
 import { WelcomeBanner } from '../../../shared/componentes/welcome-banner/welcome-banner';
@@ -13,6 +13,8 @@ import { DashboardAdminService } from '../../../core/services/dashboard-admin.se
 import { NotificationService } from '../../../core/services/notification.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { IUser } from '../../../core/interfaces/apis/auth/IUser';
+import { ClubApiService } from '../../../core/services/apis/club.api.services';
+import { IMetricasResponse } from '../../../core/interfaces/apis/club/IMetricasResponse';
 
 @Component({
   selector: 'app-admin-club-dashboard',
@@ -34,12 +36,12 @@ export class AdminClubDashboard {
   private dashboardService = inject(DashboardAdminService);
   private notificationService = inject(NotificationService);
   private authService = inject(AuthService);
+  private clubApiService = inject(ClubApiService);
 
   public readonly sidebarOpen = this.uiService.sidebarOpen;
   public readonly isMobile = this.uiService.isMobile;
   public readonly sidebarClass = this.uiService.sidebarClass;
   public readonly mainWrapperClass = this.uiService.mainWrapperClass;
-
   public readonly statCards = this.dashboardService.statCards;
   public readonly branchStats = this.dashboardService.branchStats;
   public readonly recentActivity = this.dashboardService.recentActivity;
@@ -47,43 +49,36 @@ export class AdminClubDashboard {
   public readonly pendingCount = this.dashboardService.pendingCount;
   public readonly lastUpdate = this.dashboardService.lastUpdate;
 
-  usuarioLogueado = signal<IUser>({
-    id: 0,
-    nombre:'',
-    apellido: '',
-    username: '',
-    email: '',
-    roles: [],
-    permissions: [],
-  })
+  usuarioLogueado = signal<IUser | null>(null);
+  metricas = signal<IMetricasResponse | null>(null);
 
-  constructor(){
-    this.usuarioLogueado.set(this.authService.currentUser!)
+  constructor() {
+    effect(() => {
+      this.usuarioLogueado.set(this.authService.user());
+    });
+    
+    effect(() => {
+      const clubId = this.usuarioLogueado()?.clubInfo?.id;
+
+      if (clubId && clubId > 0) {
+        this.clubApiService.obtenerMetricas(clubId).subscribe({
+          next: (result) => this.metricas.set(result)
+        });
+      }
+
+    });
   }
 
   ngOnInit(): void {
-    // Cargar datos iniciales
-    // this.dashboardService.refreshDashboard();
-
-    // Configurar debounce para búsqueda
-    // this.searchSubscription = this.searchSubject.pipe(
-    //   debounceTime(300), // Esperar 300ms después de que el usuario deje de escribir
-    //   distinctUntilChanged(), // Solo buscar si el valor cambió
-    //   filter(query => query.length === 0 || query.length > 2) // Buscar si está vacío o tiene más de 2 caracteres
-    // ).subscribe(query => {
-    //   this.performSearch(query);
-    // });
   }
 
   ngOnDestroy(): void {
-    // Limpiar suscripciones
     this.dashboardService.destroy();
     if (this.searchSubscription) {
       this.searchSubscription.unsubscribe();
     }
   }
 
-  // Métodos para manejar el sidebar
   toggleSidebar(): void {
     this.uiService.toggleSidebar();
   }
@@ -139,14 +134,11 @@ export class AdminClubDashboard {
   // Método privado que realiza la búsqueda real
   private performSearch(query: string): void {
     if (query && query.length > 2) {
-      console.log('Realizando búsqueda:', query);
       this.notificationService.info(`Buscando: "${query}"`);
 
       // Aquí iría la lógica real de búsqueda
       // this.dashboardService.search(query).subscribe(...);
     } else if (query.length === 0) {
-      console.log('Limpiando búsqueda');
-      // Limpiar resultados de búsqueda
     }
   }
 }

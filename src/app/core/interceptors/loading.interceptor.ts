@@ -16,22 +16,18 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   
   loadingService.showLoading(loadingMessage);
   
-  console.log(`[Interceptor] Iniciando petición: ${req.method} ${req.url}`, loadingMessage);
-  
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      console.error(`[Interceptor] Error en petición: ${req.method} ${req.url}`, error);
       return throwError(() => error);
     }),
     finalize(() => {
-      console.log(`[Interceptor] Finalizando petición: ${req.method} ${req.url}`);
       loadingService.hideLoading();
     })
   );
 };
 
 function getLoadingMessage(url: string, method?: string): string {
-  if (method === 'POST') return 'Guardando información';
+  if (method === 'POST') return url.includes('/Login') ? 'Iniciando sesión' : 'Guardando información';
   if (method === 'PUT') return 'Actualizando datos';
   if (method === 'DELETE') return 'Eliminando registro';
   if (method === 'GET') return 'Cargando información';

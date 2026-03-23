@@ -60,11 +60,6 @@ export class CacheService {
     };
 
     this.cache.set(key, entry);
-    
-    // Log en desarrollo
-    if (!environment.production) {
-      console.log(`📦 Cache SET: ${key}`, { size: this.cache.size });
-    }
   }
 
   /**
@@ -97,9 +92,6 @@ export class CacheService {
    */
   clear(): void {
     this.cache.clear();
-    if (!environment.production) {
-      console.log('🧹 Cache cleared');
-    }
   }
 
   /**
@@ -114,10 +106,6 @@ export class CacheService {
         expiredCount++;
       }
     }
-
-    if (expiredCount > 0 && !environment.production) {
-      console.log(`🧹 Cleared ${expiredCount} expired entries`);
-    }
   }
 
   /**
@@ -131,10 +119,6 @@ export class CacheService {
         this.cache.delete(key);
         deletedCount++;
       }
-    }
-
-    if (deletedCount > 0 && !environment.production) {
-      console.log(`🧹 Cleared ${deletedCount} entries matching pattern`, pattern);
     }
   }
 
@@ -215,9 +199,6 @@ export class CacheService {
 
     if (oldestKey) {
       this.cache.delete(oldestKey);
-      if (!environment.production) {
-        console.log(`🗑️ Evicted oldest entry: ${oldestKey}`);
-      }
     }
   }
 }

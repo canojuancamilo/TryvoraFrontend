@@ -24,18 +24,10 @@ export class DashboardSuperAdmin {
 
   sidebar = viewChild.required(Sidebar);
 
-  usuarioLogueado = signal<IUser>({
-    id: 0,
-    nombre: '',
-    apellido: '',
-    username: '',
-    email: '',
-    roles: [],
-    permissions: [],
-  })
+  usuarioLogueado = signal<IUser | null>(null)
   
   constructor() {
-    this.usuarioLogueado.set(this.authService.currentUser!)
+    this.usuarioLogueado.set(this.authService.user())
   }
 
   exportData() {

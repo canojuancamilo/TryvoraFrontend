@@ -31,10 +31,6 @@ export class AuthService {
   public isLoading = computed(() => this.authState().isLoading);
   public error = computed(() => this.authState().error);
 
-  public get currentUser(): IUser | null {
-    return this.authState().user;
-  }
-
   constructor() {
     this.loadStoredUser();
   }

@@ -49,7 +49,6 @@ export class PasoRamas implements OnInit {
 
   private cargarDatosGuardados(): void {
     const data = this.registroService.data();
-    console.log('Cargando datos en paso-ramas:', data);
     
     if (data.ramas) {
       this.ramasForm.patchValue(data.ramas, { emitEvent: false });      
@@ -62,14 +61,12 @@ export class PasoRamas implements OnInit {
     this.ramasForm.get('masculina')?.valueChanges.pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(value => {
-      console.log('masculina cambió a:', value);
       this.esMasculina.set(value);
     });
 
     this.ramasForm.get('femenina')?.valueChanges.pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(value => {
-      console.log('femenina cambió a:', value);
       this.esFemenina.set(value);
     });
   }
@@ -79,7 +76,6 @@ export class PasoRamas implements OnInit {
       debounceTime(300),
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(value => {
-      console.log('Guardando cambios:', value);
       this.registroService.updateRamasData(value);
     });
   }

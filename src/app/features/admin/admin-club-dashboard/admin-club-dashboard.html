@@ -1,14 +1,15 @@
 <div class="dashboard-container">
-  <app-sidebar [isOpen]="sidebarOpen()" [isMobile]="isMobile()" [usuarioInfo]="usuarioLogueado()" (toggleSidebar)="toggleSidebar()" />
+  <app-sidebar [isOpen]="sidebarOpen()" [isMobile]="isMobile()" [usuarioInfo]="usuarioLogueado()"
+    (toggleSidebar)="toggleSidebar()" />
 
   <div class="sidebar-overlay" [class.show]="uiService.isMobile() && uiService.sidebarOpen()" (click)="toggleSidebar()">
   </div>
   <div [class]="mainWrapperClass()">
-    <app-topbar [userAvatar]="usuarioLogueado().avatar ?? ''" [userName]="usuarioLogueado().nombre" [userRole]="usuarioLogueado().roles[0].nombre"
-      [notificationCount]="3" (toggleSidebar)="toggleSidebar()" (search)="onSearch($event)" />
+    <app-topbar [notificationCount]="3" (toggleSidebar)="toggleSidebar()" (search)="onSearch($event)" />
 
     <main class="page-content">
-      <app-welcome-banner [userName]="usuarioLogueado().nombre" [clubName]="usuarioLogueado().clubInfo?.nombre ?? ''"/>
+      <app-welcome-banner [userName]="usuarioLogueado()?.nombre" [clubName]="usuarioLogueado()?.clubInfo?.nombre ?? ''"
+        [totalJugadoresDia]="metricas()?.jugadoresAlDia!" [totalJugadoresMora]="metricas()?.deudores!" [totalComprobantesPendientes]="metricas()?.comprobantesPendientes!" />
       <app-stats-cards [stats]="statCards()" />
 
       @if (branchStats()) {

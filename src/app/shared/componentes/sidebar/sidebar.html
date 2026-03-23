@@ -8,10 +8,10 @@
 
   <div class="sidebar-club-info" (click)="onClubInfoClick()">
     <div class="sidebar-club-avatar">
-      <img [src]="usuarioInfo().clubInfo?.logo ?? 'logo-club-default.png'" [alt]="usuarioInfo().clubInfo?.nombre"
+      <img [src]="usuarioInfo()?.clubInfo?.logo ?? 'logo-club-default.png'" [alt]="usuarioInfo()?.clubInfo?.nombre"
         class="club-logo-image">
     </div>
-    <div class="sidebar-club-name">{{ usuarioInfo().clubInfo?.nombre }}</div>
+    <div class="sidebar-club-name">{{ usuarioInfo()?.clubInfo?.nombre }}</div>
   </div>
   <div class="sidebar-section">
     <!-- <div class="sidebar-section-label">Principal</div> -->
@@ -34,12 +34,12 @@
       <!-- Botón de usuario -->
       <div class="sidebar-user" (click)="toggleUserMenu()" [class.active]="isUserMenuOpen()">
         <div class="sidebar-avatar-container">
-          <img [src]="usuarioInfo().avatar ?? 'logo-user-default.jpg'" [alt]="usuarioInfo().nombre" class="user-avatar-image">
+          <img [src]="usuarioInfo()?.avatar ?? 'logo-user-default.jpg'" [alt]="usuarioInfo()?.nombre" class="user-avatar-image">
           <div class="user-status-dot online"></div>
         </div>
         <div class="sidebar-user-info">
-          <div class="sidebar-user-name">{{ usuarioInfo().nombre }} {{usuarioInfo().apellido}}</div>
-          <div class="sidebar-user-role">{{ usuarioInfo().roles[0].descripcion }}</div>
+          <div class="sidebar-user-name">{{ usuarioInfo()?.nombre }} {{usuarioInfo()?.apellido}}</div>
+          <div class="sidebar-user-role">{{ usuarioInfo()? usuarioInfo()!.roles[0].descripcion : ''}}</div>
         </div>
         <i class="bi bi-chevron-down" [class.rotated]="isUserMenuOpen()"></i>
       </div>

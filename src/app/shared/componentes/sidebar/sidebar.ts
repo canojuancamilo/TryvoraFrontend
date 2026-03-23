@@ -30,7 +30,7 @@ export class Sidebar {
 
   toggleSidebar = output<void>();
 
-  usuarioInfo = input.required<IUser>();
+  usuarioInfo = input.required<IUser | null>();
 
   isUserMenuOpen = signal(false);
 
@@ -48,7 +48,7 @@ export class Sidebar {
 
   constructor() {
     effect(() => {
-      const rol = this.usuarioInfo().roles[0]?.nombre;
+      const rol = this.usuarioInfo()?.roles[0]?.nombre;
 
       if (rol == 'super-admin') {
         this.mainNavItems.set([
@@ -160,7 +160,7 @@ export class Sidebar {
    */
   onClubInfoClick(): void {
     this.router.navigate(['/club-info']);
-    this.notificationService.info(`Club: ${this.usuarioInfo().clubInfo?.nombre}`);
+    this.notificationService.info(`Club: ${this.usuarioInfo()?.clubInfo?.nombre}`);
   }
 
   /**
@@ -170,11 +170,6 @@ export class Sidebar {
     // Si es móvil, cerrar sidebar después de navegar
     if (this.isMobile()) {
       this.onToggle();
-    }
-
-    // Si el item tiene badge, podemos mostrar información adicional
-    if (item.badge) {
-      console.log(`${item.label} tiene ${item.badge} elementos`);
     }
   }
 
